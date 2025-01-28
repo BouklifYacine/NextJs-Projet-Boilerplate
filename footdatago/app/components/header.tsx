@@ -9,6 +9,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
+import { ChevronRight } from "lucide-react";
 
 const Header = () => {
   return (
@@ -34,13 +35,13 @@ const Header = () => {
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight ">
-            <Link href="/data" className=" text-black hover:text-purple-600 transition-colors">
+            <Link href="/data" className=" text-black hover:text-purple-600 opacity-60 transition-colors">
               Data
             </Link>
-            <Link href="/favoris" className="text-black hover:text-purple-600 transition-colors">
+            <Link href="/favoris" className="text-black hover:text-purple-600 opacity-60 transition-colors">
               Favoris
             </Link>
-            <Link href="/classement" className="text-black hover:text-purple-600 transition-colors">
+            <Link href="/classement" className="text-black hover:text-purple-600 opacity-60 transition-colors">
               Classement
             </Link>
             
@@ -49,10 +50,10 @@ const Header = () => {
               variant="default" 
               className="ml-4 hover:bg-black/70"
             >
-              <Link href="/connexion">Connexion</Link>
+              <Link href="/connexion"> Connexion <ChevronRight />  </Link>
             </Button>
 
-            <Avatar className="ml-4 border-2 border-white hover:border-purple-600 cursor-pointer hover:scale-125 transition-transform">
+            <Avatar className="ml-4 border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>Profil</AvatarFallback>
             </Avatar>
