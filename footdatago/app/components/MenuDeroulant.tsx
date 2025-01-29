@@ -14,7 +14,7 @@ export function MenuDeroulant() {
   return (
     <DropdownMenu  >
       <DropdownMenuTrigger asChild>
-        <Menu className="cursor-pointer text-black" />
+        <Menu className="cursor-pointer text-white" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Mon compte</DropdownMenuLabel>

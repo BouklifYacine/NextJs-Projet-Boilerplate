@@ -13,10 +13,8 @@ import { ChevronRight } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 backdrop-blur-0 bg-black mx-10 mt-10 rounded-3xl">
-  
-      <div className="max-w-7xl mx-auto px-4 md:px-10 py-3 md:py-5">
-      
+<header className="sticky top-0 z-50 pt-4 px-4 bg-black ">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
          
           <Link href="/">
@@ -31,7 +29,7 @@ const Header = () => {
           </Link>
           
           <div className="md:hidden">
-            <MenuDeroulant />
+            <MenuDeroulant  />
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight ">
@@ -39,10 +37,10 @@ const Header = () => {
               Data
             </Link>
             <Link href="/favoris" className="text-white hover:text-purple-600 opacity-80 transition-colors">
-              Favoris
+            Classement
             </Link>
             <Link href="/classement" className="text-white hover:text-purple-600 opacity-80 transition-colors">
-              Classement
+             Favoris
             </Link>
             
             <Button 
