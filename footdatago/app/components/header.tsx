@@ -13,7 +13,7 @@ import { ChevronRight } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="sticky top-2 backdrop-blur-sm bg-white/70 mx-10 mt-10 rounded-3xl">
+    <header className="sticky top-0 backdrop-blur-0 bg-black mx-10 mt-10 rounded-3xl">
   
       <div className="max-w-7xl mx-auto px-4 md:px-10 py-3 md:py-5">
       
@@ -35,20 +35,20 @@ const Header = () => {
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight ">
-            <Link href="/data" className=" text-black hover:text-purple-600 opacity-60 transition-colors">
+            <Link href="/data" className=" text-white hover:text-purple-600 opacity-80 transition-colors">
               Data
             </Link>
-            <Link href="/favoris" className="text-black hover:text-purple-600 opacity-60 transition-colors">
+            <Link href="/favoris" className="text-white hover:text-purple-600 opacity-80 transition-colors">
               Favoris
             </Link>
-            <Link href="/classement" className="text-black hover:text-purple-600 opacity-60 transition-colors">
+            <Link href="/classement" className="text-white hover:text-purple-600 opacity-80 transition-colors">
               Classement
             </Link>
             
             <Button 
               asChild 
-              variant="default" 
-              className="ml-4 hover:bg-black/70"
+              variant="ghost" 
+              className="ml-4 hover:bg-gray-300 bg-white text-black"
             >
               <Link href="/connexion"> Connexion <ChevronRight />  </Link>
             </Button>
