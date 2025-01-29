@@ -13,7 +13,7 @@ import { ChevronRight } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 backdrop-blur-md bg-white/50">
+    <header className="sticky top-0 backdrop-blur-sm bg-white/70 mx-10 mt-10 rounded-3xl">
   
       <div className="max-w-7xl mx-auto px-4 md:px-10 py-3 md:py-5">
       

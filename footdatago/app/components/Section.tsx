@@ -25,28 +25,25 @@ const avatars = [
     profileUrl: "https://github.com/sanjay-mali",
   },
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/59442788",
-    profileUrl: "https://github.com/itsarghyadas",
+    imageUrl: "https://avatars.githubusercontent.com/u/20110627",
+    profileUrl: "https://github.com/tomonarifeehan",
   },
 ];
 
 const Section = () => {
   return (
     <section>
-      <div className='max-w-7xl mx-auto bg-red-500 mt-8 py-5'>
-        {/* En-tête */}
-        <div className='text-center flex flex-col justify-center items-center gap-4 py-4'>
-          <h1 className='text-xl md:text-8xl font-bold px-4 tracking-tight'>
-            Comparez les datas des plus grands joueurs mondiaux
-          </h1>
-          <p className='max-w-2xl text-center px-4'>
+      <div className=' mx-auto bg-red-500 mt-8 py-5'>
+      
+        <div className=' flex flex-col justify-center items-center gap-3 py-2'>
+        <h1 className='text-4xl md:text-8xl font-bold px-4 tracking-tight text-center'>
+  Comparez les datas   <br /> des plus grands joueurs mondiaux.
+</h1>
+          <p className='max-w-2xl text-sm md:text-xl text-center px-4'>
             Grace à notre outil comparez les datas détaillées des plus grands joueurs mondiaux 
             mettez les en favoris pour suivre leur performances et leurs évolution au fil de la saison.
           </p>
-        </div>
-
-        
-        <div className='flex justify-center items-center py-5'>
+          <div className='flex justify-center items-center'>
           <ShimmerButton className='py-2 px-8 text-xl font-medium tracking-tight'>
             Comparez
           </ShimmerButton>
@@ -54,7 +51,8 @@ const Section = () => {
 
         <div className='flex flex-col items-center justify-center md:flex-row gap-2 min-h-[100px]'>
           <AvatarCircles numPeople={99} avatarUrls={avatars} />
-          <span className="text-center md:text-left">Utilisé par +100 utilisateurs</span>
+          <span className="text-center md:text-left">Utiliser par +100 utilisateurs</span>
+        </div>
         </div>
       </div>
     </section>
