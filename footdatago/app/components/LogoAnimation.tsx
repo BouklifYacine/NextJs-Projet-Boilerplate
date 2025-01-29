@@ -5,11 +5,11 @@ import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 const LogoAnimation = () => {
   return (
     <>
-      <p className="text-center m-10 px-2 text-base opacity-50 font-medium">
+      <p className="text-center m-10 px-2 text-xl font-medium text-black">
         Les clubs partenaires a FootDataGo
         qui font confiance a notre outil.
       </p>
-      <div className="flex gap-10 justify-center ">
+      <div className="flex gap-10 justify-evenly ">
         <Image
           src={LogoLiverpool}
           alt="Liverpoool"

@@ -59,15 +59,15 @@ const Section = () => {
           </h1>
 
           {/* Description */}
-          <p className='max-w-2xl text-base md:text-lg lg:text-xl text-center px-4 text-white/70 pt-4'>
+          <p className='max-w-2xl text-base md:text-lg lg:text-xl text-center px-4 text-white/70 pt-3'>
             Grace à notre outil utilisez et comparez les datas
            
             des joueurs et suivez leur performances au fil de la saison.
           </p>
 
           {/* Bouton Principal */}
-          <div className='flex justify-center items-center pb-2 pt-4'>
-            <ShimmerButton className='py-4 px-8 md:py-5 md:px-12 text-lg md:text-xl font-medium tracking-tight'>
+          <div className='flex justify-center items-center pb-2 pt-3'>
+            <ShimmerButton className='py-4 px-8 md:py-5 md:px-12 text-lg md:text-xl font-medium tracking-tighter text-white  shadow-lg shadow-purple-500/40'>
               Utiliser FootDataGo
             </ShimmerButton>
           </div>
