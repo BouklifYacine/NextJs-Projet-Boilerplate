@@ -8,7 +8,7 @@ import {
 
 const Faq = () => {
   return (
-    <div className='bg-black mt-32 pb-20'>
+    <div className='bg-black pb-20'>
       <div className='container mx-auto px-4'>
         <div className='max-w-3xl mx-auto'>
           <h2 className='py-8 text-center text-4xl md:text-6xl font-bold tracking-wide bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent'>
@@ -17,7 +17,7 @@ const Faq = () => {
         
           
           <div className='space-y-6'>
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2">
@@ -31,7 +31,7 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-2" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
@@ -45,7 +45,7 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
@@ -59,7 +59,7 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
@@ -72,7 +72,7 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
@@ -85,7 +85,7 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
