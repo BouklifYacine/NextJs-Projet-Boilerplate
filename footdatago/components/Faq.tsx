@@ -17,13 +17,13 @@ const Faq = () => {
         
           
           <div className='space-y-6'>
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1" className="border-b-0">
-                  <AccordionTrigger className="text-white text-xl ">
+                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2">
                     Comment puis-je commencer à utiliser FootDataGo ?
                   </AccordionTrigger>
-                  <AccordionContent className="text-white/80 text-base">
+                  <AccordionContent className="text-white/80 text-sm md:text-base px-1 md:px-2">
                     Pour commencer, il suffit de créer un compte gratuit sur notre plateforme. 
                     Vous aurez ensuite accès à toutes les statistiques et données des joueurs.
                   </AccordionContent>
@@ -31,11 +31,11 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-2" className="border-b-0">
-                  <AccordionTrigger className="text-white text-xl ">
-                    Quelles données sont disponibles sur FootDataGo ?
+                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
+                    Quelles datas sont disponibles sur FootDataGo ?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
         
@@ -45,10 +45,10 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
-                  <AccordionTrigger className="text-white text-xl ">
+                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
                     A quoi sert la section favoris?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
@@ -59,10 +59,10 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
-                  <AccordionTrigger className="text-white text-lg md:text-xl ">
+                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
                     Comment comparer les joueurs entre eux ?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-sm md:text-base">
@@ -72,23 +72,23 @@ const Faq = () => {
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
-                  <AccordionTrigger className="text-white text-xl ">
-                    Le site est en version 0.6 y'aura t'il des nouvelles fonctionnalités?
+                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
+                    Des nouvelles fonctionnalités sont prévues?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
-                 Oui des nouvelles fonctionnalités prévues comme pouvoir comparer plus de 2 joueurs, pouvoir avoir plus de filtre de recherches et d'autres choses que je ne peux pas dire encore.
+                 Oui le site est en version 0.6 donc des nouvelles fonctionnalités prévues comme pouvoir comparer plus de 2 joueurs, pouvoir avoir plus de filtre de recherches et d'autres choses que je ne peux pas dire encore.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-2xl p-4'>
+            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4'>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
-                  <AccordionTrigger className="text-white text-xl FONT6 ">
+                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
                    Comment vous contactez? 
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
