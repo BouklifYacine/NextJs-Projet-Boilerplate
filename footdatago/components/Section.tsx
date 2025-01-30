@@ -7,32 +7,32 @@ import { IoStarSharp } from "react-icons/io5";
 
 const avatars = [
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/16860528",
+    imageUrl: "https://sportal.fr/wp-content/uploads/2024/09/pep-guardiola_12890091190x786.jpg",
     profileUrl: "https://github.com/dillionverma",
     id: 1,
   },
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/20110627",
+    imageUrl: "https://icdn.empireofthekop.com/wp-content/uploads/2023/08/fbl-sin-eng-bayern-presser-2.jpg",
     profileUrl: "https://github.com/tomonarifeehan",
     id: 2,
   },
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/106103625",
+    imageUrl: "https://i.eurosport.com/2024/01/07/3857005-78373028-2560-1440.jpg",
     profileUrl: "https://github.com/BankkRoll",
-    id: 13,
+    id: 3,
   },
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/59228569",
+    imageUrl: "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg",
     profileUrl: "https://github.com/safethecode",
     id: 4,
   },
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/59442788",
+    imageUrl: "https://yop.l-frii.com/wp-content/uploads/2024/08/Ancelotti-est-lun-des-meilleurs-entraineurs-de-tous-les-temps.jpg",
     profileUrl: "https://github.com/sanjay-mali",
     id: 5,
   },
   {
-    imageUrl: "https://avatars.githubusercontent.com/u/20110627",
+    imageUrl: "https://assets.goal.com/images/v3/bltcf27e487fb22060c/GOAL%20-%20Blank%20WEB%20-%20Facebook(768).jpeg?auto=webp&format=pjpg&width=3840&quality=60",
     profileUrl: "https://github.com/tomonarifeehan",
     id: 6,
   },

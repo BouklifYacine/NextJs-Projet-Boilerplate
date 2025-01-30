@@ -49,7 +49,7 @@ const Faq = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                    A quoi sert la section favoris?
+                    A quoi sert la section favoris ?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
                La section sert a suivre vos joueur favoris pour avoir directement les datas que vous voulez et sans devoir a aller dans l'outil de comparaison a chaque fois.
@@ -76,7 +76,7 @@ const Faq = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                    Des nouvelles fonctionnalités sont prévues?
+                    Des nouvelles fonctionnalités sont prévues ?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
                  Oui le site est en version 0.6 donc des nouvelles fonctionnalités prévues comme pouvoir comparer plus de 2 joueurs, pouvoir avoir plus de filtre de recherches et d'autres choses que je ne peux pas dire encore.
@@ -89,7 +89,7 @@ const Faq = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                   Comment vous contactez? 
+                   Comment vous contactez ? 
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-base">
                 C'est tout simple allez dans la section retours et envoyer moi un mail en précisant la catégorie de votre demande 

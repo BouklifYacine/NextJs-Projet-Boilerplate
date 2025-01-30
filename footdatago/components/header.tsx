@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
-import { MenuDeroulant } from "./MenuDeroulant";
+import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
 import {
@@ -52,9 +52,9 @@ const Header = () => {
             </Button>
 
             <Avatar className="ml-4 border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>Profil</AvatarFallback>
-            </Avatar>
+  <AvatarImage src="https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg" alt="Profile Liverpool" />
+  <AvatarFallback>LFC</AvatarFallback>
+</Avatar>
           </nav>
         </div>
       </div>
