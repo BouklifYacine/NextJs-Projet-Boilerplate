@@ -1,6 +1,7 @@
-import Header from "./components/header";
-import LogoAnimation from "./components/LogoAnimation";
-import Section from "./components/Section";
+import Faq from "@/components/Faq";
+import Header from "@/components/header";
+import LogoAnimation from "@/components/LogoAnimation";
+import Section from "@/components/Section";
 
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
    <Header/>
    <Section/>
    <LogoAnimation></LogoAnimation>
+   <Faq></Faq>
 
    </>
  

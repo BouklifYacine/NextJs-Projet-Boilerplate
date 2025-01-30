@@ -10,7 +10,7 @@ import LogoArsenal from "@/app/public/Arsenal_FC.svg.webp";
 
 const LogoAnimation = () => {
   return (
-    <div className="bg-white py-8 md:py-12">
+    <div className="bg-white py-8 md:py-12 mt-10">
       <div className="container mx-auto max-w-7xl px-4">
         <div>
           <p className="text-center mb-6 md:mb-10 text-sm md:text-xl font-medium">Ces clubs nous font confiance</p>
