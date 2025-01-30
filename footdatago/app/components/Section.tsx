@@ -1,8 +1,6 @@
 import React from 'react'
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
-
-import { Star } from 'lucide-react';
 import { IoStarSharp } from "react-icons/io5";
 
 
@@ -58,27 +56,23 @@ const Section = () => {
             </span>
           </h1>
 
-          {/* Description */}
           <p className='max-w-2xl text-base md:text-lg lg:text-xl text-center px-4 text-white/70 pt-3'>
             Grace à notre outil utilisez et comparez les datas
            
             des joueurs et suivez leur performances au fil de la saison.
           </p>
 
-          {/* Bouton Principal */}
           <div className='flex justify-center items-center pb-2 pt-3'>
             <ShimmerButton className='py-4 px-8 md:py-5 md:px-12 text-lg md:text-xl font-medium tracking-tighter text-white  shadow-lg shadow-purple-500/40'>
               Utiliser FootDataGo
             </ShimmerButton>
           </div>
 
-          {/* Utilisateurs */}
           <div className='flex flex-col items-center justify-center md:flex-row gap-3'>
             <AvatarCircles numPeople={100} avatarUrls={avatars} />
             <span className="text-base md:text-lg text-white">Approuvé par +100 utilisateurs</span>
           </div>
           
-          {/* Étoiles */}
           <div className='flex pb-8 space-x-1'>
             <IoStarSharp className='text-yellow-500 text-2xl'/>
             <IoStarSharp className='text-yellow-500 text-2xl'/>
