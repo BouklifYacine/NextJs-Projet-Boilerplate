@@ -1,7 +1,7 @@
 'use client'
 
 import { ChartPie, DoorOpen, LogOut, Menu, Settings, Star, Table2, User } from "lucide-react";
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import {
  DropdownMenu,
  DropdownMenuContent,
@@ -12,11 +12,13 @@ import {
  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 export function MenuDeroulant() {
  const { data: session } = useSession()
 
  return (
+  <>
    <DropdownMenu>
      <DropdownMenuTrigger asChild>
        <Menu className="cursor-pointer text-white" />
@@ -67,13 +69,19 @@ export function MenuDeroulant() {
            </DropdownMenuItem>
          </DropdownMenuGroup>
        ) : (
-   
-         <DropdownMenuItem onClick={() => signIn('github')}>
+  
+
+        <Link href="connexion">
+
+         <DropdownMenuItem >
            <DoorOpen className="mr-2 h-4 w-4" />
            <span>Connexion</span>
          </DropdownMenuItem>
+
+</Link>
        )}
      </DropdownMenuContent>
    </DropdownMenu>
+   </>
  )
 }

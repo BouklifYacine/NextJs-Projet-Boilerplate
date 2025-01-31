@@ -1,25 +1,30 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
-import { MenuDeroulant } from "@/components/MenuDeroulant";
 import Link from "next/link";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { useSession } from 'next-auth/react'
+import { DoorOpen, Settings } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession } from "next-auth/react";
 import { Deconnexion } from "./BoutonDéconnexion";
 import { BoutonConnexion } from "./BoutonConnexion";
-
+import { MenuDeroulant } from "@/components/MenuDeroulant";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 z-50 pt-4 px-4 bg-black ">
+    <header className="sticky top-0 z-50 pt-4 px-4 bg-black">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <Link href="/">
@@ -32,48 +37,106 @@ const Header = () => {
               priority
             />
           </Link>
-          
+
           <div className="md:hidden">
             <MenuDeroulant />
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
-            <Link href="/data" className="text-white hover:text-purple-600 opacity-80 transition-colors">
+            <Link
+              href="/data"
+              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+            >
               Data
             </Link>
-            <Link href="/favoris" className="text-white hover:text-purple-600 opacity-80 transition-colors">
+            <Link
+              href="/classement"
+              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+            >
               Classement
             </Link>
-            <Link href="/classement" className="text-white hover:text-purple-600 opacity-80 transition-colors">
+            <Link
+              href="/favoris"
+              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+            >
               Favoris
             </Link>
-            
+
             {!session ? (
               <div className="flex items-center gap-6">
-           
-           <BoutonConnexion></BoutonConnexion>
-
-                <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
-                  <AvatarImage 
-                    src="https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg" 
-                    alt="Logo" 
-                  />
-                  <AvatarFallback>LFC</AvatarFallback>
-                </Avatar>
-             
+                <BoutonConnexion />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
+                      <AvatarImage
+                        src="https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
+                        alt="Logo"
+                      />
+                      <AvatarFallback>LFC</AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <div className="flex items-center gap-2 px-2 py-1.5">
+                      <Avatar className="h-6 w-6">
+                        <AvatarImage
+                          src="https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
+                          alt="Logo"
+                        />
+                        <AvatarFallback>LFC</AvatarFallback>
+                      </Avatar>
+                      <DropdownMenuLabel className="px-0">
+                        Mon compte
+                      </DropdownMenuLabel>
+                    </div>
+                    <DropdownMenuSeparator />
+                    
+                      <DropdownMenuItem>
+                        <DoorOpen className="mr-2 h-4 w-4" />
+                        <Link href="connexion" className="cursor-pointer">Connexion</Link>
+                      </DropdownMenuItem>
+                   
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             ) : (
               <div className="flex items-center gap-6">
-               
-               <Deconnexion></Deconnexion>
-
-                <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
-                  <AvatarImage 
-                    src={session.user?.image ?? ""} 
-                    alt={session.user?.name ?? "User avatar"} 
-                  />
-                  <AvatarFallback>{session.user?.name?.[0]?.toUpperCase() ?? ""}</AvatarFallback>
-                </Avatar>
+                <Deconnexion />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
+                      <AvatarImage
+                        src={session.user?.image ?? ""}
+                        alt={session.user?.name ?? "User avatar"}
+                      />
+                      <AvatarFallback>
+                        {session.user?.name?.[0]?.toUpperCase() ?? ""}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <div className="flex items-center gap-2 px-2 py-1.5">
+                      <Avatar className="h-6 w-6">
+                        <AvatarImage
+                          src={session.user?.image ?? ""}
+                          alt={session.user?.name ?? "User avatar"}
+                        />
+                        <AvatarFallback>
+                          {session.user?.name?.[0]?.toUpperCase() ?? ""}
+                        </AvatarFallback>
+                      </Avatar>
+                      <DropdownMenuLabel className="px-0">
+                        Mon compte
+                      </DropdownMenuLabel>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <Settings className="mr-2 h-4 w-4 " />
+                        <Link href="parametres" className="cursor-pointer">Paramètres</Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
           </nav>
