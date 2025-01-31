@@ -10,8 +10,9 @@ generator client {
 model User {
   id            String          @id @default(cuid())
   name          String?
-  email         String?          @unique
+  email         String?         @unique
   emailVerified DateTime?
+  password      String?
   image         String?
   accounts      Account[]
   sessions      Session[]
@@ -25,11 +26,12 @@ model User {
 model Favoris {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   
+  userId    String
   joueurNom String
   joueurId  Int
   createdAt DateTime @default(now())
 }
+
 model Account {
   userId            String
   type              String

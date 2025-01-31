@@ -11,49 +11,49 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  // pages: {
-  //   signIn: "/connexion",
-  // },
+  pages: {
+    signIn: "/connexion",
+  },
   providers: [
     GitHub,
     Google,
-    // Credentials({
-    //   name: "Inscription",
-    //   credentials: {
-    //     email: { label: "email", type: "email" },
-    //     password: { label: "password", type: "password" },
-    //   },
-    //   async authorize(credentials, request) {
-    //     const email = credentials.email as string | undefined;
-    //     const password = credentials.password as string | undefined;
+    Credentials({
+      name: "Inscription",
+      credentials: {
+        email: { label: "email", type: "email" },
+        password: { label: "password", type: "password" },
+      },
+      async authorize(credentials, request) {
+        const email = credentials.email as string | undefined;
+        const password = credentials.password as string | undefined;
 
-    //     if (!email || !password) {
-    //       throw new Error("Vous devez remplir les deux champs");
-    //     }
+        if (!email || !password) {
+          throw new Error("Vous devez remplir les deux champs");
+        }
 
-    //     const user = await prisma.user.findUnique({
-    //       where: { email },
-    //       select: {
-    //         id: true,
-    //         email: true,
-    //         name: true,
-    //         password: true
-    //       }
-    //     });
+        const user = await prisma.user.findUnique({
+          where: { email },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            password: true
+          }
+        });
 
-    //     if (!user || !user.password) {
-    //       throw new Error("Utilisateur introuvable");
-    //     }
+        if (!user || !user.password) {
+          throw new Error("Utilisateur introuvable");
+        }
 
-    //     const isValid = await bcrypt.compare(password, user.password);
+        const isValid = await bcrypt.compare(password, user.password);
 
-    //     if (!isValid) {
-    //       throw new Error("Le mot de passe est invalide");
-    //     }
+        if (!isValid) {
+          throw new Error("Le mot de passe est invalide");
+        }
 
-    //     return user;
-    //   },
-    // }),
+        return user;
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user, account }) {

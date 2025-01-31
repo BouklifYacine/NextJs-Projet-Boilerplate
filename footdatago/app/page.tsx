@@ -2,7 +2,8 @@ import Faq from "@/components/Faq";
 import Header from "@/components/header";
 import LogoAnimation from "@/components/LogoAnimation";
 import Section from "@/components/Section";
-import TestBouton from "@/components/testbouton";
+import DesignBoutonGoogle from "@/components/ui/DesignBoutonGoogle";
+
 
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
    <Section/>
    <LogoAnimation></LogoAnimation>
    <Faq></Faq>
+   <DesignBoutonGoogle></DesignBoutonGoogle>
    
 
    </>
