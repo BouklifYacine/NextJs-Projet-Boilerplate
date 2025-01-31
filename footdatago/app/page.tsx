@@ -12,7 +12,7 @@ export default function Home() {
    <Section/>
    <LogoAnimation></LogoAnimation>
    <Faq></Faq>
-   <TestBouton></TestBouton>
+   
 
    </>
  

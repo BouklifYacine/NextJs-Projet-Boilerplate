@@ -62,7 +62,7 @@ const Section = () => {
           </h1>
 
           <p className="max-w-2xl text-base md:text-lg lg:text-xl text-center px-4 text-white/70 pt-3">
-            Grace à notre outil utilisez et comparez les datas des joueurs et
+            Grace à notre outil utilisez, comparez les datas des joueurs et
             suivez leur performances au fil de la saison.
           </p>
 
