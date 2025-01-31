@@ -4,7 +4,8 @@ import React from 'react'
 
 const Camarche = async () => {
     const session = await auth()
-    console.log(session?.user)
+    console.log("voici l'id : " +  session?.user?.id)
+    console.log("Voici la session au complet : " + session?.user?.name + session?.user?.email + session?.user?.image)
     if(!session) {
         redirect("/")
     }
