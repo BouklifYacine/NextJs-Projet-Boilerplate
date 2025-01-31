@@ -14,6 +14,8 @@ import {
 import { ChevronRight, LogOut } from "lucide-react";
 import { signIn, signOut } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
+import { Deconnexion } from "./BoutonDéconnexion";
+import { ConnexionGoogle } from "./BoutonAuthGoogle";
 
 const Header = () => {
   const { data: session } = useSession()
@@ -50,13 +52,7 @@ const Header = () => {
             
             {!session ? (
               <div className="flex items-center gap-6">
-                   <Button 
-                  onClick={() => signIn('google')}
-                  variant="ghost" 
-                  className="hover:bg-gray-300 bg-white text-black"
-                >
-                  Connexion <ChevronRight />
-                </Button>
+              <ConnexionGoogle></ConnexionGoogle>
 
                 <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
                   <AvatarImage 
@@ -70,13 +66,7 @@ const Header = () => {
             ) : (
               <div className="flex items-center gap-6">
                
-                <Button 
-                  onClick={() => signOut()}
-                  variant="ghost" 
-                  className="hover:bg-gray-300 bg-white text-black flex items-center gap-2"
-                >
-                  Déconnexion <LogOut size={16} />
-                </Button>
+               <Deconnexion></Deconnexion>
 
                 <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
                   <AvatarImage 
