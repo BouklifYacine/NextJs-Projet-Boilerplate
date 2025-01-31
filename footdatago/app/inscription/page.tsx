@@ -11,6 +11,7 @@ import SchemaInscription from '@/schema/SchemaInscription';
 import { useRouter } from 'next/navigation';
 import Boutongoogle from '@/components/BoutonAuthGoogle';
 import BoutonGithub from '@/components/BoutonAuthGoogle';
+import BoutonConnexionProviders from '@/components/BoutonConnexionProviders';
 
 type Schema = z.infer<typeof SchemaInscription>;
 
@@ -108,9 +109,7 @@ const AuthForm = () => {
             </div>
           </div>
 
-       <Boutongoogle></Boutongoogle>
-
-       <BoutonGithub></BoutonGithub>
+     <BoutonConnexionProviders></BoutonConnexionProviders>
 
           <p className="text-center text-sm text-gray-600 mt-4">
             Déjà inscrit?{' '}
