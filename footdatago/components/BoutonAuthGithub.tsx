@@ -1,0 +1,14 @@
+"use client"
+import { signIn } from "next-auth/react"
+import { Button } from "./ui/button"
+import { ChevronRight } from "lucide-react"
+ 
+export function ConnexionGithub() {
+  return      <Button 
+  onClick={() => signIn('github')}
+  variant="ghost" 
+  className="hover:bg-gray-300 bg-white text-black"
+>
+  Connexion <ChevronRight />
+</Button>
+}

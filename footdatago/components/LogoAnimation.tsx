@@ -13,7 +13,7 @@ const LogoAnimation = () => {
     <div className="bg-black py-16 md:py-12 ">
       <div className="container mx-auto mt-24 max-w-7xl px-8">
         <div>
-          <p className="text-center text-white py-8 mb-4 text-lg md:text-2xl font-medium">Ces clubs nous font confiance</p>
+          <p className="text-center text-white py-8 mb-4 text-lg md:text-2xl font-medium">Ils nous font confiance</p>
         </div>
         <div className="flex justify-center w-full">
           <div className="flex items-center justify-between   w-full max-w-6xl ">

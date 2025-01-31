@@ -45,6 +45,14 @@ export function MenuDeroulant() {
              <span>{session.user?.name || 'Profil'}</span>
            </DropdownMenuItem>
            <DropdownMenuItem>
+             <ChartPie className="mr-2 h-4 w-4" />
+             <span>Data</span>
+           </DropdownMenuItem>
+           <DropdownMenuItem>
+             <Table2 className="mr-2 h-4 w-4" />
+             <span>Classement</span>
+           </DropdownMenuItem>
+           <DropdownMenuItem>
              <Star className="mr-2 h-4 w-4" />
              <span>Favoris</span>
            </DropdownMenuItem>
@@ -60,7 +68,7 @@ export function MenuDeroulant() {
          </DropdownMenuGroup>
        ) : (
    
-         <DropdownMenuItem onClick={() => signIn('google')}>
+         <DropdownMenuItem onClick={() => signIn('github')}>
            <DoorOpen className="mr-2 h-4 w-4" />
            <span>Connexion</span>
          </DropdownMenuItem>

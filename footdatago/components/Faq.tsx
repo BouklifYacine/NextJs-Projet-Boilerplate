@@ -11,7 +11,7 @@ const Faq = () => {
     <div className='bg-black pb-20'>
       <div className='container mx-auto px-4'>
         <div className='max-w-3xl mx-auto'>
-          <h2 className='py-8 text-center text-4xl md:text-6xl font-bold tracking-wide bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent'>
+          <h2 className='py-8 text-center text-4xl md:text-6xl font-bold tracking-wide bg-gradient-to-r from-purple-500 to-blue-500  bg-clip-text text-transparent'>
             FAQ
           </h2>
         
