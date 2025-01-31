@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
+import { SessionProvider } from "next-auth/react";
+import Provider from "./auth/provider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"], 
@@ -25,7 +27,9 @@ export default function RootLayout({
         dmSans.className, 
         "antialiased " 
       )}>
+        <Provider>
         {children}
+        </Provider>
       </body>
     </html>
   );
