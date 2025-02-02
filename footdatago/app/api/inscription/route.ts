@@ -44,7 +44,8 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json({
-    name : nouvelutilisateur.name , 
-    emailresultat : result.success
+    name : nouvelutilisateur.name ,
+    message : "Inscription réussie "
+  
   });
 }

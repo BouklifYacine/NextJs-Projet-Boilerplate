@@ -1,11 +1,23 @@
-// app/api/auth/reset-password/confirm/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
+import { ResetPasswordSchema } from "@/schema/SchemaMotDepasse";
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, email, newPassword } = await request.json();
+
+    const body = await request.json();
+    
+    const validation = ResetPasswordSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { message: validation.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+    
+    const { code, email, newPassword } = body
 
     const user = await prisma.user.findFirst({
       where: {
