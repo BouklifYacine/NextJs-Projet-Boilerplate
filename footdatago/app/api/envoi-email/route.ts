@@ -1,19 +1,18 @@
-import { NextResponse } from 'next/server';
-import { sendEmail } from '@/app/utils/email';
-import WelcomeEmail from '@/app/(emails)/EmailBievenue';
-import { createElement } from 'react';  
+import { NextResponse } from "next/server";
+import { sendEmail } from "@/app/utils/email";
+import EmailBienvenue from "@/app/(emails)/EmailBievenue";
+import { createElement } from "react";
 
 export async function POST(req: Request) {
   try {
     const { email, username } = await req.json();
-    
 
-    const emailElement = createElement(WelcomeEmail, { username });
-    
+    const emailElement = createElement(EmailBienvenue, { username });
+
     const result = await sendEmail({
       to: email,
-      subject: 'Bienvenue!',
-      emailComponent: emailElement
+      subject: "Bienvenue!",
+      emailComponent: emailElement,
     });
 
     if (!result.success) {
@@ -25,9 +24,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ username });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
