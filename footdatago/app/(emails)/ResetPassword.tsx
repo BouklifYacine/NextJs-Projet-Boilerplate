@@ -1,4 +1,4 @@
-import { Html, Head, Body, Container, Section, Text } from '@react-email/components';
+  import { Html, Head, Body, Container, Section, Text } from '@react-email/components';
 import * as React from 'react';
 
 interface ResetPasswordEmailProps {

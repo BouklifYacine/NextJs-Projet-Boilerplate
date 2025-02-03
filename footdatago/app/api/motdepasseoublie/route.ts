@@ -8,6 +8,17 @@ export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
 
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { message: "Aucun compte n'est associé à cette adresse email" },
+        { status: 404 }
+      );
+    }
+
     // Génère un code à 6 chiffres
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
     const codeExpiry = new Date(Date.now() + 3600000); // 1 heure normalement
@@ -31,7 +42,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { message: "Erreur serveur" },
-      { status: 500 }
+      { status: 400 }
     );
   }
 }

@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Mail } from "lucide-react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,15 +22,23 @@ const AuthForm = () => {
   });
 
   const router = useRouter();
+  const [code, setCode] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data: Schema) => {
     try {
       const response = await axios.post("/api/motdepasseoublie", data);
-      router.push("/connexion/motdepasseoublie/code");
+
       reset();
-      console.log(response.data);
-      
-    } catch (error) {
+      setCode(response.data.message);
+      setErrorMessage("");
+      setTimeout(() => {
+        router.push("/connexion/motdepasseoublie/code");
+      }, 3000);
+    } catch (error: any) {
+      setErrorMessage(
+        error.response?.data?.message || "Une erreur est survenue"
+      );
       console.error("Erreur:", error);
     }
   };
@@ -40,7 +47,7 @@ const AuthForm = () => {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-6">
-          Mot de passe oublié ? 
+          Mot de passe oublié ?
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -66,6 +73,12 @@ const AuthForm = () => {
               </p>
             )}
           </div>
+
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
+
+          <p className=" text-green-500 text-sm">{code}</p>
 
           <button
             type="submit"
