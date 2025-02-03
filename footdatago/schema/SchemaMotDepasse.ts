@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const ResetPasswordSchema = z.object({
   code: z.string(),
-  email: z.string(),
+  email: z.string().email(),
   newPassword: z
     .string({ message: "Vous devez mettre un mot de passe" })
     .min(1, { message: "Vous devez mettre un mot de passe" })
@@ -10,3 +10,7 @@ export const ResetPasswordSchema = z.object({
     .trim()
     .max(35, "Le mot de passe doit faire au maximum 35 caractères"),
 });
+
+export const EmailSchema = z.object({
+  email : z.string().email()
+})

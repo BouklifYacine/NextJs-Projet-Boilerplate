@@ -11,25 +11,25 @@ export async function POST(request: NextRequest) {
       where: { email },
     });
 
-    if (!user) {
+    if (!user?.password) {
       return NextResponse.json(
         { message: "Compte non trouvé" },
         { status: 404 }
       );
     }
 
-    const isValid = await bcrypt.compare(motdepasseactuel, user.password);
-    if (!isValid) {
+    const MotdePasseValide = await bcrypt.compare(motdepasseactuel, user.password);
+    if (!MotdePasseValide) {
       return NextResponse.json(
         { message: "Mot de passe actuel incorrect" },
         { status: 400 }
       );
     }
 
-    const hashedPassword = await bcrypt.hash(nouveaumotdepasse, 10);
+    const MotDePasseHache = await bcrypt.hash(nouveaumotdepasse, 10);
     await prisma.user.update({
       where: { email },
-      data: { password: hashedPassword },
+      data: { password: MotDePasseHache },
     });
 
     return NextResponse.json({ message: "Mot de passe mis à jour" });

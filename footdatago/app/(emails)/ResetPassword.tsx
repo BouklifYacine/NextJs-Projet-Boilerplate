@@ -1,4 +1,3 @@
-// app/(emails)/ResetPasswordEmail.tsx
 import { Html, Head, Body, Container, Section, Text } from '@react-email/components';
 import * as React from 'react';
 

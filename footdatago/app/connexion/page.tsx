@@ -93,6 +93,13 @@ const ConnexionForm = () => {
             )}
           </div>
 
+          <div className=" flex justify-end text-xs text-blue-600 hover:text-blue-700 underline">
+<Link href="/connexion/motdepasseoublie">
+Mot de passe oublié? 
+</Link>
+          </div>
+          
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -124,6 +131,10 @@ const ConnexionForm = () => {
               S'inscrire
             </Link>
           </p>
+
+        
+
+          
         </form>
       </div>
     </div>
