@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       emailComponent: emailElement,
     });
 
-    return NextResponse.json({ message: "Code envoyé par email" });
+    return NextResponse.json({ message: "Code envoyé par email dans les spams " });
   } catch (error) {
     return NextResponse.json(
       { message: "Erreur serveur" },
