@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,7 @@ const ConnexionForm = () => {
     resolver: zodResolver(SchemaConnexion),
   });
   const router = useRouter();
+  const [erreuridentifiant, setErreurIdentifiant] = useState("")
 
   const onSubmit = async (data: Schema) => {
     try {
@@ -34,7 +35,7 @@ const ConnexionForm = () => {
       });
 
       if (result?.error) {
-        alert("Email ou mot de passe incorrect");
+        setErreurIdentifiant("Email ou mot de passe incorrect.")
         return;
       }
 
@@ -95,10 +96,11 @@ const ConnexionForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
+            className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? 'opacity-50' : ''}`}
           >
             {isSubmitting ? "Connexion..." : "Se connecter"}
           </button>
+          <span className="text-red-500 text-xs"> {erreuridentifiant} </span>
 
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
