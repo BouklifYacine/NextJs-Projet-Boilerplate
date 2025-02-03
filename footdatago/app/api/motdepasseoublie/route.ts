@@ -19,6 +19,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!user.password) {
+      return NextResponse.json(
+        { message: "Ce compte utilise une connexion via Google/Github. La réinitialisation de mot de passe n'est pas disponible." },
+        { status: 404 }
+      );
+    }
+
     // Génère un code à 6 chiffres
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
     const codeExpiry = new Date(Date.now() + 3600000); // 1 heure normalement
