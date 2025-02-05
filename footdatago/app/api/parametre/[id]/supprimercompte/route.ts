@@ -4,6 +4,7 @@ import { compare } from "bcryptjs";
 import { createElement } from "react";
 import { sendEmail } from "@/app/utils/email";
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
+import SuppressionCompte from "@/app/(emails)/SuppressionCompte";
 
 interface Props {
   params: {
@@ -89,6 +90,7 @@ export async function DELETE(request: NextRequest, { params }: Props) {
       id: true,
       email: true,
       resetToken: true,
+      name : true
     },
   });
 
@@ -105,6 +107,14 @@ export async function DELETE(request: NextRequest, { params }: Props) {
   const utilisateursupprimer = await prisma.user.delete({
     where: { id },
   });
+
+  const emailelement = createElement(SuppressionCompte, {pseudo : utilisateur.name || "pseudo"})
+
+  await sendEmail({
+    to : utilisateur.email || "",
+    subject : "Suppression du compte.", 
+    emailComponent : emailelement
+  })
 
   return NextResponse.json({message : "Le compte de " + utilisateursupprimer.name + " a été définitivement supprimer"});
 }
