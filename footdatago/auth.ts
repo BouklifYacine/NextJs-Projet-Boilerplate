@@ -13,6 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: {
     signIn: "/connexion",
+    error: "/auth/error",
   },
   providers: [
     GitHub,
@@ -37,11 +38,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             id: true,
             email: true,
             name: true,
-            password: true
+            password: true, 
+            accounts : true
           }
         });
 
-        if (!user || !user.password) {
+        if (!user) {
+          throw new Error("Utilisateur introuvable");
+        }
+
+        
+        if (user.accounts && user.accounts.length > 0) {
+          const provider = user.accounts[0].provider;
+          throw new Error(`Ce compte est lié à ${provider}. Veuillez vous connecter avec ${provider}.`);
+        }
+
+        if (!user.password) {
           throw new Error("Utilisateur introuvable");
         }
 
@@ -56,6 +68,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+
+    async signIn({ user, account }) {
+      if (account?.provider === "github" || account?.provider === "google") {
+        try {
+         
+          const utilisateurexistantavecmail = await prisma.user.findUnique({
+            where: { email: user.email || "" },
+            include: {
+              accounts: true,
+            },
+          });
+  
+          if (utilisateurexistantavecmail && utilisateurexistantavecmail.accounts.length === 0) {
+            return '/auth/error?error=EmailExists';
+          }
+  
+          // Vérifier le pseudo
+          const utilisateurexistantavecname = await prisma.user.findUnique({
+            where: { name: user.name || ""},
+          });
+  
+          if (utilisateurexistantavecname) {
+            return '/auth/error?error=NameExists';
+          }
+  
+        } catch (error) {
+          return '/auth/error?error=Default';
+        }
+      }
+      return true;
+    },
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
