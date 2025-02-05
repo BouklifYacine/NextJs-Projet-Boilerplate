@@ -1,11 +1,11 @@
-  import { Html, Head, Body, Container, Section, Text } from '@react-email/components';
+import { Html, Head, Body, Container, Section, Text } from '@react-email/components';
 import * as React from 'react';
 
-interface ResetPasswordEmailProps {
+interface CodeConfirmation {
   resetCode: string;
 }
 
-const ResetPasswordEmail: React.FC<ResetPasswordEmailProps> = ({ resetCode }) => {
+const CodeConfirmation: React.FC<CodeConfirmation> = ({ resetCode }) => {
   return (
     <Html>
       <Head />
@@ -23,4 +23,4 @@ const ResetPasswordEmail: React.FC<ResetPasswordEmailProps> = ({ resetCode }) =>
   );
 };
 
-export default ResetPasswordEmail;
+export default CodeConfirmation;

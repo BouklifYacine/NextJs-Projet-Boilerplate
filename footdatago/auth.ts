@@ -84,7 +84,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return '/auth/error?error=EmailExists';
           }
   
-          // Vérifier le pseudo
+          
           const utilisateurexistantavecname = await prisma.user.findUnique({
             where: { name: user.name || ""},
           });
