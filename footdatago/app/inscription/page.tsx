@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Mail, Lock, User } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -24,14 +24,17 @@ const AuthForm = () => {
   });
 
   const router = useRouter();
+  const [erreurmessageapi, setErreurMessageApi] = useState("")
 
   const onSubmit = async (data: Schema) => {
     try {
       const response = await axios.post("/api/inscription", data);
       router.push("/connexion");
       reset();
+      setErreurMessageApi(""); 
       console.log(response.data);
-    } catch (error) {
+    } catch (error: any) {
+      setErreurMessageApi( error.response?.data || "Une erreur est survenue");
       console.error("Erreur:", error);
     }
   };
@@ -106,12 +109,19 @@ const AuthForm = () => {
               <p className="text-red-500 text-xs mt-1">
                 {errors.password.message}
               </p>
+              
             )}
           </div>
 
+          {erreurmessageapi && (
+            <p className="text-red-500 text-sm text-center">
+              {erreurmessageapi}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+            className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? 'opacity-50' : ''}`}
             disabled={isSubmitting}
           >
             {isSubmitting ? "En cours" : "S'inscrire "}
