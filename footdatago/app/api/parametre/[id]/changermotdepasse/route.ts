@@ -6,6 +6,7 @@ import { compare } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import { createElement } from "react";
 import bcrypt from "bcryptjs";
+import { User } from "@prisma/client";
 
 interface Props {
   params: {
@@ -21,22 +22,39 @@ export async function POST(request: NextRequest, { params }: Props) {
   const { id } = await params;
   const { motdepasse } = await request.json();
 
-  if (!motdepasse)
-    return NextResponse.json("Vous devez mettre un mot de passe ", {
+  if (!motdepasse) {
+    return NextResponse.json("Vous devez mettre un mot de passe", {
       status: 400,
     });
+  }
 
-  const utilisateur = await prisma.user.findUnique({
+  const utilisateur = (await prisma.user.findUnique({
     where: { id },
-  });
+    include: {
+      accounts: true,
+    },
+  })) as (User & { accounts: any[] }) | null;
 
-  const pseudoutilisateur = utilisateur?.name;
+  if (!utilisateur) {
+    return NextResponse.json("Cet utilisateur n'existe pas", { status: 400 });
+  }
 
-  if (!utilisateur || !(await compare(motdepasse, utilisateur.password!)))
+  if (utilisateur.accounts.length > 0) {
+    const provider = utilisateur.accounts[0].provider;
     return NextResponse.json(
-      "Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon",
+      {
+        message: `Cette fonctionnalité n'est pas disponible car votre compte est lié à ${provider} . Vous ne pouvez pas changer le mot de passe d'un compte créé avec ${provider}.`,
+      },
       { status: 400 }
     );
+  }
+
+  const motDePasseValide = await compare(motdepasse, utilisateur.password!);
+  if (!motDePasseValide) {
+    return NextResponse.json("Le mot de passe n'est pas le bon", {
+      status: 400,
+    });
+  }
 
   const heureenminute = 60 * 60 * 1000;
   const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -50,20 +68,29 @@ export async function POST(request: NextRequest, { params }: Props) {
     },
   });
 
+  if (!utilisateur.email) {
+    return NextResponse.json(
+      {
+        message: "Aucune adresse email associée à ce compte",
+      },
+      { status: 400 }
+    );
+  }
+
   const emailElement = createElement(CodeConfirmation, {
     resetCode,
-    pseudo: pseudoutilisateur || "Utilisateur",
+    pseudo: utilisateur.name || "Utilisateur",
   });
 
   await sendEmail({
-    to: utilisateur.email || "",
+    to: utilisateur.email,
     subject: "Code de réinitialisation de mot de passe",
     emailComponent: emailElement,
   });
 
   return NextResponse.json({
     message:
-      "Le code pour changer votre motdepasse a été envoyer a votre adresse email",
+      "Le code pour changer votre mot de passe a été envoyé sur votre adresse email",
   });
 }
 
@@ -117,10 +144,9 @@ export async function PATCH(request: NextRequest, { params }: Props) {
   }
 
   if (!codeutilisateur)
-    return NextResponse.json(
-      " le code de vérification n'est pas bon",
-      { status: 400 }
-    );
+    return NextResponse.json(" le code de vérification n'est pas bon", {
+      status: 400,
+    });
 
   const motdepassehashe = await bcrypt.hash(motdepasse, 10);
 
