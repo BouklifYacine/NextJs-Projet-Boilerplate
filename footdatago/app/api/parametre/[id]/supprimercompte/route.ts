@@ -19,7 +19,7 @@ export async function POST(request: NextRequest, { params }: Props) {
   if (!motdepasse) return NextResponse.json("le mot de passe n'existe pas " , {status : 400})
 
   const utilisateur = await prisma.user.findUnique({
-    where: { id: iduser },
+    where: { id },
    
   });
 
@@ -29,18 +29,5 @@ export async function POST(request: NextRequest, { params }: Props) {
   return NextResponse.json(utilisateur.name);
 }
 
-export async function GET(request: NextRequest, { params }: Props) {
-    const { id } = await params;  // Pas de await ici
-  
-    const utilisateur = await prisma.user.findUnique({
-      where: { id },
-    });
-  
-    if (!utilisateur) {
-      return NextResponse.json({ message: "Cet utilisateur n'existe pas" }, { status: 404 });
-    }
-  
-    return NextResponse.json({ name: utilisateur.name });  // Retourner un objet, pas une string
-  }
 
 
