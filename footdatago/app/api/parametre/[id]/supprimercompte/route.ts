@@ -26,11 +26,11 @@ export async function POST(request: NextRequest, { params }: Props) {
     where: { id },
   });
 
-  const pseudoutilisateur = utilisateur?.name
+  const pseudoutilisateur = utilisateur?.name;
 
   if (!utilisateur || !(await compare(motdepasse, utilisateur.password!)))
     return NextResponse.json(
-      "Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon"
+      "Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon" , {status : 400}
     );
 
   const heureenminute = 60 * 60 * 1000;
@@ -45,7 +45,10 @@ export async function POST(request: NextRequest, { params }: Props) {
     },
   });
 
-  const emailElement = createElement(CodeConfirmation, { resetCode, pseudo: pseudoutilisateur || "Utilisateur" });
+  const emailElement = createElement(CodeConfirmation, {
+    resetCode,
+    pseudo: pseudoutilisateur || "Utilisateur",
+  });
 
   await sendEmail({
     to: utilisateur.email || "",
@@ -53,5 +56,46 @@ export async function POST(request: NextRequest, { params }: Props) {
     emailComponent: emailElement,
   });
 
-  return NextResponse.json({message : "Le code pour supprimer votre compte a été envoyer a votre adresse email"});
+  return NextResponse.json({
+    message:
+      "Le code pour supprimer votre compte a été envoyer a votre adresse email",
+  });
+}
+
+export async function DELETE(request: NextRequest, { params }: Props) {
+  const { id } = await params;
+  const { codeverification } = await request.json();
+
+  if (!codeverification) {
+    return NextResponse.json(
+      { error: "Code de vérification requis" },
+      { status: 400 }
+    );
+  }
+
+  const utilisateur = await prisma.user.findFirst({
+    where: {
+      id,
+      resetToken: codeverification,
+      resetTokenExpiry: {
+        gt: new Date(),
+      },
+    },
+    select: {
+      id: true,
+      email: true,
+    }
+  });
+
+  if(!utilisateur) return NextResponse.json(" Le code n'est pas valide et ou l'utilisateur n'existe pas " , {status : 400})
+
+    await prisma.session.deleteMany({
+        where: { userId: id }
+      });
+
+    const utilisateursupprimer = await prisma.user.delete({
+        where : {id}
+    })
+
+    return NextResponse.json(utilisateursupprimer)
 }
