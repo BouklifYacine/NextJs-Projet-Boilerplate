@@ -8,6 +8,9 @@ interface Props {
   };
 }
 
+// Enlever les id quand on a fini de faire les test et remplacer par session ca sera plus simple comme cela
+// Enlever donc le dossier [id] et donc tout mettre dans le dossier paramètre 
+
 export async function POST(request: NextRequest, { params }: Props) {
   const { idUtilisateur } = await params;
   const { motdepasse } = await request.json();
@@ -22,5 +25,5 @@ export async function POST(request: NextRequest, { params }: Props) {
   if (!utilisateur || !(await compare(motdepasse, utilisateur.password!))) 
     return NextResponse.json("Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon");
 
-  return NextResponse.json("Cet utilisateur existe ");
+  return NextResponse.json(utilisateur.name);
 }

@@ -1,6 +1,9 @@
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { compare } from "bcryptjs";
+import { createElement } from "react";
+import { sendEmail } from "@/app/utils/email";
+import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
 
 interface Props {
   params: {
@@ -10,24 +13,45 @@ interface Props {
 }
 
 // Enlever les id quand on a fini de faire les test et remplacer par session ca sera plus simple comme cela
-// Enlever donc le dossier [id] et donc tout mettre dans le dossier paramètre 
+// Enlever donc le dossier [id] et donc tout mettre dans le dossier paramètre
 
 export async function POST(request: NextRequest, { params }: Props) {
   const { id } = await params;
   const { motdepasse } = await request.json();
 
-  if (!motdepasse) return NextResponse.json("le mot de passe n'existe pas " , {status : 400})
+  if (!motdepasse)
+    return NextResponse.json("le mot de passe n'existe pas ", { status: 400 });
 
   const utilisateur = await prisma.user.findUnique({
     where: { id },
-   
   });
 
-  if (!utilisateur || !(await compare(motdepasse, utilisateur.password!))) 
-    return NextResponse.json("Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon");
+  const pseudoutilisateur = utilisateur?.name
 
-  return NextResponse.json(utilisateur.name);
+  if (!utilisateur || !(await compare(motdepasse, utilisateur.password!)))
+    return NextResponse.json(
+      "Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon"
+    );
+
+  const heureenminute = 60 * 60 * 1000;
+  const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const expirationcode = new Date(Date.now() + heureenminute);
+
+  await prisma.user.update({
+    where: { id },
+    data: {
+      resetToken: resetCode,
+      resetTokenExpiry: expirationcode,
+    },
+  });
+
+  const emailElement = createElement(CodeConfirmation, { resetCode, pseudo: pseudoutilisateur || "Utilisateur" });
+
+  await sendEmail({
+    to: utilisateur.email || "",
+    subject: "Code de réinitialisation",
+    emailComponent: emailElement,
+  });
+
+  return NextResponse.json({message : "Le code pour supprimer votre compte a été envoyer a votre adresse email"});
 }
-
-
-

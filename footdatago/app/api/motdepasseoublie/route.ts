@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import { createElement } from "react";
 import { sendEmail } from "@/app/utils/email";
-import ResetPasswordEmail from "@/app/(emails)/ResetPassword";
+import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,17 +28,17 @@ export async function POST(request: NextRequest) {
 
     // Génère un code à 6 chiffres
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const codeExpiry = new Date(Date.now() + 3600000); // 1 heure normalement
+    const expirationcode = new Date(Date.now() + 3600000); // 1 heure normalement
 
     await prisma.user.update({
       where: { email },
       data: {
         resetToken: resetCode,
-        resetTokenExpiry: codeExpiry,
+        resetTokenExpiry: expirationcode,
       },
     });
 
-    const emailElement = createElement(ResetPasswordEmail, { resetCode });
+    const emailElement = createElement(CodeConfirmation, { resetCode });
     await sendEmail({
       to: email,
       subject: "Code de réinitialisation",
