@@ -21,7 +21,7 @@ export async function POST(request: NextRequest, { params }: Props) {
   const { motdepasse } = await request.json();
 
   if (!motdepasse)
-    return NextResponse.json("le mot de passe n'existe pas ", { status: 400 });
+    return NextResponse.json("Vous devez mettre un mot de passe ", { status: 400 });
 
   const utilisateur = await prisma.user.findUnique({
     where: { id },
