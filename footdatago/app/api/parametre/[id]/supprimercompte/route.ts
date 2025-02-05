@@ -30,7 +30,8 @@ export async function POST(request: NextRequest, { params }: Props) {
 
   if (!utilisateur || !(await compare(motdepasse, utilisateur.password!)))
     return NextResponse.json(
-      "Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon" , {status : 400}
+      "Cet utilisateur n'existe pas ou le mot de passe n'est pas le bon",
+      { status: 400 }
     );
 
   const heureenminute = 60 * 60 * 1000;
@@ -66,6 +67,9 @@ export async function DELETE(request: NextRequest, { params }: Props) {
   const { id } = await params;
   const { codeverification } = await request.json();
 
+  console.log("ID reçu:", id);
+  console.log("Code reçu:", codeverification);
+
   if (!codeverification) {
     return NextResponse.json(
       { error: "Code de vérification requis" },
@@ -84,18 +88,23 @@ export async function DELETE(request: NextRequest, { params }: Props) {
     select: {
       id: true,
       email: true,
-    }
+      resetToken: true,
+    },
   });
 
-  if(!utilisateur) return NextResponse.json(" Le code n'est pas valide et ou l'utilisateur n'existe pas " , {status : 400})
+  if (!utilisateur)
+    return NextResponse.json(
+      " Le code n'est pas valide et ou l'utilisateur n'existe pas ",
+      { status: 400 }
+    );
 
-    await prisma.session.deleteMany({
-        where: { userId: id }
-      });
+  await prisma.session.deleteMany({
+    where: { userId: id },
+  });
 
-    const utilisateursupprimer = await prisma.user.delete({
-        where : {id}
-    })
+  const utilisateursupprimer = await prisma.user.delete({
+    where: { id },
+  });
 
-    return NextResponse.json(utilisateursupprimer)
+  return NextResponse.json({message : "Le compte de " + utilisateursupprimer.name + " a été définitivement supprimer"});
 }
