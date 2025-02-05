@@ -9,15 +9,15 @@ import {
   import * as React from "react";
   
   interface EmailChangementPseudo {
-    name?: string;
-    ancienpseudo? : string,
-    nouveaupseudo? : string
+    name: string;
+    ancienpseudo : string,
+    nouveaupseudo : string
   }
   
   const EmailChangementPseudo: React.FC<EmailChangementPseudo> = ({
-      name = "pseudo",
-      ancienpseudo = "AncienPseudo",
-      nouveaupseudo = "NouveauPseudo"
+      name ,
+      ancienpseudo, 
+      nouveaupseudo
   }) => {
     return (
       <Html>
