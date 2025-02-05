@@ -129,6 +129,8 @@ export async function PATCH(request: NextRequest, { params }: Props) {
      },
   });
 
+   // Envoyer un mail !!!
+
   return NextResponse.json({
     message: "Votre nouveau pseudo est : " + nouveaupseudo.name,
   });

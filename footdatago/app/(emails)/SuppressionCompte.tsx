@@ -20,7 +20,7 @@ const SuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => {
         <Container>
           <Section>
             <Text>Bonjour {pseudo}</Text>
-            <Text>Votre compte a été supprimer </Text>
+            <Text>Votre compte a été supprimer définitivement. </Text>
           
           </Section>
         </Container>
