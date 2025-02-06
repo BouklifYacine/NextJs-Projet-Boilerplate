@@ -13,7 +13,7 @@ interface EmailBienvenueProps {
 }
 
 const EmailBienvenue: React.FC<EmailBienvenueProps> = ({
-    name = "there",
+    name 
 }) => {
   return (
     <Html>

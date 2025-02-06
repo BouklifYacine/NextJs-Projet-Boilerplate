@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createElement } from "react";
 import bcrypt from "bcryptjs";
 import { User } from "@prisma/client";
+import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse";
 
 interface Props {
   params: {
@@ -160,6 +161,14 @@ export async function PATCH(request: NextRequest, { params }: Props) {
   });
 
   // Envoyer un mail !!!
+
+  const emailelement = createElement(NotifChangementMotDePasse , {pseudo : utilisateurexistant.name || ""})
+
+  await sendEmail({
+    to : utilisateurexistant.email! ,
+    subject : "Changement de mot de passe",
+    emailComponent : emailelement
+  })
 
   return NextResponse.json({
     message: "Votre nouveau mot de passe a été mis a jour ",

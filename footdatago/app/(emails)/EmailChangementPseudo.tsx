@@ -9,8 +9,8 @@ import {
   import * as React from "react";
   
   interface EmailChangementPseudo {
-    pseudo: string;    // ancien pseudo
-    name: string; // nouveau pseudo
+    pseudo: string;   
+    name: string; 
   }
   
   const EmailChangementPseudo: React.FC<EmailChangementPseudo> = ({

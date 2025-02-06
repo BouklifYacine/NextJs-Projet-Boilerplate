@@ -130,8 +130,6 @@ export async function PATCH(request: NextRequest, { params }: Props) {
      },
   });
 
-   // Envoyer un mail !!!
-
    const emailelement = createElement(EmailChangementPseudo, { pseudo : utilisateur.name || "" , name : nouveaupseudo.name || ""})
 
    await sendEmail({
