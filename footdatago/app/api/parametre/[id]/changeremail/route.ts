@@ -1,13 +1,12 @@
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
 import { sendEmail } from "@/app/utils/email";
 import { prisma } from "@/prisma";
-import { SchemaChangementMotDePasse } from "@/schema/SchemaParametre";
+import { SchemaChangementEmail } from "@/schema/SchemaParametre";
 import { compare } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import { createElement } from "react";
-import bcrypt from "bcryptjs";
 import { User } from "@prisma/client";
-import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse";
+import EmailChangement from "@/app/(emails)/ChangementEmail";
 
 interface Props {
   params: {
@@ -93,4 +92,114 @@ export async function POST(request: NextRequest, { params }: Props) {
     message:
       "Le code pour changer votre email a été envoyé sur votre adresse email",
   });
+}
+
+export async function PATCH(request: NextRequest, { params }: Props) {
+  try {
+      const { id } = await params;
+      const body = await request.json();
+      const { nouvelEmail, codeVerification } = body;
+
+      const validation = SchemaChangementEmail.safeParse(body);
+      if (!validation.success) {
+          return NextResponse.json(
+              { message: validation.error.errors[0].message },
+              { status: 400 }
+          );
+      }
+
+      const emailDejaUtilise = await prisma.user.findUnique({
+          where: { email: nouvelEmail }
+      });
+
+      if (emailDejaUtilise) {
+          return NextResponse.json(
+              { message: "Cet email est déjà utilisé" },
+              { status: 400 }
+          );
+      }
+
+      if (!codeVerification) {
+          return NextResponse.json(
+              { message: "Le code de vérification est requis" },
+              { status: 400 }
+          );
+      }
+
+      const utilisateurAvecCode = await prisma.user.findFirst({
+          where: {
+              id,
+              resetToken: codeVerification,
+              resetTokenExpiry: {
+                  gt: new Date(),
+              },
+          },
+          select: {
+              id: true,
+              email: true,
+              resetToken: true,
+              name: true,
+              password: true,
+          },
+      });
+
+      if (!utilisateurAvecCode) {
+          return NextResponse.json(
+              { message: "Le code de vérification est invalide ou a expiré" },
+              { status: 400 }
+          );
+      }
+
+      const ancienEmail = utilisateurAvecCode.email;
+
+      await prisma.$transaction(async (db) => {
+          await db.user.update({
+              where: { id: utilisateurAvecCode.id },
+              data: {
+                  email: nouvelEmail,
+                  resetToken: null,
+                  resetTokenExpiry: null
+              }
+          });
+          await db.session.deleteMany({
+              where: { userId: id }
+          });
+      });
+
+      const contenuEmailAncienneAdresse = createElement(EmailChangement, {
+          pseudo: utilisateurAvecCode.name || "",
+          email: nouvelEmail,
+          ancienemail: ancienEmail || ""
+      });
+
+      const contenuEmailNouvelleAdresse = createElement(EmailChangement, {
+          pseudo: utilisateurAvecCode.name || "",
+          email: nouvelEmail,
+          ancienemail: ancienEmail || ""
+      });
+
+      await Promise.all([
+          sendEmail({
+              to: ancienEmail!,
+              subject: "Changement de votre email",
+              emailComponent: contenuEmailAncienneAdresse,
+          }),
+          sendEmail({
+              to: nouvelEmail,
+              subject: "Confirmation de votre nouvel email",
+              emailComponent: contenuEmailNouvelleAdresse,
+          })
+      ]);
+
+      return NextResponse.json({
+          message: "Votre email a été mis à jour avec succès"
+      });
+
+  } catch (error) {
+      console.error("Erreur:", error);
+      return NextResponse.json(
+          { message: "Une erreur est survenue lors du changement d'email" },
+          { status: 500 }
+      );
+  }
 }

@@ -14,11 +14,11 @@ export const SchemaChangementPseudo = z.object({
 });
 
 export const SchemaChangementEmail = z.object({
-  email: z
+  nouvelEmail: z
     .string({ message: "Vous devez mettre un email" })
     .email({ message: "Vous devez mettre un email valide" }),
 
-  codeverification: z
+    codeVerification: z
     .string({ message: "Vous devez mettre un code" })
     .min(1, { message: "Vous devez mettre un code" })
     .length(6, { message: "Le code doit contenir exactement 6 caractères" }),
