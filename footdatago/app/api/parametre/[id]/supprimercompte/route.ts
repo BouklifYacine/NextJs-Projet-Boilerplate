@@ -100,13 +100,15 @@ export async function DELETE(request: NextRequest, { params }: Props) {
       { status: 400 }
     );
 
+ 
+  const utilisateursupprimer = await prisma.user.delete({
+    where: { id },
+  });
+
   await prisma.session.deleteMany({
     where: { userId: id },
   });
 
-  const utilisateursupprimer = await prisma.user.delete({
-    where: { id },
-  });
 
   const emailelement = createElement(SuppressionCompte, {pseudo : utilisateur.name || "pseudo"})
 

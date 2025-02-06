@@ -151,24 +151,32 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 
   const motdepassehashe = await bcrypt.hash(motdepasse, 10);
 
-  await prisma.user.update({
-    where: { id },
-    data: {
-      password: motdepassehashe,
-      resetToken: null,
-      resetTokenExpiry: null,
-    },
+
+ await prisma.$transaction(async (db) => {
+  await db.user.update({
+    where : {id}, 
+    data : {
+      password : motdepassehashe,
+      resetToken : null, 
+      resetTokenExpiry : null
+    }
+  })
+
+  await db.session.deleteMany({
+    where : {userId : id }
+  })
+ })
+
+
+  const emailelement = createElement(NotifChangementMotDePasse, {
+    pseudo: utilisateurexistant.name || "",
   });
 
-  // Envoyer un mail !!!
-
-  const emailelement = createElement(NotifChangementMotDePasse , {pseudo : utilisateurexistant.name || ""})
-
   await sendEmail({
-    to : utilisateurexistant.email! ,
-    subject : "Changement de mot de passe",
-    emailComponent : emailelement
-  })
+    to: utilisateurexistant.email!,
+    subject: "Changement de mot de passe",
+    emailComponent: emailelement,
+  });
 
   return NextResponse.json({
     message: "Votre nouveau mot de passe a été mis a jour ",
