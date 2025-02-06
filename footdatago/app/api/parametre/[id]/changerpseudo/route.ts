@@ -1,4 +1,5 @@
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
+import EmailChangementPseudo from "@/app/(emails)/EmailChangementPseudo";
 import { sendEmail } from "@/app/utils/email";
 import { prisma } from "@/prisma";
 import { SchemaChangementPseudo } from "@/schema/SchemaParametre";
@@ -130,6 +131,14 @@ export async function PATCH(request: NextRequest, { params }: Props) {
   });
 
    // Envoyer un mail !!!
+
+   const emailelement = createElement(EmailChangementPseudo, { pseudo : utilisateur.name || "" , name : nouveaupseudo.name || ""})
+
+   await sendEmail({
+    to: utilisateur.email || "", 
+    subject : "Changement de pseudo",
+    emailComponent : emailelement
+   })
 
   return NextResponse.json({
     message: "Votre nouveau pseudo est : " + nouveaupseudo.name,

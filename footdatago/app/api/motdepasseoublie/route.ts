@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const emailElement = createElement(CodeConfirmation, { resetCode });
+    const emailElement = createElement(CodeConfirmation, { resetCode , pseudo : user.email || "" });
     await sendEmail({
       to: email,
       subject: "Code de réinitialisation",
