@@ -30,7 +30,7 @@ const abonnements = [
       "Support 24/7",
       "Accès anticipé aux nouvelles fonctionnalités",
     ],
-    lienStripe: process.env.NEXT_PUBLIC_STRIPE_LINK_YEARLY_PRICE_ID
+    lienStripe: process.env.NEXT_PUBLIC_STRIPE_LINK_YEARLY_PRICE_ID || ""
   },
 ]
 

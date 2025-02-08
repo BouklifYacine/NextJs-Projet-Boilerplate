@@ -8,9 +8,7 @@ import bcrypt from "bcryptjs";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt",
-  },
+  session: { strategy: "jwt" },
   pages: {
     signIn: "/connexion",
     error: "/auth/error",
@@ -39,7 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             email: true,
             name: true,
             password: true, 
-            accounts : true
+            accounts: true
           }
         });
 
@@ -47,7 +45,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("Utilisateur introuvable");
         }
 
-        
         if (user.accounts && user.accounts.length > 0) {
           const provider = user.accounts[0].provider;
           throw new Error(`Ce compte est lié à ${provider}. Veuillez vous connecter avec ${provider}.`);
@@ -68,32 +65,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-
     async signIn({ user, account }) {
       if (account?.provider === "github" || account?.provider === "google") {
         try {
-         
-          const utilisateurexistantavecmail = await prisma.user.findUnique({
+          const existingUser = await prisma.user.findUnique({
             where: { email: user.email || "" },
             include: {
               accounts: true,
             },
           });
-  
-          if (utilisateurexistantavecmail && utilisateurexistantavecmail.accounts.length === 0) {
+
+          if (existingUser && existingUser.accounts.length === 0 && existingUser.password) {
             return '/auth/error?error=EmailExists';
           }
-  
-          
-          const utilisateurexistantavecname = await prisma.user.findUnique({
-            where: { name: user.name || ""},
-          });
-  
-          if (utilisateurexistantavecname) {
-            return '/auth/error?error=NameExists';
+
+          if (existingUser && existingUser.accounts.some(acc => acc.provider === account.provider)) {
+            return true;
           }
-  
+
+          if (!existingUser) {
+            const nameExists = await prisma.user.findFirst({
+              where: { name: user.name || "" }
+            });
+            
+            if (nameExists) {
+              return '/auth/error?error=NameExists';
+            }
+          }
+
         } catch (error) {
+          console.error('Erreur lors de la vérification:', error);
           return '/auth/error?error=Default';
         }
       }
