@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { signIn } from "@/auth";
 import bcrypt from "bcryptjs";
@@ -11,7 +11,6 @@ type Schema = z.infer<typeof SchemaConnexion>;
 
 export async function connexionAction(data: Schema) {
   try {
-
     const user = await prisma.user.findUnique({
       where: {
         email: data.email,
@@ -21,16 +20,16 @@ export async function connexionAction(data: Schema) {
     if (!user?.password) {
       return {
         success: false,
-        error: "Email ou mot de passe incorrect"
+        error: "Email ou mot de passe incorrect",
       };
     }
 
-    const isValidPassword = await bcrypt.compare(data.password, user.password);
+    const Motdepassevalide = await bcrypt.compare(data.password, user.password);
 
-    if (!isValidPassword) {
+    if (!Motdepassevalide) {
       return {
         success: false,
-        error: "Email ou mot de passe incorrect"
+        error: "Email ou mot de passe incorrect",
       };
     }
 
@@ -41,14 +40,13 @@ export async function connexionAction(data: Schema) {
     });
 
     return {
-      success: true
+      success: true,
     };
-
   } catch (error) {
     console.error("Erreur de connexion:", error);
     return {
       success: false,
-      error: "Une erreur est survenue lors de la connexion"
+      error: "Une erreur est survenue lors de la connexion",
     };
   }
 }

@@ -2,7 +2,7 @@ import Faq from "@/components/Faq";
 import Header from "@/components/header";
 import LogoAnimation from "@/components/LogoAnimation";
 import Section from "@/components/Section";
-import SectionPayement from "@/components/SectionPayement";
+import SectionPayement from "@/components/sectionspayement/SectionPayement";
 
 export default function Home() {
   return (
