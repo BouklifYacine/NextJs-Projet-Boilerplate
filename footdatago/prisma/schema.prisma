@@ -46,7 +46,6 @@ enum Plan {
 enum PlanAbonnement {
   mois
   année
-  permanent
 }
 
 model Favoris {
