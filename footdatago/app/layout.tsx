@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
-import { SessionProvider } from "next-auth/react";
-import Provider from "./auth/provider";
+import AuthProvider from "./auth/provider";
+import QueryProvider from "./(providers)/QueryProvider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"], 
@@ -22,14 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="relative"> 
+    <html lang="fr" className="relative" suppressHydrationWarning> 
       <body className={clsx(
         dmSans.className, 
         "antialiased " 
       )}>
-        <Provider>
+        <QueryProvider>
+        <AuthProvider>
         {children}
-        </Provider>
+        </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );
