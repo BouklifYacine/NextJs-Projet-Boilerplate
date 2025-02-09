@@ -145,8 +145,12 @@ const Header = () => {
                         <DropdownMenuGroup>
                           <DropdownMenuItem>
                           
-                            <CreditCard className="mr-2 h-4 w-4 text-black" />
-                            <span className="text-black font-medium">Abonnement</span>
+                          <Link href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!} className="cursor-pointer">
+               <DropdownMenuItem>
+                 <CreditCard className="mr-2 h-4 w-4 text-black" />
+                 <span className="text-black font-medium">Abonnement</span>
+               </DropdownMenuItem>
+             </Link>
                           </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
