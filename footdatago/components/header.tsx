@@ -4,12 +4,14 @@ import Image from "next/image";
 import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
-import { DoorOpen, Settings } from "lucide-react";
+import { CreditCard, DoorOpen, Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Deconnexion } from "./BoutonDéconnexion";
 import { BoutonConnexion } from "./BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
+import { useQuery } from "@tanstack/react-query";
+import { UtilisateurAbonner } from "@/app/pro/action";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +24,13 @@ import {
 
 const Header = () => {
   const { data: session } = useSession();
+  
+  const { data } = useQuery({
+    queryKey: ["utilisateurabonner"],
+    queryFn: async () => UtilisateurAbonner(),
+  });
+
+  const utilisateurabonner = data?.abonner;
 
   return (
     <header className="sticky top-0 z-50 pt-4 px-4 bg-black">
@@ -89,12 +98,13 @@ const Header = () => {
                       </DropdownMenuLabel>
                     </div>
                     <DropdownMenuSeparator />
-                    
-                      <DropdownMenuItem>
-                        <DoorOpen className="mr-2 h-4 w-4" />
-                        <Link href="connexion" className="cursor-pointer">Connexion</Link>
-                      </DropdownMenuItem>
-                   
+
+                    <DropdownMenuItem>
+                      <DoorOpen className="mr-2 h-4 w-4" />
+                      <Link href="connexion" className="cursor-pointer">
+                        Connexion
+                      </Link>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -129,10 +139,26 @@ const Header = () => {
                       </DropdownMenuLabel>
                     </div>
                     <DropdownMenuSeparator />
+                    
+                    {utilisateurabonner && (
+                      <>
+                        <DropdownMenuGroup>
+                          <DropdownMenuItem>
+                          
+                            <CreditCard className="mr-2 h-4 w-4 text-black" />
+                            <span className="text-black font-medium">Abonnement</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                        <DropdownMenuSeparator />
+                      </>
+                    )}
+
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4 " />
-                        <Link href="parametres" className="cursor-pointer">Paramètres</Link>
+                        <Settings className="mr-2 h-4 w-4" />
+                        <Link href="parametres" className="cursor-pointer">
+                          Paramètres
+                        </Link>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>

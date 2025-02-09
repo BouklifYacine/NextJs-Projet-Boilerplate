@@ -1,6 +1,6 @@
 'use client'
 
-import { ChartPie, DoorOpen, LogOut, Menu, Settings, Star, Table2, User } from "lucide-react";
+import { ChartPie, CreditCard, DoorOpen, LogOut, Menu, Settings, Star, Table2, User } from "lucide-react";
 import { useSession, signOut } from 'next-auth/react'
 import {
  DropdownMenu,
@@ -13,9 +13,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { UtilisateurAbonner } from "@/app/pro/action";
 
 export function MenuDeroulant() {
  const { data: session } = useSession()
+
+ const { data } = useQuery({
+  queryKey: ["utilisateurabonner"],
+  queryFn: async () => UtilisateurAbonner(),
+});
+
+const utilisateurabonner = data?.abonner
 
  return (
   <>
@@ -36,7 +45,18 @@ export function MenuDeroulant() {
        </div>
        <DropdownMenuSeparator />
 
-
+       {session && utilisateurabonner && (
+         <>
+           <DropdownMenuGroup>
+             <DropdownMenuItem>
+               <CreditCard className="mr-2 h-4 w-4 text-black" />
+               <span className="text-black font-medium">Abonnement</span>
+             </DropdownMenuItem>
+           </DropdownMenuGroup>
+           <DropdownMenuSeparator />
+         </>
+       )}
+       
        <DropdownMenuSeparator />
 
        {session ? (

@@ -12,7 +12,7 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
         
         retryDelay: 3000, // en millisecondes
        
-        staleTime: 10 * 1000, // 10 secondes
+        staleTime: 5 * 1000, // 10 secondes
         // Durée de cache
       },
       mutations: {
