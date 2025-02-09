@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Boilerplate Next.js Full-Stack
+Un template moderne et complet pour construire des applications web full-stack avec Next.js 15.
+Fonctionnalités
+🔐 Authentification & Autorisation
 
-## Getting Started
+Système d'authentification complet
+Routes protégées
+Gestion des rôles (Utilisateur, Admin, Super Admin)
+Gestion des sessions
+Système de réinitialisation de mot de passe 
+Mot de passe oublié
 
-First, run the development server:
+📧 Système d'Emails
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Emails de bienvenue
+Vérification d'email
+Emails de réinitialisation de mot de passe avec code unique et avec expiration d'une heure 
+Templates d'emails personnalisables
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+💳 Intégration des Paiements
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Intégration Stripe
+Traitement sécurisé des paiements
+Gestion des abonnements en BDD
+Historique des paiements en BDD
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🎨 Interface Utilisateur
 
-## Learn More
+Landing page moderne
+Tableau de bord responsive
+Panneau de paramètres utilisateur clair
+DarkMode
+Gestion du Loading 
+Gestion des skeletons
+Responsive
 
-To learn more about Next.js, take a look at the following resources:
+🗄️ Base de Données
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Intégration Prisma ORM
+Migrations de base de données
+Seeding des données
+Requêtes optimisées
+Gestion des relations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🛡️ Sécurité
 
-## Deploy on Vercel
+Protection CSRF
+Prévention XSS
+Limitation de requêtes
+Validation des entrées coté client et serveur 
+En-têtes sécurisés
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Stack Technique
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Frontend : Next.js 15+, React, Tailwind CSS
+Backend :  Next.js
+Base de données : PostgreSQL avec Prisma
+Authentification : AuthJs
+Paiements : Stripe
+Email : Nodemailer (Resend si vous avez un nom de domaine car c'est bien meilleur)
+Style : Tailwind CSS, Shadcn UI
+Gestion des formulaires : React Hook Form + Zod
+Autre librairie : React Hot Toast / TanStack Query / Motion / Lucide React / React Email / BcryptJS / Axios 
