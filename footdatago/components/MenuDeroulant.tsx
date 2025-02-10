@@ -76,7 +76,9 @@ const utilisateurabonner = data?.abonner
            </DropdownMenuItem>
            <DropdownMenuItem>
              <Settings className="mr-2 h-4 w-4" />
-             <span>Paramètres</span>
+             <Link href={`/parametres/${session.user?.id}`} className="cursor-pointer">
+                          Paramètres
+                        </Link>
            </DropdownMenuItem>
            <DropdownMenuSeparator />
            <DropdownMenuItem onClick={() => signOut()}>

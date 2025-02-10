@@ -270,8 +270,10 @@ export async function changerPseudo(donnees: TypePseudo) {
 export async function supprimerCompte(codeVerification?: string) {
   try {
     const session = await auth()
+    
+    // Vérifier que l'utilisateur est connecté
     if (!session?.user?.id) {
-      return { error: "Non autorisé" }
+      throw new Error("Non autorisé")
     }
 
     const utilisateur = await prisma.user.findUnique({
@@ -280,12 +282,18 @@ export async function supprimerCompte(codeVerification?: string) {
     })
 
     if (!utilisateur) {
-      return { error: "Utilisateur non trouvé" }
+      throw new Error("Utilisateur non trouvé")
     }
 
-    // Si l'utilisateur n'utilise pas de provider (Google, GitHub, etc.)
-    if (utilisateur.accounts.length === 0) {
-      // Vérification du code pour les utilisateurs avec mot de passe
+    const hasProvider = utilisateur.accounts.length > 0
+
+    // Si c'est un compte normal (sans provider) et qu'il n'y a pas de code
+    if (!hasProvider && !codeVerification) {
+      throw new Error("Code de vérification requis")
+    }
+
+    // Vérifier le code uniquement pour les comptes sans provider
+    if (!hasProvider) {
       const utilisateurVerifie = await prisma.user.findFirst({
         where: {
           id: session.user.id,
@@ -295,29 +303,28 @@ export async function supprimerCompte(codeVerification?: string) {
       })
 
       if (!utilisateurVerifie) {
-        return { error: "Code de vérification invalide ou expiré" }
+        throw new Error("Code de vérification invalide ou expiré")
       }
     }
 
     try {
-      // Suppression en cascade avec transaction
       await prisma.$transaction(async (db) => {
-        // Suppression des sessions
+        // Supprimer les sessions
         await db.session.deleteMany({
           where: { userId: session.user.id }
         })
 
-        // Suppression des comptes liés (providers)
+        // Supprimer les comptes liés (providers)
         await db.account.deleteMany({
           where: { userId: session.user.id }
         })
 
-        // Suppression des authentificateurs
+        // Supprimer les authentificateurs
         await db.authenticator.deleteMany({
           where: { userId: session.user.id }
         })
-        
-        // Suppression de l'abonnement si existe
+
+        // Supprimer l'abonnement si existe
         if (utilisateur.clientId) {
           try {
             await db.abonnement.delete({
@@ -327,35 +334,22 @@ export async function supprimerCompte(codeVerification?: string) {
             console.error("Erreur lors de la suppression de l'abonnement:", error)
           }
         }
-        
-        // Suppression de l'utilisateur
+
+        // Supprimer l'utilisateur
         await db.user.delete({
           where: { id: session.user.id }
         })
       })
 
-      // Envoi de l'email de confirmation
-      await sendEmail({
-        to: utilisateur.email!,
-        subject: "Suppression de votre compte",
-        emailComponent: createElement(SuppressionCompte, {
-          pseudo: utilisateur.name || ""
-        })
-      })
+      // Déconnexion
+      await signOut({ redirect: false })
 
-      // Déconnexion et redirection
-      await signOut()
-      revalidatePath('/')
-      redirect('/')
-      
+      return { success: true }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error)
-      return { error: "Une erreur est survenue lors de la suppression du compte" }
+      throw new Error("Une erreur est survenue lors de la suppression du compte")
     }
-
-    return { success: true }
   } catch (error) {
-    console.error("Erreur générale:", error)
     return { error: (error as Error).message }
   }
 }
