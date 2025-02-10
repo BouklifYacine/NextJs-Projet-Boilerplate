@@ -202,7 +202,12 @@ export async function changerPseudo(donnees: TypePseudo) {
 
     // Vérifier si le pseudo existe déjà
     const pseudoExistant = await prisma.user.findUnique({
-      where: { name: pseudo }
+      where: { 
+        name: pseudo,
+        NOT: {
+          id: session.user.id
+        }
+      }
     })
 
     if (pseudoExistant) {
@@ -211,48 +216,49 @@ export async function changerPseudo(donnees: TypePseudo) {
 
     // Pour les utilisateurs avec credentials, vérifier le code
     if (!hasProvider) {
-      if (!codeverification) {
-        throw new Error("Code de vérification requis")
-      }
-
-      const codeValide = await prisma.user.findFirst({
+      const utilisateurVerifie = await prisma.user.findFirst({
         where: {
           id: session.user.id,
           resetToken: codeverification,
-          resetTokenExpiry: { gt: new Date() }
+          resetTokenExpiry: {
+            gt: new Date()
+          }
         }
       })
 
-      if (!codeValide) {
+      if (!utilisateurVerifie) {
         throw new Error("Code de vérification invalide ou expiré")
       }
     }
 
     const ancienPseudo = utilisateur.name
 
-    // Mise à jour selon le type d'authentification
-    const updateData = hasProvider 
-      ? { name: pseudo }
-      : { 
-          name: pseudo,
+    // Mise à jour du pseudo
+    await prisma.user.update({
+      where: { 
+        id: session.user.id
+      },
+      data: {
+        name: pseudo,
+        // Réinitialiser le token après utilisation
+        ...((!hasProvider) && {
           resetToken: null,
           resetTokenExpiry: null
-        }
-
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: updateData
+        })
+      }
     })
 
     // Envoyer l'email de confirmation
-    await sendEmail({
-      to: utilisateur.email!,
-      subject: "Changement de pseudo",
-      emailComponent: createElement(EmailChangementPseudo, {
-        pseudo: ancienPseudo || "",
-        name: pseudo
+    if (utilisateur.email) {
+      await sendEmail({
+        to: utilisateur.email,
+        subject: "Changement de pseudo",
+        emailComponent: createElement(EmailChangementPseudo, {
+          pseudo: ancienPseudo || "",
+          name: pseudo
+        })
       })
-    })
+    }
 
     revalidatePath('/parametres')
     return { success: true }
@@ -261,7 +267,7 @@ export async function changerPseudo(donnees: TypePseudo) {
   }
 }
 
-export async function supprimerCompte() {
+export async function supprimerCompte(codeVerification?: string) {
   try {
     const session = await auth()
     if (!session?.user?.id) {
@@ -277,33 +283,58 @@ export async function supprimerCompte() {
       return { error: "Utilisateur non trouvé" }
     }
 
+    // Si l'utilisateur n'utilise pas de provider (Google, GitHub, etc.)
+    if (utilisateur.accounts.length === 0) {
+      // Vérification du code pour les utilisateurs avec mot de passe
+      const utilisateurVerifie = await prisma.user.findFirst({
+        where: {
+          id: session.user.id,
+          resetToken: codeVerification,
+          resetTokenExpiry: { gt: new Date() }
+        }
+      })
+
+      if (!utilisateurVerifie) {
+        return { error: "Code de vérification invalide ou expiré" }
+      }
+    }
+
     try {
+      // Suppression en cascade avec transaction
       await prisma.$transaction(async (db) => {
+        // Suppression des sessions
         await db.session.deleteMany({
-          where: { userId: session?.user?.id }
+          where: { userId: session.user.id }
         })
+
+        // Suppression des comptes liés (providers)
         await db.account.deleteMany({
-          where: { userId: session?.user?.id}
+          where: { userId: session.user.id }
         })
+
+        // Suppression des authentificateurs
         await db.authenticator.deleteMany({
-          where: { userId: session?.user?.id }
+          where: { userId: session.user.id }
         })
         
+        // Suppression de l'abonnement si existe
         if (utilisateur.clientId) {
           try {
             await db.abonnement.delete({
-              where: { userId: session?.user?.id }
+              where: { userId: session.user.id }
             })
           } catch (error) {
             console.error("Erreur lors de la suppression de l'abonnement:", error)
           }
         }
         
+        // Suppression de l'utilisateur
         await db.user.delete({
-          where: { id: session?.user?.id }
+          where: { id: session.user.id }
         })
       })
 
+      // Envoi de l'email de confirmation
       await sendEmail({
         to: utilisateur.email!,
         subject: "Suppression de votre compte",
@@ -312,6 +343,7 @@ export async function supprimerCompte() {
         })
       })
 
+      // Déconnexion et redirection
       await signOut()
       revalidatePath('/')
       redirect('/')
