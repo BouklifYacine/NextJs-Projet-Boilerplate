@@ -141,25 +141,17 @@ const Header = () => {
                     <DropdownMenuSeparator />
                     
                     {utilisateurabonner && (
-                      <>
-                        <DropdownMenuGroup>
-                          <DropdownMenuItem>
-                          
-                          <Link href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!} className="cursor-pointer">
-               <DropdownMenuItem>
-                 <CreditCard className="mr-2 h-4 w-4 text-black" />
-                 <span className="text-black font-medium">Abonnement</span>
-               </DropdownMenuItem>
-             </Link>
-                          </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                      </>
-                    )}
+  <Link href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!} >
+    <DropdownMenuItem>
+      <CreditCard className="mr-2 h-4 w-4 cursor-pointer" />
+      <span className="cursor-pointer">Abonnement</span>
+    </DropdownMenuItem>
+  </Link>
+)}
 
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4" />
+                        <Settings className="mr-2 h-4 w-4 cursor-pointer" />
                         <Link href="parametres" className="cursor-pointer">
                           Paramètres
                         </Link>
