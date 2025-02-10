@@ -180,6 +180,34 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
       return;
     }
 
+    const isSubscriptionCanceled = subscription.cancel_at || subscription.status === "canceled";
+
+    if (isSubscriptionCanceled) {
+      const endDate = new Date((subscription.cancel_at || subscription.current_period_end) * 1000);
+
+      await prisma.abonnement.update({
+        where: { userId: user.id },
+        data: {
+          datefin: endDate,
+        }
+      });
+
+      if (user.email) {
+        const emailElement = createElement(EmailSuppressionAbonnement, {
+          name: user.name || user.email,
+          plan: "Pro"
+        });
+
+        await sendEmail({
+          to: user.email,
+          subject: "Confirmation de résiliation de votre abonnement",
+          emailComponent: emailElement
+        });
+      }
+      return;
+    }
+
+    
     const isYearly = priceId === process.env.STRIPE_YEARLY_PRICE_ID;
     const periode = isYearly ? PlanAbonnement.année : PlanAbonnement.mois;
 
@@ -196,34 +224,40 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
       where: { userId: user.id }
     });
 
-    await prisma.abonnement.update({
-      where: { userId: user.id },
-      data: {
-        plan: newPlan,
-        periode: periode,
-        datefin: endDate,
-      },
-    });
-
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        plan: newPlan,
-      },
-    });
-
-    if (user.email && oldPlanData) {
-      const emailElement = createElement(EmailChangementAbonnement, {
-        name: user.name || user.email,
-        plan: isYearly ? "Pro Annuel" : "Pro Mensuel",
-        oldPlan: oldPlanData.periode === PlanAbonnement.année ? "Pro Annuel" : "Pro Mensuel"
+   
+    if (oldPlanData && 
+        (oldPlanData.plan !== newPlan || 
+         oldPlanData.periode !== periode)) {
+      
+      await prisma.abonnement.update({
+        where: { userId: user.id },
+        data: {
+          plan: newPlan,
+          periode: periode,
+          datefin: endDate,
+        },
       });
 
-      await sendEmail({
-        to: user.email,
-        subject: "Confirmation du changement de votre abonnement",
-        emailComponent: emailElement
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          plan: newPlan,
+        },
       });
+
+      if (user.email) {
+        const emailElement = createElement(EmailChangementAbonnement, {
+          name: user.name || user.email,
+          plan: isYearly ? "Pro Annuel" : "Pro Mensuel",
+          oldPlan: oldPlanData.periode === PlanAbonnement.année ? "Pro Annuel" : "Pro Mensuel"
+        });
+
+        await sendEmail({
+          to: user.email,
+          subject: "Confirmation du changement de votre abonnement",
+          emailComponent: emailElement
+        });
+      }
     }
   } catch (error) {
     console.error("Erreur dans handleSubscriptionUpdated:", error);
