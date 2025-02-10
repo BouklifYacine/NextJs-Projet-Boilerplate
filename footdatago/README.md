@@ -194,15 +194,14 @@ stripe listen --forward-to localhost:3000/api/webhook
    - Configurez les webhooks Stripe en production
 
 2. Base de données :
-```bash
+
 npx prisma generate
 npx prisma db push
-```
+
 
 3. Construction :
-```bash
+
 npm run build
-```
 
 ## Support
 
@@ -217,4 +216,3 @@ Pour toute question ou problème :
 - [Documentation Prisma](https://www.prisma.io/docs/)
 - [Documentation Stripe](https://stripe.com/docs)
 - [Documentation Nodemailer](https://nodemailer.com/)
-- [Documentation Resend](https://resend.com/docs)

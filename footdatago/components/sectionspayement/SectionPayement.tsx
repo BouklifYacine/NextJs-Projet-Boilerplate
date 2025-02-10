@@ -1,4 +1,3 @@
-// components/SectionPayement/index.tsx
 import { auth } from '@/auth'
 import ClientSidePayment from './ClientPayement'
 
@@ -6,18 +5,31 @@ const abonnements = [
   {
     nom: "Mensuel",
     prix: "5€",
+    prixMensuel: null,
+    reduction: null,
     description: "Pour les utilisateurs réguliers",
-    avantages: ["Toutes les fonctionnalités gratuites", "Support prioritaire", "Fonctionnalités avancées"],
-    lienStripe: "https://buy.stripe.com/test_7sIbIVcioe2WfLO6op",
+    tag: "Populaire",
+    avantages: [
+      "Toutes les fonctionnalités gratuites",
+      "Support prioritaire par email",
+      "Fonctionnalités avancées",
+      "Mises à jour régulières",
+    ],
+    lienStripe: process.env.NEXT_PUBLIC_STRIPE_LINK_MONTHLY_PRICE_ID || ""
   },
   {
     nom: "Annuel",
     prix: "50€",
+    prixMensuel: "4.17€",
+    reduction: "17%",
     description: "Pour les utilisateurs engagés",
+    tag: "Meilleure offre",
     avantages: [
       "Toutes les fonctionnalités mensuelles",
-      "Support 24/7",
+      "Support prioritaire 24/7",
       "Accès anticipé aux nouvelles fonctionnalités",
+      "Formation personnalisée",
+ 
     ],
     lienStripe: process.env.NEXT_PUBLIC_STRIPE_LINK_YEARLY_PRICE_ID || ""
   },
@@ -27,12 +39,16 @@ const SectionPayement = async () => {
   const session = await auth()
 
   return (
-    <div className="bg-black p-20">
-      <div className="container mx-auto px-4 m-20">
-        <h2 className="text-white text-center mb-12 text-3xl md:text-5xl font-bold tracking-tight">
+    <div className="min-h-screen bg-black py-20">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-white text-center mb-16 text-3xl md:text-5xl font-bold tracking-tight">
           Passer au Next Level
         </h2>
-        <ClientSidePayment session={session} abonnements={abonnements} />
+        <div className="flex justify-center w-full">
+          <div className="w-full max-w-6xl">
+            <ClientSidePayment session={session} abonnements={abonnements} />
+          </div>
+        </div>
       </div>
     </div>
   )

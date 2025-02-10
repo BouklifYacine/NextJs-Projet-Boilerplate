@@ -3,6 +3,13 @@ import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import { Plan, PlanAbonnement } from "@prisma/client";
+import { createElement } from "react";
+import { sendEmail } from "@/app/utils/email";
+import { 
+  EmailNouvelAbonnement, 
+  EmailChangementAbonnement, 
+  EmailSuppressionAbonnement 
+} from "@/app/(emails)/AbonnementEmail";
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -18,7 +25,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
     }
 
-    // Gestion des différents types d'événements
     switch (event.type) {
       case "checkout.session.completed":
         await handleCheckoutComplete(event);
@@ -44,50 +50,60 @@ export async function POST(request: NextRequest) {
 }
 
 async function handleSubscriptionCanceled(event: Stripe.Event) {
-    const subscription = event.data.object as Stripe.Subscription;
-    const customerId = subscription.customer as string;
-  
-    const user = await prisma.user.findUnique({
-      where: { clientId: customerId }
-    });
-  
-    if (!user) {
-      throw new Error("Utilisateur non trouvé pour le customerId: " + customerId);
+  const subscription = event.data.object as Stripe.Subscription;
+  const customerId = subscription.customer as string;
+
+  const user = await prisma.user.findUnique({
+    where: { clientId: customerId }
+  });
+
+  if (!user) {
+    throw new Error("Utilisateur non trouvé pour le customerId: " + customerId);
+  }
+
+  await prisma.abonnement.delete({
+    where: { userId: user.id }
+  });
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      plan: Plan.free,
+      clientId: null
     }
-  
-    await prisma.abonnement.delete({
-      where: { userId: user.id }
+  });
+
+
+  if (user.email) {
+    const emailElement = createElement(EmailSuppressionAbonnement, {
+      name: user.name || user.email,
+      plan: "Pro"
     });
 
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        plan: Plan.free,
-        clientId: null 
-      }
+    await sendEmail({
+      to: user.email,
+      subject: "Confirmation de résiliation de votre abonnement",
+      emailComponent: emailElement
     });
-
-    console.log(`Abonnement supprimé pour l'utilisateur: ${user.email}`);
+  }
 }
 
-   
 async function handleCheckoutComplete(event: Stripe.Event) {
   const session = await stripe.checkout.sessions.retrieve(
     (event.data.object as Stripe.Checkout.Session).id,
     { expand: ["line_items"] }
   );
 
-  // Vérifie et trouve l'utilisateur
   const email = session.customer_details?.email;
   if (!email) throw new Error("Pas d'email");
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw new Error("Pas d'utilisateur");
 
-  const clientId =
-    typeof session.customer === "string"
-      ? session.customer
-      : session.customer?.id;
+  const clientId = typeof session.customer === "string"
+    ? session.customer
+    : session.customer?.id;
+    
   if (!user.clientId && clientId) {
     await prisma.user.update({
       where: { id: user.id },
@@ -106,7 +122,6 @@ async function handleCheckoutComplete(event: Stripe.Event) {
     } else {
       endDate.setMonth(endDate.getMonth() + 1);
     }
-
 
     await prisma.abonnement.upsert({
       where: { userId: user.id },
@@ -128,6 +143,17 @@ async function handleCheckoutComplete(event: Stripe.Event) {
     await prisma.user.update({
       where: { id: user.id },
       data: { plan: Plan.pro },
+    });
+
+    const emailElement = createElement(EmailNouvelAbonnement, {
+      name: user.name || email,
+      plan: isYearly ? "Pro Annuel" : "Pro Mensuel"
+    });
+
+    await sendEmail({
+      to: email,
+      subject: "Confirmation de votre abonnement",
+      emailComponent: emailElement
     });
   }
 }
@@ -166,6 +192,9 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
 
     const isActive = subscription.status === "active";
     const newPlan = isActive ? Plan.pro : Plan.free;
+    const oldPlanData = await prisma.abonnement.findUnique({
+      where: { userId: user.id }
+    });
 
     await prisma.abonnement.update({
       where: { userId: user.id },
@@ -182,8 +211,21 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
         plan: newPlan,
       },
     });
+
+    if (user.email && oldPlanData) {
+      const emailElement = createElement(EmailChangementAbonnement, {
+        name: user.name || user.email,
+        plan: isYearly ? "Pro Annuel" : "Pro Mensuel",
+        oldPlan: oldPlanData.periode === PlanAbonnement.année ? "Pro Annuel" : "Pro Mensuel"
+      });
+
+      await sendEmail({
+        to: user.email,
+        subject: "Confirmation du changement de votre abonnement",
+        emailComponent: emailElement
+      });
+    }
   } catch (error) {
     console.error("Erreur dans handleSubscriptionUpdated:", error);
   }
 }
-
