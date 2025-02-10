@@ -1,7 +1,9 @@
 'use client'
+
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { supprimerCompte, verifierMotDePasse } from '../actions'
@@ -33,7 +35,7 @@ export function SectionSuppression({ userId }: { userId: string }) {
     queryKey: ['userAccounts', userId],
     queryFn: async () => {
       const response = await fetch(`/api/user/accounts?userId=${userId}`)
-      if (!response.ok) throw new Error('Failed to fetch user accounts')
+      if (!response.ok) throw new Error('Échec de la récupération des comptes')
       return response.json()
     }
   })
@@ -45,26 +47,43 @@ export function SectionSuppression({ userId }: { userId: string }) {
     defaultValues: { motdepasse: '' }
   })
 
+  const formConfirmation = useForm({
+    defaultValues: {
+      codeVerification: ''
+    }
+  })
+
   const verifierMotDePasseMutation = useMutation({
     mutationFn: async (motdepasse: string) => {
-      const resultat = await verifierMotDePasse(motdepasse)
-      if (resultat.error) throw new Error(resultat.error)
-      return resultat
+      try {
+        const resultat = await verifierMotDePasse(motdepasse)
+        if (resultat.error) throw new Error(resultat.error)
+        return resultat
+      } catch (error) {
+        if ((error as Error).message === "Non autorisé") {
+          router.push('/connexion')
+          return null
+        }
+        throw error
+      }
     },
     onSuccess: () => {
-      toast.success("Code de vérification envoyé")
+      toast.success('Code de vérification envoyé par email')
       setEtape('confirmation')
       formVerification.reset()
     },
     onError: (error: Error) => {
-      toast.error(error.message)
+      if (error.message !== "Non autorisé") {
+        toast.error(error.message)
+        formVerification.setError('motdepasse', { message: error.message })
+      }
     }
   })
 
   const supprimerCompteMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (codeVerification: string) => {
       try {
-        const resultat = await supprimerCompte()
+        const resultat = await supprimerCompte(codeVerification)
         if (resultat?.error) throw new Error(resultat.error)
         return resultat
       } catch (error) {
@@ -88,6 +107,11 @@ export function SectionSuppression({ userId }: { userId: string }) {
     setConfirmation(false)
     setEtape('verification')
     formVerification.reset()
+    formConfirmation.reset()
+  }
+
+  const handleCodeSubmit = async (data: { codeVerification: string }) => {
+    await supprimerCompteMutation.mutateAsync(data.codeVerification)
   }
 
   return (
@@ -119,7 +143,7 @@ export function SectionSuppression({ userId }: { userId: string }) {
                   onClick={() => {
                     setConfirmation(true)
                     if (hasProvider) {
-                      supprimerCompteMutation.mutate()
+                      supprimerCompteMutation.mutateAsync('')
                     }
                   }}
                   className="bg-destructive hover:bg-destructive/90"
@@ -176,18 +200,35 @@ export function SectionSuppression({ userId }: { userId: string }) {
               )}
 
               {etape === 'confirmation' && (
-                <div>
-                  <Button 
-                    variant="destructive"
-                    onClick={() => supprimerCompteMutation.mutate()}
-                    disabled={supprimerCompteMutation.isPending}
-                  >
-                    {supprimerCompteMutation.isPending 
-                      ? "Suppression en cours..." 
-                      : "Confirmer la suppression"
-                    }
-                  </Button>
-                </div>
+                <form onSubmit={formConfirmation.handleSubmit(handleCodeSubmit)} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="codeVerification">Code de vérification</Label>
+                    <Input
+                      id="codeVerification"
+                      {...formConfirmation.register('codeVerification')}
+                      placeholder="Entrez le code reçu par email"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button 
+                      type="submit"
+                      variant="destructive"
+                      disabled={supprimerCompteMutation.isPending}
+                    >
+                      {supprimerCompteMutation.isPending 
+                        ? "Suppression en cours..." 
+                        : "Confirmer la suppression"
+                      }
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={annuler}
+                    >
+                      Annuler
+                    </Button>
+                  </div>
+                </form>
               )}
             </div>
           )

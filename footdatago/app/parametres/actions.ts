@@ -183,7 +183,7 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
   }
 }
 
-export async function changerPseudo(donnees: { pseudo: string, codeverification?: string }) {
+export async function changerPseudo(donnees: TypePseudo) {
   try {
     const session = await auth()
     if (!session?.user?.id) throw new Error("Non autorisé")

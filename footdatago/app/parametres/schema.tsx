@@ -1,4 +1,4 @@
-// app/parametres/schema.ts
+
 import { z } from "zod"
 
 export const schemaVerificationMotDePasse = z.object({
@@ -9,7 +9,7 @@ export const schemaEmail = z.object({
   nouvelEmail: z
     .string({ message: "Vous devez mettre un email" })
     .email({ message: "Vous devez mettre un email valide" }),
-  codeVerification: z
+    codeverification: z
     .string({ message: "Vous devez mettre un code" })
     .length(6, { message: "Le code doit contenir exactement 6 caractères" })
 })
