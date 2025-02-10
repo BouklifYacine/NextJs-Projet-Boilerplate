@@ -1,60 +1,84 @@
-"use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useEmail } from "../hooks/useEmail";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import toast from "react-hot-toast";
-import { InputPassword } from "./InputPassword";
-import {  useRouter } from "next/navigation";
+'use client'
 
-interface SectionEmailProps {
-  userId: string;
-}
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { changerEmail, verifierMotDePasse } from '../actions'
+import { useMutation } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { schemaEmail, schemaVerificationMotDePasse } from '../schema'
+import { InputPassword } from './InputPassword'
+import toast from 'react-hot-toast'
+import { TypeEmail } from '../schema'
 
-export function SectionEmail({ userId }: SectionEmailProps) {
-  const router = useRouter();
-  const [enEdition, setEnEdition] = useState(false);
-  const {
-    etape,
-    formMotDePasse,
-    formEmail,
-    verifierMotDePasseMutation,
-    changerEmailMutation,
-    reinitialiser,
-  } = useEmail(userId);
+
+
+export function SectionEmail() {
+  const [enEdition, setEnEdition] = useState(false)
+  const [etape, setEtape] = useState<'motdepasse' | 'email'>('motdepasse')
+
+  const formMotDePasse = useForm({
+    resolver: zodResolver(schemaVerificationMotDePasse),
+    defaultValues: {
+      motdepasse: ''
+    }
+  })
+
+  const formEmail = useForm<TypeEmail>({
+    resolver: zodResolver(schemaEmail),
+    defaultValues: {
+      nouvelEmail: '',
+      codeverification: ''
+    }
+  })
+
+  const verifierMotDePasseMutation = useMutation({
+    mutationFn: async (motdepasse: string) => {
+      const resultat = await verifierMotDePasse(motdepasse)
+      if (resultat.error) throw new Error(resultat.error)
+      return resultat
+    },
+    onSuccess: () => {
+      toast.success('Code de vérification envoyé par email')
+      setEtape('email')
+      formMotDePasse.reset()
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+      formMotDePasse.setError('motdepasse', { message: error.message })
+    }
+  })
+
+  const changerEmailMutation = useMutation({
+    mutationFn: async (data: TypeEmail) => {
+      const resultat = await changerEmail(data)
+      if (resultat.error) throw new Error(resultat.error)
+      return resultat
+    },
+    onSuccess: () => {
+      toast.success('Email modifié avec succès')
+      annuler()
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+      if (error.message.includes('Code')) {
+        formEmail.setError('codeverification', { message: error.message })
+      } else {
+        formEmail.setError('nouvelEmail', { message: error.message })
+      }
+    }
+  })
 
   const annuler = () => {
-    setEnEdition(false);
-    reinitialiser();
-  };
-
-  const gererVerificationMotDePasse = async (data: { motdepasse: string }) => {
-    try {
-      await verifierMotDePasseMutation.mutateAsync(data.motdepasse);
-      router.refresh();
-      toast.success("Code de vérification envoyé");
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  };
-
-  const gererChangementEmail = async (data: {
-    nouvelEmail: string;
-    codeVerification: string;
-  }) => {
-    try {
-      await changerEmailMutation.mutateAsync(data);
-      
-      window.location.reload();
-      toast.success("Email modifié avec succès");
-      annuler();
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
-  };
+    setEnEdition(false)
+    setEtape('motdepasse')
+    formMotDePasse.reset()
+    formEmail.reset()
+  }
 
   return (
     <Card className="p-6">
@@ -65,48 +89,59 @@ export function SectionEmail({ userId }: SectionEmailProps) {
             <p className="text-sm text-gray-500">Gérez votre adresse email</p>
           </div>
           {!enEdition && (
-            <Button onClick={() => setEnEdition(true)}>Modifier</Button>
+            <Button onClick={() => setEnEdition(true)}>
+              Modifier
+            </Button>
           )}
         </div>
 
-        {enEdition && etape === "motdepasse" && (
-          <form
-            onSubmit={formMotDePasse.handleSubmit(gererVerificationMotDePasse)}
+        {enEdition && etape === 'motdepasse' && (
+          <form 
+            onSubmit={formMotDePasse.handleSubmit((data) => 
+              verifierMotDePasseMutation.mutate(data.motdepasse)
+            )} 
             className="space-y-4"
           >
             <div className="space-y-2">
               <Label htmlFor="motdepasse">Mot de passe actuel</Label>
               <InputPassword
                 id="motdepasse"
-                {...formMotDePasse.register("motdepasse")}
+                {...formMotDePasse.register('motdepasse')}
               />
               {formMotDePasse.formState.errors.motdepasse && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {formMotDePasse.formState.errors.motdepasse.message?.toString()}
+                    {formMotDePasse.formState.errors.motdepasse.message}
                   </AlertDescription>
                 </Alert>
               )}
             </div>
             <div className="flex space-x-2">
-              <Button
-                type="submit"
+              <Button 
+                type="submit" 
                 disabled={verifierMotDePasseMutation.isPending}
               >
-                {verifierMotDePasseMutation.isPending
-                  ? "Vérification..."
-                  : "Continuer"}
+                {verifierMotDePasseMutation.isPending 
+                  ? "Vérification..." 
+                  : "Continuer"
+                }
               </Button>
-              <Button type="button" variant="outline" onClick={annuler}>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={annuler}
+              >
                 Annuler
               </Button>
             </div>
           </form>
         )}
 
-        {enEdition && etape === "email" && (
-          <form
-            onSubmit={formEmail.handleSubmit(gererChangementEmail)}
+        {enEdition && etape === 'email' && (
+          <form 
+            onSubmit={formEmail.handleSubmit((data) => 
+              changerEmailMutation.mutate(data)
+            )}
             className="space-y-4"
           >
             <div className="space-y-2">
@@ -114,12 +149,12 @@ export function SectionEmail({ userId }: SectionEmailProps) {
               <Input
                 id="nouvelEmail"
                 type="email"
-                {...formEmail.register("nouvelEmail")}
+                {...formEmail.register('nouvelEmail')}
               />
               {formEmail.formState.errors.nouvelEmail && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {formEmail.formState.errors.nouvelEmail.message?.toString()}
+                    {formEmail.formState.errors.nouvelEmail.message}
                   </AlertDescription>
                 </Alert>
               )}
@@ -128,23 +163,31 @@ export function SectionEmail({ userId }: SectionEmailProps) {
               <Label htmlFor="codeVerification">Code de vérification</Label>
               <Input
                 id="codeVerification"
-                {...formEmail.register("codeVerification")}
+                {...formEmail.register('codeverification')}
               />
-              {formEmail.formState.errors.codeVerification && (
+              {formEmail.formState.errors.codeverification && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {formEmail.formState.errors.codeVerification.message?.toString()}
+                    {formEmail.formState.errors.codeverification.message}
                   </AlertDescription>
                 </Alert>
               )}
             </div>
             <div className="flex space-x-2">
-              <Button type="submit" disabled={changerEmailMutation.isPending}>
-                {changerEmailMutation.isPending
-                  ? "Modification en cours..."
-                  : "Changer l'email"}
+              <Button 
+                type="submit"
+                disabled={changerEmailMutation.isPending}
+              >
+                {changerEmailMutation.isPending 
+                  ? "Modification en cours..." 
+                  : "Changer l'email"
+                }
               </Button>
-              <Button type="button" variant="outline" onClick={annuler}>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={annuler}
+              >
                 Annuler
               </Button>
             </div>
@@ -152,5 +195,5 @@ export function SectionEmail({ userId }: SectionEmailProps) {
         )}
       </div>
     </Card>
-  );
+  )
 }

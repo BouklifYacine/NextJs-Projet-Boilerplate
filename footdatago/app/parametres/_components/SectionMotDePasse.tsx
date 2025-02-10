@@ -1,32 +1,60 @@
 'use client'
+
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useMotDePasse } from '../hooks/useMotDePasse'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { changerMotDePasse } from '../actions'
+import { verifierMotDePasse, changerMotDePasse } from '../actions'
 import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schema'
 import { InputPassword } from './InputPassword'
+import toast from 'react-hot-toast'
+import { TypeMotDePasse } from '../schema'
 
-interface SectionMotDePasseProps {
-  userId: string;
-}
 
-export function SectionMotDePasse({ userId }: SectionMotDePasseProps) {
+
+export function SectionMotDePasse() {
   const [enEdition, setEnEdition] = useState(false)
-  const {
-    etape,
-    formVerification,
-    formChangement,
-    verifierMotDePasseMutation,
-    reinitialiser
-  } = useMotDePasse(userId)
+  const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
+
+  const formVerification = useForm({
+    resolver: zodResolver(schemaVerificationMotDePasse),
+    defaultValues: {
+      motdepasse: ''
+    }
+  })
+
+  const formChangement = useForm<TypeMotDePasse>({
+    resolver: zodResolver(schemaMotDePasse),
+    defaultValues: {
+      motdepasse: '',
+      codeverification: ''
+    }
+  })
+
+  const verifierMotDePasseMutation = useMutation({
+    mutationFn: async (motdepasse: string) => {
+      const resultat = await verifierMotDePasse(motdepasse)
+      if (resultat.error) throw new Error(resultat.error)
+      return resultat
+    },
+    onSuccess: () => {
+      toast.success('Code de vérification envoyé par email')
+      setEtape('changement')
+      formVerification.reset()
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+      formVerification.setError('motdepasse', { message: error.message })
+    }
+  })
 
   const changerMotDePasseMutation = useMutation({
-    mutationFn: async (data: { motdepasse: string, codeverification: string }) => {
+    mutationFn: async (data: TypeMotDePasse) => {
       const resultat = await changerMotDePasse(data)
       if (resultat.error) throw new Error(resultat.error)
       return resultat
@@ -37,38 +65,41 @@ export function SectionMotDePasse({ userId }: SectionMotDePasseProps) {
     },
     onError: (error: Error) => {
       toast.error(error.message)
+      if (error.message.includes('Code')) {
+        formChangement.setError('codeverification', { message: error.message })
+      } else {
+        formChangement.setError('motdepasse', { message: error.message })
+      }
     }
   })
 
   const annuler = () => {
     setEnEdition(false)
-    reinitialiser()
+    setEtape('verification')
+    formVerification.reset()
+    formChangement.reset()
   }
 
-  const gererChangementMotDePasse = async (data: { motdepasse: string, codeverification: string }) => {
-    try {
-      await changerMotDePasseMutation.mutateAsync(data)
-    } catch (error) {
-      console.error('Erreur:', error)
-    }
-  }
-
-  return (
-    <Card className="p-6">
-      <div className="space-y-6">
+  if (!enEdition) {
+    return (
+      <Card className="p-6">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-xl font-semibold">Mot de passe</h2>
             <p className="text-sm text-gray-500">Modifiez votre mot de passe</p>
           </div>
-          {!enEdition && (
-            <Button onClick={() => setEnEdition(true)}>
-              Modifier
-            </Button>
-          )}
+          <Button onClick={() => setEnEdition(true)}>
+            Modifier
+          </Button>
         </div>
+      </Card>
+    )
+  }
 
-        {enEdition && etape === 'verification' && (
+  return (
+    <Card className="p-6">
+      <div className="space-y-6">
+        {etape === 'verification' && (
           <form 
             onSubmit={formVerification.handleSubmit((data) => 
               verifierMotDePasseMutation.mutate(data.motdepasse)
@@ -84,7 +115,7 @@ export function SectionMotDePasse({ userId }: SectionMotDePasseProps) {
               {formVerification.formState.errors.motdepasse && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {formVerification.formState.errors.motdepasse.message?.toString()}
+                    {formVerification.formState.errors.motdepasse.message}
                   </AlertDescription>
                 </Alert>
               )}
@@ -110,35 +141,38 @@ export function SectionMotDePasse({ userId }: SectionMotDePasseProps) {
           </form>
         )}
 
-        {enEdition && etape === 'changement' && (
+        {etape === 'changement' && (
           <form 
-            onSubmit={formChangement.handleSubmit(gererChangementMotDePasse)}
+            onSubmit={formChangement.handleSubmit((data) => 
+              changerMotDePasseMutation.mutate(data)
+            )}
             className="space-y-4"
           >
             <div className="space-y-2">
-              <Label htmlFor="nouveauMotDePasse">Nouveau mot de passe</Label>
+              <Label htmlFor="motdepasse">Nouveau mot de passe</Label>
               <InputPassword
                 id="motdepasse"
-                {...formVerification.register('motdepasse')}
+                {...formChangement.register('motdepasse')}
               />
               {formChangement.formState.errors.motdepasse && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {formChangement.formState.errors.motdepasse.message?.toString()}
+                    {formChangement.formState.errors.motdepasse.message}
                   </AlertDescription>
                 </Alert>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="codeVerification">Code de vérification</Label>
+              <Label htmlFor="codeverification">Code de vérification</Label>
               <Input
-                id="codeVerification"
+                id="codeverification"
                 {...formChangement.register('codeverification')}
+                placeholder="Entrez le code reçu par email"
               />
               {formChangement.formState.errors.codeverification && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {formChangement.formState.errors.codeverification.message?.toString()}
+                    {formChangement.formState.errors.codeverification.message}
                   </AlertDescription>
                 </Alert>
               )}
