@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Mail, Lock, User, Shield } from "lucide-react"
+import { Mail, Lock, User } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 
 interface SectionProfilProps {

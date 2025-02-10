@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import BoutonConnexionProviders from "@/components/BoutonConnexionProviders";
 import { z } from "zod";
 import SchemaInscription from "@/schema/SchemaInscription";
+import { InputPassword } from "../parametres/_components/InputPassword";
 
 type Schema = z.infer<typeof SchemaInscription>;
 
@@ -91,12 +92,13 @@ const ClientInscriptionFormulaire = () => {
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
           />
-          <input
-            {...register("password")}
-            type="password"
-            className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="••••••••"
-          />
+        
+             <InputPassword
+                         {...register("password")}
+                         
+                         className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                         placeholder="••••••••"
+                        />
         </div>
         {errors.password && (
           <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
