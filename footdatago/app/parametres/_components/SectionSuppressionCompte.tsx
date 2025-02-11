@@ -25,6 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { schemaVerificationMotDePasse } from '../schema'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { signOut } from "next-auth/react"
 
 export function SectionSuppression({ userId }: { userId: string }) {
   const router = useRouter()
@@ -83,10 +84,13 @@ export function SectionSuppression({ userId }: { userId: string }) {
         throw error
       }
     },
-    onSuccess: () => {
+    onSuccess:  () => {
       toast.success('Compte supprimé avec succès')
-      router.push('/')
-      router.refresh()
+       signOut({ redirectTo: "/connexion" })
+  
+      // Redirection manuelle
+      router.push("/connexion")
+      router.refresh() 
     },
     onError: (error: Error) => {
       toast.error(error.message || "Une erreur est survenue")
