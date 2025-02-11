@@ -311,24 +311,24 @@ export async function supprimerCompte(codeVerification?: string) {
       await prisma.$transaction(async (db) => {
         // Supprimer les sessions
         await db.session.deleteMany({
-          where: { userId: session.user.id }
+          where: { userId: session?.user?.id }
         })
 
         // Supprimer les comptes liés (providers)
         await db.account.deleteMany({
-          where: { userId: session.user.id }
+          where: { userId: session?.user?.id }
         })
 
         // Supprimer les authentificateurs
         await db.authenticator.deleteMany({
-          where: { userId: session.user.id }
+          where: { userId: session?.user?.id }
         })
 
         // Supprimer l'abonnement si existe
         if (utilisateur.clientId) {
           try {
             await db.abonnement.delete({
-              where: { userId: session.user.id }
+              where: { userId: session?.user?.id }
             })
           } catch (error) {
             console.error("Erreur lors de la suppression de l'abonnement:", error)
@@ -337,7 +337,7 @@ export async function supprimerCompte(codeVerification?: string) {
 
         // Supprimer l'utilisateur
         await db.user.delete({
-          where: { id: session.user.id }
+          where: { id: session?.user?.id }
         })
       })
 
