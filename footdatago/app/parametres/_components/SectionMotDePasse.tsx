@@ -1,84 +1,24 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { verifierMotDePasse, changerMotDePasse } from '../actions'
-import { useMutation } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schema'
 import { InputPassword } from './InputPassword'
-import toast from 'react-hot-toast'
-import { TypeMotDePasse } from '../schema'
-
-
+import { useMotDePasse } from '../hooks/useMotDePasse'
 
 export function SectionMotDePasse() {
-  const [enEdition, setEnEdition] = useState(false)
-  const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
-
-  const formVerification = useForm({
-    resolver: zodResolver(schemaVerificationMotDePasse),
-    defaultValues: {
-      motdepasse: ''
-    }
-  })
-
-  const formChangement = useForm<TypeMotDePasse>({
-    resolver: zodResolver(schemaMotDePasse),
-    defaultValues: {
-      motdepasse: '',
-      codeverification: ''
-    }
-  })
-
-  const verifierMotDePasseMutation = useMutation({
-    mutationFn: async (motdepasse: string) => {
-      const resultat = await verifierMotDePasse(motdepasse)
-      if (resultat.error) throw new Error(resultat.error)
-      return resultat
-    },
-    onSuccess: () => {
-      toast.success('Code de vérification envoyé par email')
-      setEtape('changement')
-      formVerification.reset()
-    },
-    onError: (error: Error) => {
-      toast.error(error.message)
-      formVerification.setError('motdepasse', { message: error.message })
-    }
-  })
-
-  const changerMotDePasseMutation = useMutation({
-    mutationFn: async (data: TypeMotDePasse) => {
-      const resultat = await changerMotDePasse(data)
-      if (resultat.error) throw new Error(resultat.error)
-      return resultat
-    },
-    onSuccess: () => {
-      toast.success('Mot de passe modifié avec succès')
-      annuler()
-    },
-    onError: (error: Error) => {
-      toast.error(error.message)
-      if (error.message.includes('Code')) {
-        formChangement.setError('codeverification', { message: error.message })
-      } else {
-        formChangement.setError('motdepasse', { message: error.message })
-      }
-    }
-  })
-
-  const annuler = () => {
-    setEnEdition(false)
-    setEtape('verification')
-    formVerification.reset()
-    formChangement.reset()
-  }
+  const {
+    etape,
+    enEdition,
+    setEnEdition,
+    formVerification,
+    formChangement,
+    verifierMotDePasseMutation,
+    changerMotDePasseMutation,
+    reinitialiser
+  } = useMotDePasse()
 
   if (!enEdition) {
     return (
@@ -133,7 +73,7 @@ export function SectionMotDePasse() {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={annuler}
+                onClick={reinitialiser}
               >
                 Annuler
               </Button>
@@ -190,7 +130,7 @@ export function SectionMotDePasse() {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={annuler}
+                onClick={reinitialiser}
               >
                 Annuler
               </Button>

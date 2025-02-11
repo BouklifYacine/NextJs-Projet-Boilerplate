@@ -1,15 +1,18 @@
 'use client'
+
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schema'
-import { verifierMotDePasse } from '../actions'
+import { verifierMotDePasse, changerMotDePasse } from '../actions'
 import toast from 'react-hot-toast'
 import { TypeMotDePasse } from '../schema'
+import { signOut } from 'next-auth/react'
 
-export function useMotDePasse(userId: string) {
+export function useMotDePasse() {
   const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
+  const [enEdition, setEnEdition] = useState(false)
 
   const formVerification = useForm({
     resolver: zodResolver(schemaVerificationMotDePasse),
@@ -43,7 +46,28 @@ export function useMotDePasse(userId: string) {
     }
   })
 
+  const changerMotDePasseMutation = useMutation({
+    mutationFn: async (data: TypeMotDePasse) => {
+      const resultat = await changerMotDePasse(data)
+      if (resultat.error) throw new Error(resultat.error)
+      return resultat
+    },
+    onSuccess: () => {
+      toast.success('Mot de passe modifié avec succès')
+      signOut({ callbackUrl: "/connexion" })
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+      if (error.message.includes('Code')) {
+        formChangement.setError('codeverification', { message: error.message })
+      } else {
+        formChangement.setError('motdepasse', { message: error.message })
+      }
+    }
+  })
+
   const reinitialiser = () => {
+    setEnEdition(false)
     setEtape('verification')
     formVerification.reset()
     formChangement.reset()
@@ -51,9 +75,12 @@ export function useMotDePasse(userId: string) {
 
   return {
     etape,
+    enEdition,
+    setEnEdition,
     formVerification,
     formChangement,
     verifierMotDePasseMutation,
+    changerMotDePasseMutation,
     reinitialiser
   }
 }

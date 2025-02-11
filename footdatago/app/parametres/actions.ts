@@ -162,6 +162,7 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
           resetTokenExpiry: null
         }
       })
+      // Suppression de toutes les sessions
       await db.session.deleteMany({
         where: { userId: session?.user?.id }
       })
