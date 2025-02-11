@@ -12,7 +12,6 @@ import SuppressionCompte from "@/app/(emails)/SuppressionCompte"
 import { revalidatePath } from "next/cache"
 import { auth, signOut } from "@/auth"
 import { TypeEmail, TypeMotDePasse, TypePseudo } from "./schema"
-import { redirect } from "next/navigation"
 
 export async function verifierMotDePasse(motdepasse: string) {
   try {
@@ -67,7 +66,7 @@ export async function changerEmail(donnees: TypeEmail) {
     const session = await auth()
     if (!session?.user?.id) throw new Error("Non autorisé")
 
-    const { nouvelEmail, codeVerification } = donnees
+    const { nouvelEmail, codeverification } = donnees
 
     const emailExistant = await prisma.user.findUnique({
       where: { email: nouvelEmail }
@@ -80,7 +79,7 @@ export async function changerEmail(donnees: TypeEmail) {
     const utilisateur = await prisma.user.findFirst({
       where: {
         id: session.user.id,
-        resetToken: codeVerification,
+        resetToken: codeverification,
         resetTokenExpiry: { gt: new Date() }
       }
     })
