@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { LangueSelect } from "../../components/SelectLangue";
-import { useTraductions } from "./(hooks)/HookTraduction";
+import { useTraduction } from "./(hooks)/HookTraduction";
 
 export default function Home() {
   const [langue, setLangue] = useState("fr");
-  const { data: texts, isLoading } = useTraductions(langue);
+  const { data: texte, isLoading } = useTraduction(langue);
 
-  if (isLoading) return <div>Chargement</div>;
+  if (isLoading) return <div>Chargement ...</div>;
 
   return (
     <div className="p-4">
@@ -20,9 +20,9 @@ export default function Home() {
         <div className="flex flex-col items-center">
 
         
-        <h1 className=" font-bold text-5xl">{texts?.title}</h1>
-        <h2 className=" my-2 text-green-500 text-2xl">{texts?.welcome}</h2>
-        <p>{texts?.description}</p>
+        <h1 className=" font-bold text-5xl">{texte?.title}</h1>
+        <h2 className=" my-2 text-green-500 text-2xl">{texte?.welcome}</h2>
+        <p>{texte?.description}</p>
         </div>
       
       </div>

@@ -12,8 +12,8 @@ export function LangueSelect({ value, onValueChange }: SelectLangue) {
         <SelectValue placeholder="Sélectionner la langue" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="fr" className="text-black cursor-pointer">Français 🇫🇷</SelectItem>
-        <SelectItem value="en" className="text-black cursor-pointer">English 🇬🇧</SelectItem>
+        <SelectItem value="fr" className="text-black cursor-pointer">Français </SelectItem>
+        <SelectItem value="en" className="text-black cursor-pointer">English </SelectItem>
       </SelectContent>
     </Select>
   );
