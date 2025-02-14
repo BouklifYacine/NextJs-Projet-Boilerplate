@@ -1,3 +1,5 @@
+import { NextRequest } from "next/server";
+
 type Translations = {
     fr: typeof traductions.fr;
     en: typeof traductions.fr;
@@ -17,7 +19,7 @@ type Translations = {
   }
   
   export async function GET(
-    request: Request,
+    request: NextRequest,
     { params }: { params: { lang: keyof Translations } }
   ) {
     return Response.json(traductions[params.lang]);
