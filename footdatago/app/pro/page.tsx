@@ -8,7 +8,7 @@ const ProPage = async () => {
   
 
         const sessiondetails = session?.user?.name 
-        const sessionId = session?.user?.id
+        // const sessionId = session?.user?.id
       const sessiond = JSON.stringify(sessiondetails)
 
       const utilisateur = await prisma.user.findUnique({

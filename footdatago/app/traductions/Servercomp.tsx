@@ -8,7 +8,7 @@ export default function Home() {
   const [langue, setLangue] = useState("fr");
   const { data: texte, isLoading } = useTraduction(langue);
 
-  if (isLoading) return <div>Chargement ...</div>;
+  if (isLoading) return <div>Mohamed est pas content</div>;
 
   return (
     <div className="p-4">

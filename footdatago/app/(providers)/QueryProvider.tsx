@@ -8,18 +8,18 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
     defaultOptions: {
       queries: {
        
-        retry: 2,
+        retry: 2, // Nombre de fois qu'on fait des tentatives de query
         
-        retryDelay: 3000, // en millisecondes
+        retryDelay: 3000, // Délai entre les tentatives de query en millisecondes
        
-        staleTime: 5 * 1000, // 10 secondes
-        // Durée de cache
+        staleTime: 50 * 1000, // 10 secondes  Durée de cache
+       
       },
       mutations: {
-        // Tentatives pour les mutations
-        retry: 2,
-        // Délai entre les tentatives de mutation
-        retryDelay: 3000,
+       
+        retry: 2,  // Tentatives pour les mutations 
+      
+        retryDelay: 3000,   // Délai entre les tentatives de mutation
       },
     },
   }))
