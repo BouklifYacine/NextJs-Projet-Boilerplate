@@ -3,7 +3,6 @@ import { prisma } from "@/prisma";
 export async function GetUtilisateurs() {
   const users = await prisma.user.findMany({
     select: {
-      id: true,
       name: true,
       email: true,
       image: true,
