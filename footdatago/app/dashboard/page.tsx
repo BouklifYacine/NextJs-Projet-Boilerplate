@@ -18,6 +18,7 @@ import { StatsBlock } from "./components/Block";
 import { CreditCard, UserPlus, Users } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Dashboard = async () => {
   const utilisateur = await GetUtilisateurs();
@@ -62,6 +63,7 @@ const Dashboard = async () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead><Checkbox ></Checkbox></TableHead>
               <TableHead className="font-bold text-black">Avatar</TableHead>
               <TableHead className="font-bold text-black">Role</TableHead>
               <TableHead className="font-bold text-black">Pseudo</TableHead>
@@ -75,6 +77,7 @@ const Dashboard = async () => {
           <TableBody>
             {utilisateur.map((user) => (
               <TableRow key={user.id}>
+                <TableCell><Checkbox></Checkbox></TableCell>
                 <TableCell className="font-medium">
                   {user.image && (
                     <div className="relative h-10 w-12">
@@ -116,7 +119,7 @@ const Dashboard = async () => {
         </Table>
       </div>
       <div className="flex justify-end mt-4 gap-4">
-<Button variant="destructive">Supprimer  </Button> <Button>Yacine </Button>
+<Button variant="destructive"> Supprimer  </Button> <Button> Yacine </Button>
       </div>
     </div>
   );
