@@ -17,6 +17,7 @@ import {
 import { StatsBlock } from "./components/Block";
 import { CreditCard, UserPlus, Users } from "lucide-react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = async () => {
   const utilisateur = await GetUtilisateurs();
@@ -76,7 +77,7 @@ const Dashboard = async () => {
               <TableRow key={user.id}>
                 <TableCell className="font-medium">
                   {user.image && (
-                    <div className="relative h-10 w-10">
+                    <div className="relative h-10 w-12">
                       <Image
                         src={user.image}
                         alt={user.name || "Avatar"}
@@ -113,6 +114,9 @@ const Dashboard = async () => {
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex justify-end mt-4 gap-4">
+<Button variant="destructive">Supprimer  </Button> <Button>Yacine </Button>
       </div>
     </div>
   );
