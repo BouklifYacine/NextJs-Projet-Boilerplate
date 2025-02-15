@@ -4,7 +4,7 @@ import { useState } from "react";
 import { LangueSelect } from "../../components/SelectLangue";
 import { useTraduction } from "./(hooks)/HookTraduction";
 
-export default function Home() {
+export default function TradServ() {
   const [langue, setLangue] = useState("fr");
   const { data: texte, isLoading } = useTraduction(langue);
 

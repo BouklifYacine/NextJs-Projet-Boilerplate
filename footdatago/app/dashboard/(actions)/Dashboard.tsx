@@ -1,28 +1,44 @@
 import { prisma } from "@/prisma";
 
+const PRIX = {
+  MENSUEL: 9.99,
+  ANNUEL: 50.00
+};
+
 export async function GetUtilisateurs() {
-  const users = await prisma.user.findMany({
-    select: {
-      name: true,
-      email: true,
-      image: true,
-      plan: true,
-      createdAt: true,
-      abonnement: {
-        select: {
-          periode: true,
-          datedebut: true,
-          datefin: true,
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        plan: true,
+        createdAt: true,
+        abonnement: {
+          select: {
+            periode: true,
+            datedebut: true,
+            datefin: true,
+          },
         },
       },
-    },
-  });
-  return users;
+    });
+    return users;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des utilisateurs:", error);
+    throw error;
+  }
 }
 
 export async function getTotalUtilisateurs() {
-  const TotalUtilisateur = await prisma.user.count();
-  return TotalUtilisateur;
+  try {
+    const totalUtilisateurs = await prisma.user.count();
+    return totalUtilisateurs;
+  } catch (error) {
+    console.error("Erreur lors du comptage des utilisateurs:", error);
+    throw error;
+  }
 }
 
 export async function getTotalAbonnement() {
@@ -35,4 +51,61 @@ export async function getTotalAbonnement() {
   return getTotalAbonnement;
 }
 
+export async function getAbonnementStats() {
+  try {
+    const abonnements = await prisma.abonnement.groupBy({
+      by: ['periode'],
+      _count: {
+        periode: true
+      },
+      where: {
+        datefin: {
+          gte: new Date() 
+        }
+      }
+    });
+
+   
+    const statsMensuels = {
+      nombre: 0,
+      revenus: 0
+    };
+    
+    const statsAnnuels = {
+      nombre: 0,
+      revenus: 0
+    };
+
+    // Calculer les statistiques pour chaque type d'abonnement
+    abonnements.forEach(abo => {
+      if (abo.periode === 'mois') {
+        statsMensuels.nombre = abo._count.periode;
+        statsMensuels.revenus = abo._count.periode * PRIX.MENSUEL;
+      } else if (abo.periode === 'année') {
+        statsAnnuels.nombre = abo._count.periode;
+        statsAnnuels.revenus = abo._count.periode * PRIX.ANNUEL;
+      }
+    });
+
+
+    const totalRevenus = statsMensuels.revenus + statsAnnuels.revenus;
+
+    return {
+      mensuels: {
+        nombre: statsMensuels.nombre,
+        revenus: statsMensuels.revenus.toFixed(2)
+      },
+      annuels: {
+        nombre: statsAnnuels.nombre,
+        revenus: statsAnnuels.revenus.toFixed(2)
+      },
+      total: {
+        revenus: totalRevenus.toFixed(2)
+      }
+    };
+  } catch (error) {
+    console.error("Erreur lors du calcul des statistiques d'abonnement:", error);
+    throw error;
+  }
+}
 

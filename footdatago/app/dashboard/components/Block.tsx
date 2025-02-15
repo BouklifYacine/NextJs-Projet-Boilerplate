@@ -1,12 +1,11 @@
 import React from "react";
-import { Users, UserPlus, CreditCard } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const StatsBlock = ({ icon: Icon, title, value }) => (
-  <Card className="flex-1">
+  <Card className="flex-1 md:m-4">
     <CardContent className="p-6">
       <div className="flex items-center space-x-4">
-        <div className="p-4 bg-blue-100 rounded-lg">
+        <div className="p-2 bg-blue-100 rounded-lg">
           <Icon className="w-6 h-6 text-blue-600" />
         </div>
         <div>

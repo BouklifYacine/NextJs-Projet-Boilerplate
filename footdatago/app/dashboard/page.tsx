@@ -1,7 +1,10 @@
 import React from "react";
-import { getTotalUtilisateurs, GetUtilisateurs } from "./(actions)/Dashboard";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import {
+  getAbonnementStats,
+  getTotalAbonnement,
+  getTotalUtilisateurs,
+  GetUtilisateurs,
+} from "./(actions)/Dashboard";
 import Header from "@/components/header";
 import {
   Table,
@@ -13,60 +16,52 @@ import {
 } from "@/components/ui/table";
 import { StatsBlock } from "./components/Block";
 import { CreditCard, UserPlus, Users } from "lucide-react";
+import Image from "next/image";
 
 const Dashboard = async () => {
-  // const session = auth();
-  // if (!session) redirect("/");
-
   const utilisateur = await GetUtilisateurs();
   const TotalUtilisateur = await getTotalUtilisateurs();
+  const TotalAbonnement = await getTotalAbonnement();
+  const StatsAbonnement = await getAbonnementStats();
+  const TotalRevenus = StatsAbonnement.total.revenus;
+
   return (
     <div className="container mx-auto">
-      <Header></Header>
+      <Header />
 
       <div className="flex flex-col md:flex-row gap-6 mb-8 mt-4">
-        <StatsBlock 
+        <StatsBlock
           icon={Users}
           title="Nombre utilisateurs"
           value={TotalUtilisateur || "0"}
         />
-        <StatsBlock 
+        <StatsBlock
           icon={UserPlus}
           title="Nombre abonnés"
-          value="0" // À remplacer par la vraie donnée
+          value={TotalAbonnement}
         />
-        <StatsBlock 
+        <StatsBlock
           icon={CreditCard}
-          title="Revenus"
-          value="0€" // À remplacer par la vraie donnée
+          title="Revenus total"
+          value={TotalRevenus + "€"}
+        />
+        <StatsBlock
+          icon={CreditCard}
+          title="Abos Annuel"
+          value={StatsAbonnement.annuels.nombre}
+        />
+        <StatsBlock
+          icon={CreditCard}
+          title="Abo Mensuel"
+          value={StatsAbonnement.mensuels.nombre}
         />
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="font-bold text-black">Avatar</TableHead>
-            <TableHead className="font-bold text-black">Role</TableHead>
-            <TableHead className="font-bold text-black">Pseudo</TableHead>
-            <TableHead className="font-bold text-black">Email</TableHead>
-            <TableHead className="font-bold text-black">Créer le</TableHead>
-            <TableHead className="font-bold text-black">Abonnement</TableHead>
-            <TableHead className="font-bold text-black">Durée</TableHead>
-          </TableRow>
-        </TableHeader>
 
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="">$250.00</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <div className="rounded-md border">
+       
+      </div>
     </div>
   );
 };
 
 export default Dashboard;
-
-// Faire trois bloc avec total nombre d'utilisateurs / Total utilisateur abonné / Nombre revenus par mois ou nombre connecté avec providers
