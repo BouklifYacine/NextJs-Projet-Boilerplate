@@ -58,7 +58,61 @@ const Dashboard = async () => {
       </div>
 
       <div className="rounded-md border">
-       
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="font-bold text-black">Avatar</TableHead>
+              <TableHead className="font-bold text-black">Role</TableHead>
+              <TableHead className="font-bold text-black">Pseudo</TableHead>
+              <TableHead className="font-bold text-black">Email</TableHead>
+              <TableHead className="font-bold text-black">Créé le</TableHead>
+              <TableHead className="font-bold text-black">Abonnement</TableHead>
+              <TableHead className="font-bold text-black">Durée</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {utilisateur.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell className="font-medium">
+                  {user.image && (
+                    <div className="relative h-10 w-10">
+                      <Image
+                        src={user.image}
+                        alt={user.name || "Avatar"}
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover"
+                      />
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell>{user.plan || "Standard"}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  {new Date(user.createdAt).toLocaleDateString("fr-FR")}
+                </TableCell>
+                <TableCell>{user.plan.charAt(0).toUpperCase() + user.plan.slice(1) || "Standard"}</TableCell>
+                <TableCell>
+                  {user.abonnement?.[0]?.periode || "Aucun"}
+                </TableCell>
+                <TableCell>
+                  {user.abonnement?.[0] ? (
+                    <span>
+                      {new Date(user.abonnement[0].datedebut).toLocaleDateString("fr-FR")} 
+                      {" - "}
+                      {new Date(user.abonnement[0].datefin).toLocaleDateString("fr-FR")}
+                    </span>
+                  ) : (
+                    "-"
+                  )}
+                </TableCell>
+                
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
