@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -65,7 +65,8 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<string[]>([]);
   const [recherche , setRecherche] = useState('')
 
-  const utilisateurFiltre = utilisateursLocaux.filter((pseudo) => pseudo.name.toLocaleLowerCase().includes(recherche.toLowerCase()))
+  
+  const utilisateurFiltre = useMemo(() => utilisateursLocaux.filter((pseudo) => pseudo.name.toLocaleLowerCase().includes(recherche.toLowerCase())) , [utilisateursLocaux , recherche] )
 
   const gererSelectionTotale = (coche: boolean) => {
     if (coche) {
