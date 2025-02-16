@@ -16,7 +16,7 @@ model User {
   emailVerified    DateTime?
   password         String?
   image            String?
-  role Roles @default(utilisateur)
+  role             Roles           @default(utilisateur)
   resetToken       String?
   resetTokenExpiry DateTime?
   accounts         Account[]
@@ -42,19 +42,22 @@ model Abonnement {
 
 // Enum des roles 
 enum Roles {
-  Admin 
+  Admin
   utilisateur
 }
+
 // Stripe Enum des noms de vos type d'abonnement en rajouter si besoin 
 enum Plan {
   free
   pro
 }
+
 // Stripe Model ou vous allez gérer vos type d'abonnement 
 enum PlanAbonnement {
   mois
   année
 }
+
 // Account Model pour AuthJS
 model Account {
   userId            String
@@ -77,7 +80,7 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
- // Session Model pour récupérer les tokens si besoin 
+// Session Model pour récupérer les tokens si besoin 
 model Session {
   sessionToken String   @unique
   userId       String

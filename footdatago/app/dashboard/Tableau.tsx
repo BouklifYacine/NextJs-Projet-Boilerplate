@@ -29,6 +29,7 @@ interface Utilisateur {
   name: string;
   email: string;
   plan: "pro" | "free";
+  role : "Admin" | "utilisateur";
   createdAt: string;
   abonnement?: Abonnement[];
 }
@@ -69,7 +70,9 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
     string[]
   >([]);
   const [recherche, setRecherche] = useState("");
-  const [filtreactif, setFiltreActif] = useState(false);
+  const [filtreabonnement, setFiltreAbonnement] = useState(false);
+  const [filtreAdmin, setFiltreAdmin] = useState(false)
+
 
   const utilisateurFiltre = useMemo(
     () =>
@@ -77,10 +80,11 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         const correspondancePseudo = utilisateur.name
           .toLowerCase()
           .includes(recherche.toLowerCase());
-        const correspondancePlan = !filtreactif || utilisateur.plan === "pro";
-        return correspondancePseudo && correspondancePlan;
+        const correspondancePlan = !filtreabonnement || utilisateur.plan === "pro";
+        const conrrespondanceRole = !filtreAdmin || utilisateur.role === "Admin"
+        return correspondancePseudo && correspondancePlan && conrrespondanceRole ;
       }),
-    [utilisateursLocaux, recherche, filtreactif]
+    [utilisateursLocaux, recherche, filtreabonnement , filtreAdmin ]
   );
 
   const gererSelectionTotale = (coche: boolean) => {
@@ -160,10 +164,17 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
       <div className="flex justify-end gap-2">
         <Button
-          onClick={() => setFiltreActif(!filtreactif)}
-          variant={filtreactif ? "default" : "outline"}
+          onClick={() => setFiltreAbonnement(!filtreabonnement)}
+          variant={filtreabonnement ? "default" : "outline"}
         >
           Abonnement
+        </Button>
+
+        <Button
+          onClick={() => setFiltreAdmin(!filtreAdmin)}
+          variant={filtreAdmin ? "default" : "outline"}
+        >
+          Admin
         </Button>
         <Input
           value={recherche}
@@ -223,15 +234,15 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   <Badge
                     className={`
                       ${
-                        utilisateur.plan === "pro"
+                        utilisateur.role === "Admin"
                           ? "bg-green-100 text-green-800 border-green-200"
                           : "bg-red-100 text-red-800 border-red-200"
                       }
                       hover:bg-opacity-80 cursor-default font-medium px-2 py-1
                     `}
                   >
-                    {utilisateur.plan.charAt(0).toUpperCase() +
-                      utilisateur.plan.slice(1)}
+                    {utilisateur.role.charAt(0).toUpperCase() +
+                      utilisateur.role.slice(1)}
                   </Badge>
                 </TableCell>
                 <TableCell>{utilisateur.name}</TableCell>

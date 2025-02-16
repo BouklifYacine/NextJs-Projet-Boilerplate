@@ -12,6 +12,7 @@ export async function GetUtilisateurs() {
         id: true,
         name: true,
         email: true,
+        role : true,
         image: true,
         plan: true,
         createdAt: true,
