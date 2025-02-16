@@ -1,6 +1,6 @@
 'use client'
 
-import { ChartPie, CreditCard, DoorOpen, LogOut, Menu, Settings, Star, Table2, User } from "lucide-react";
+import { ChartPie, CreditCard, DoorOpen, LogOut, Menu, Settings, Star, Table, Table2, User } from "lucide-react";
 import { useSession, signOut } from 'next-auth/react'
 import {
  DropdownMenu,
@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/pro/action";
+import { UtilisateurAdmin } from "@/app/(actions)/AdminAction";
 
 export function MenuDeroulant() {
  const { data: session } = useSession()
@@ -24,7 +25,13 @@ export function MenuDeroulant() {
   queryFn: async () => UtilisateurAbonner(),
 });
 
+const { data: Admin } = useQuery({
+  queryKey: ["utilisateurAdmin"], 
+  queryFn : async () => UtilisateurAdmin()
+})
+
 const utilisateurabonner = data?.abonner
+const utilisateurAdmin = Admin?.Admin
 
  return (
   <>
@@ -52,6 +59,14 @@ const utilisateurabonner = data?.abonner
              <span className="text-black font-medium">Abonnement</span>
            </DropdownMenuItem>
          </Link>
+       )}
+       {session && utilisateurAdmin && (
+          <Link href="/dashboard" className="cursor-pointer">
+          <DropdownMenuItem>
+            <Table className="mr-2 h-4 w-4 text-black" />
+            <span className="text-black font-medium">Dashboard</span>
+          </DropdownMenuItem>
+        </Link>
        )}
        
        <DropdownMenuSeparator />
