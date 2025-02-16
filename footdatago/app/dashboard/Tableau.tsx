@@ -60,13 +60,28 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   MRR: MRR,
   RevenusParUtilisateurs: RevenusParUtilisateurs,
 }) => {
-  const [utilisateursLocaux, setUtilisateursLocaux] = useState<Utilisateur[]>(utilisateursInitiaux);
-  const [statistiquesLocales, setStatistiquesLocales] = useState<Statistiques>( statistiquesInitiales);
-  const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<string[]>([]);
-  const [recherche , setRecherche] = useState('')
+  const [utilisateursLocaux, setUtilisateursLocaux] =
+    useState<Utilisateur[]>(utilisateursInitiaux);
+  const [statistiquesLocales, setStatistiquesLocales] = useState<Statistiques>(
+    statistiquesInitiales
+  );
+  const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
+    string[]
+  >([]);
+  const [recherche, setRecherche] = useState("");
+  const [filtreactif, setFiltreActif] = useState(false);
 
-  
-  const utilisateurFiltre = useMemo(() => utilisateursLocaux.filter((pseudo) => pseudo.name.toLocaleLowerCase().includes(recherche.toLowerCase())) , [utilisateursLocaux , recherche] )
+  const utilisateurFiltre = useMemo(
+    () =>
+      utilisateursLocaux.filter((utilisateur) => {
+        const correspondancePseudo = utilisateur.name
+          .toLowerCase()
+          .includes(recherche.toLowerCase());
+        const correspondancePlan = !filtreactif || utilisateur.plan === "pro";
+        return correspondancePseudo && correspondancePlan;
+      }),
+    [utilisateursLocaux, recherche, filtreactif]
+  );
 
   const gererSelectionTotale = (coche: boolean) => {
     if (coche) {
@@ -143,8 +158,20 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         />
       </div>
 
-      <div className="flex justify-end ">
-        <Input value={recherche} onChange={(e) => setRecherche(e.target.value)} className="w-52 mb-5" type="text" placeholder="Pseudo"></Input>
+      <div className="flex justify-end gap-2">
+        <Button
+          onClick={() => setFiltreActif(!filtreactif)}
+          variant={filtreactif ? "default" : "outline"}
+        >
+          Abonnement
+        </Button>
+        <Input
+          value={recherche}
+          onChange={(e) => setRecherche(e.target.value)}
+          className="w-52 mb-5"
+          type="text"
+          placeholder="Pseudo"
+        />
       </div>
       <div className="rounded-md border">
         <Table>
