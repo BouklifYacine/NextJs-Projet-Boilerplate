@@ -75,7 +75,6 @@ export async function getAbonnementStats() {
       revenus: 0,
     };
 
-    // Calculer les statistiques pour chaque type d'abonnement
     abonnements.forEach((abo) => {
       if (abo.periode === "mois") {
         statsMensuels.nombre = abo._count.periode;
