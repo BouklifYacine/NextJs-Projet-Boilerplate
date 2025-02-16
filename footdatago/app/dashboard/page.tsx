@@ -16,6 +16,7 @@ const TableauDeBord = async () => {
   const statsAbonnements = await getAbonnementStats();
   const totalRevenus = statsAbonnements.total.revenus;
   const MRR = Number(statsAbonnements.total.mrr)
+  const RevenusParUtilisateurs =  (Number(totalRevenus) / totalUtilisateurs ).toFixed(2)
 
 
   const statistiques = {
@@ -28,7 +29,7 @@ const TableauDeBord = async () => {
   return (
     <>
       <Header />
-      <TableauDeBordClient utilisateurs={utilisateurs} statistiques={statistiques} MRR={MRR} />
+      <TableauDeBordClient utilisateurs={utilisateurs} statistiques={statistiques} MRR={MRR} RevenusParUtilisateurs={RevenusParUtilisateurs} />
     </>
   );
 };

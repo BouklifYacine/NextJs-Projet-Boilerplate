@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/table";
 import { StatsBlock } from "./components/Block";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, UserPlus, Users } from "lucide-react";
+import { CreditCard, UserPlus, Users, Landmark, UserRound } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 interface Abonnement {
   periode: string;
@@ -49,22 +50,26 @@ interface Statistiques {
 interface TableauDeBordProps {
   utilisateurs: Utilisateur[];
   statistiques: Statistiques;
-  MRR : number
+  MRR: number;
+  RevenusParUtilisateurs: number;
 }
 
-export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ 
-  utilisateurs: utilisateursInitiaux, 
+export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
+  utilisateurs: utilisateursInitiaux,
   statistiques: statistiquesInitiales,
-  MRR : MRR
+  MRR: MRR,
+  RevenusParUtilisateurs: RevenusParUtilisateurs,
 }) => {
-
   const [utilisateursLocaux, setUtilisateursLocaux] = useState<Utilisateur[]>(utilisateursInitiaux);
-  const [statistiquesLocales, setStatistiquesLocales] = useState<Statistiques>(statistiquesInitiales);
+  const [statistiquesLocales, setStatistiquesLocales] = useState<Statistiques>( statistiquesInitiales);
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<string[]>([]);
+  const [recherche , setRecherche] = useState('')
+
+  const utilisateurFiltre = utilisateursLocaux.filter((pseudo) => pseudo.name.toLocaleLowerCase().includes(recherche.toLowerCase()))
 
   const gererSelectionTotale = (coche: boolean) => {
     if (coche) {
-      setUtilisateursSelectionnes(utilisateursLocaux.map(user => user.id));
+      setUtilisateursSelectionnes(utilisateursLocaux.map((user) => user.id));
     } else {
       setUtilisateursSelectionnes([]);
     }
@@ -72,46 +77,42 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
   const gererSelectionUtilisateur = (coche: boolean, idUtilisateur: string) => {
     if (coche) {
-      setUtilisateursSelectionnes(prev => [...prev, idUtilisateur]);
+      setUtilisateursSelectionnes((prev) => [...prev, idUtilisateur]);
     } else {
-      setUtilisateursSelectionnes(prev => 
-        prev.filter(id => id !== idUtilisateur)
+      setUtilisateursSelectionnes((prev) =>
+        prev.filter((id) => id !== idUtilisateur)
       );
     }
   };
 
   const gererSuppression = () => {
-    
     const utilisateursRestants = utilisateursLocaux.filter(
-      user => !utilisateursSelectionnes.includes(user.id)
+      (user) => !utilisateursSelectionnes.includes(user.id)
     );
-
 
     const nouveauTotalUtilisateurs = utilisateursRestants.length;
     const nouveauTotalAbonnements = utilisateursRestants.filter(
-      user => user.abonnement && user.abonnement.length > 0
+      (user) => user.abonnement && user.abonnement.length > 0
     ).length;
-
 
     const nouveauxAbonnementsAnnuels = utilisateursRestants.filter(
-      user => user.abonnement?.[0]?.periode === "Annuel"
+      (user) => user.abonnement?.[0]?.periode === "Annuel"
     ).length;
     const nouveauxAbonnementsMensuels = utilisateursRestants.filter(
-      user => user.abonnement?.[0]?.periode === "Mensuel"
+      (user) => user.abonnement?.[0]?.periode === "Mensuel"
     ).length;
 
- 
     setUtilisateursLocaux(utilisateursRestants);
-    setStatistiquesLocales(prev => ({
+    setStatistiquesLocales((prev) => ({
       ...prev,
       totalUtilisateurs: nouveauTotalUtilisateurs,
       totalAbonnements: nouveauTotalAbonnements,
       statsAbonnements: {
         annuels: { nombre: nouveauxAbonnementsAnnuels },
-        mensuels: { nombre: nouveauxAbonnementsMensuels }
-      }
+        mensuels: { nombre: nouveauxAbonnementsMensuels },
+      },
     }));
-    
+
     setUtilisateursSelectionnes([]);
   };
 
@@ -129,29 +130,31 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
           value={statistiquesLocales.totalAbonnements.toString()}
         />
         <StatsBlock
-          icon={CreditCard}
+          icon={Landmark}
           title="Revenus total"
           value={`${statistiquesLocales.totalRevenus}€`}
         />
+        <StatsBlock icon={CreditCard} title="MRR" value={MRR + "€"} />
         <StatsBlock
-          icon={CreditCard}
-          title="MRR"
-          value={MRR + "€"}
-        />
-        <StatsBlock
-          icon={CreditCard}
-          title="Abo Mensuel"
-          value={statistiquesLocales.statsAbonnements.mensuels.nombre.toString()}
+          icon={UserRound}
+          title="RMPU "
+          value={RevenusParUtilisateurs + "€"}
         />
       </div>
 
+      <div className="flex justify-end ">
+        <Input value={recherche} onChange={(e) => setRecherche(e.target.value)} className="w-52 mb-5" type="text" placeholder="Pseudo"></Input>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>
-                <Checkbox 
-                  checked={utilisateursSelectionnes.length === utilisateursLocaux.length}
+                <Checkbox
+                  checked={
+                    utilisateursSelectionnes.length ===
+                    utilisateursLocaux.length
+                  }
                   onCheckedChange={gererSelectionTotale}
                 />
               </TableHead>
@@ -161,17 +164,16 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
               <TableHead className="font-bold text-black">Email</TableHead>
               <TableHead className="font-bold text-black">Créé le</TableHead>
               <TableHead className="font-bold text-black">Abonnement</TableHead>
-              <TableHead className="font-bold text-black">Durée</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {utilisateursLocaux.map((utilisateur) => (
+            {utilisateurFiltre.map((utilisateur) => (
               <TableRow key={utilisateur.id}>
                 <TableCell>
-                  <Checkbox 
+                  <Checkbox
                     checked={utilisateursSelectionnes.includes(utilisateur.id)}
-                    onCheckedChange={(checked: boolean) => 
+                    onCheckedChange={(checked: boolean) =>
                       gererSelectionUtilisateur(checked, utilisateur.id)
                     }
                   />
@@ -190,16 +192,18 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   )}
                 </TableCell>
                 <TableCell>
-                  <Badge 
-                  
+                  <Badge
                     className={`
-                      ${utilisateur.plan === "pro" 
-                        ? "bg-green-100 text-green-800 border-green-200" 
-                        : "bg-red-100 text-red-800 border-red-200"}
+                      ${
+                        utilisateur.plan === "pro"
+                          ? "bg-green-100 text-green-800 border-green-200"
+                          : "bg-red-100 text-red-800 border-red-200"
+                      }
                       hover:bg-opacity-80 cursor-default font-medium px-2 py-1
                     `}
                   >
-                    {utilisateur.plan.charAt(0).toUpperCase() + utilisateur.plan.slice(1)}
+                    {utilisateur.plan.charAt(0).toUpperCase() +
+                      utilisateur.plan.slice(1)}
                   </Badge>
                 </TableCell>
                 <TableCell>{utilisateur.name}</TableCell>
@@ -208,18 +212,19 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   {new Date(utilisateur.createdAt).toLocaleDateString("fr-FR")}
                 </TableCell>
                 <TableCell>
-                  {utilisateur.abonnement?.[0]?.periode || "Aucun"}
-                </TableCell>
-                <TableCell>
-                  {utilisateur.abonnement?.[0] ? (
-                    <span>
-                      {new Date(utilisateur.abonnement[0].datedebut).toLocaleDateString("fr-FR")} 
-                      {" - "}
-                      {new Date(utilisateur.abonnement[0].datefin).toLocaleDateString("fr-FR")}
-                    </span>
-                  ) : (
-                    "-"
-                  )}
+                  <Badge
+                    className={`
+                      ${
+                        utilisateur.plan === "pro"
+                          ? "bg-green-100 text-green-800 border-green-200"
+                          : "bg-red-100 text-red-800 border-red-200"
+                      }
+                      hover:bg-opacity-80 cursor-default font-medium px-2 py-1
+                    `}
+                  >
+                    {utilisateur.plan.charAt(0).toUpperCase() +
+                      utilisateur.plan.slice(1)}
+                  </Badge>
                 </TableCell>
               </TableRow>
             ))}
@@ -229,10 +234,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
       {utilisateursSelectionnes.length > 0 && (
         <div className="flex justify-end mt-4 gap-4">
-          <Button 
-            variant="destructive"
-            onClick={gererSuppression}
-          >
+          <Button variant="destructive" onClick={gererSuppression}>
             Supprimer ({utilisateursSelectionnes.length})
           </Button>
         </div>
