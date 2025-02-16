@@ -2,7 +2,7 @@ import { prisma } from "@/prisma";
 
 const PRIX = {
   MENSUEL: 9.99,
-  ANNUEL: 50.00
+  ANNUEL: 50.0,
 };
 
 export async function GetUtilisateurs() {
@@ -54,58 +54,60 @@ export async function getTotalAbonnement() {
 export async function getAbonnementStats() {
   try {
     const abonnements = await prisma.abonnement.groupBy({
-      by: ['periode'],
+      by: ["periode"],
       _count: {
-        periode: true
+        periode: true,
       },
       where: {
         datefin: {
-          gte: new Date() 
-        }
-      }
+          gte: new Date(),
+        },
+      },
     });
 
-   
     const statsMensuels = {
       nombre: 0,
-      revenus: 0
+      revenus: 0,
     };
-    
+
     const statsAnnuels = {
       nombre: 0,
-      revenus: 0
+      revenus: 0,
     };
 
     // Calculer les statistiques pour chaque type d'abonnement
-    abonnements.forEach(abo => {
-      if (abo.periode === 'mois') {
+    abonnements.forEach((abo) => {
+      if (abo.periode === "mois") {
         statsMensuels.nombre = abo._count.periode;
         statsMensuels.revenus = abo._count.periode * PRIX.MENSUEL;
-      } else if (abo.periode === 'année') {
+      } else if (abo.periode === "année") {
         statsAnnuels.nombre = abo._count.periode;
         statsAnnuels.revenus = abo._count.periode * PRIX.ANNUEL;
       }
     });
 
-
     const totalRevenus = statsMensuels.revenus + statsAnnuels.revenus;
+    const mrr = statsMensuels.nombre * PRIX.MENSUEL + (statsAnnuels.nombre * PRIX.ANNUEL) / 12;
 
     return {
       mensuels: {
         nombre: statsMensuels.nombre,
-        revenus: statsMensuels.revenus.toFixed(2)
+        revenus: statsMensuels.revenus.toFixed(2),
       },
       annuels: {
         nombre: statsAnnuels.nombre,
-        revenus: statsAnnuels.revenus.toFixed(2)
+        revenus: statsAnnuels.revenus.toFixed(2),
       },
       total: {
-        revenus: totalRevenus.toFixed(2)
-      }
+        revenus: totalRevenus.toFixed(2),
+        mrr: mrr.toFixed(2),
+      },
     };
   } catch (error) {
-    console.error("Erreur lors du calcul des statistiques d'abonnement:", error);
+    console.error(
+      "Erreur lors du calcul des statistiques d'abonnement:",
+      error
+    );
     throw error;
   }
 }
-

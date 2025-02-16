@@ -19,6 +19,7 @@ import { CreditCard, UserPlus, Users } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select } from "@/components/ui/select";
 
 const Dashboard = async () => {
   const utilisateur = await GetUtilisateurs();
@@ -26,6 +27,7 @@ const Dashboard = async () => {
   const TotalAbonnement = await getTotalAbonnement();
   const StatsAbonnement = await getAbonnementStats();
   const TotalRevenus = StatsAbonnement.total.revenus;
+  const RevenusParUtilisateur =  Number(TotalRevenus) / TotalUtilisateur 
 
   return (
     <div className="container mx-auto">
@@ -39,7 +41,7 @@ const Dashboard = async () => {
         />
         <StatsBlock
           icon={UserPlus}
-          title="Nombre abonnés"
+          title="Nombre abonnements"
           value={TotalAbonnement}
         />
         <StatsBlock
@@ -49,13 +51,13 @@ const Dashboard = async () => {
         />
         <StatsBlock
           icon={CreditCard}
-          title="Abos Annuel"
-          value={StatsAbonnement.annuels.nombre}
+          title="MRR"
+          value={StatsAbonnement.total.mrr + "€"}
         />
         <StatsBlock
           icon={CreditCard}
-          title="Abo Mensuel"
-          value={StatsAbonnement.mensuels.nombre}
+          title="Revenus par client"
+          value={RevenusParUtilisateur + "€"}
         />
       </div>
 
@@ -91,7 +93,7 @@ const Dashboard = async () => {
                     </div>
                   )}
                 </TableCell>
-                <TableCell>{user.plan || "Standard"}</TableCell>
+                <TableCell>Admin</TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
