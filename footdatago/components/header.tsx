@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
-import { CreditCard, DoorOpen, Settings } from "lucide-react";
+import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Deconnexion } from "./BoutonDéconnexion";
@@ -21,16 +21,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UtilisateurAdmin } from "@/app/(actions)/AdminAction";
 
 const Header = () => {
   const { data: session } = useSession();
-  
+
   const { data } = useQuery({
     queryKey: ["utilisateurabonner"],
     queryFn: async () => UtilisateurAbonner(),
   });
 
+  const { data: Admin } = useQuery({
+    queryKey: ["utilisateurAdmin"],
+    queryFn: async () => UtilisateurAdmin(),
+  });
+
   const utilisateurabonner = data?.abonner;
+  const utilisateurAdmin = Admin?.Admin;
 
   return (
     <header className="sticky top-0 z-50 pt-4 px-4 bg-black">
@@ -139,20 +146,38 @@ const Header = () => {
                       </DropdownMenuLabel>
                     </div>
                     <DropdownMenuSeparator />
-                    
+
                     {utilisateurabonner && (
-  <Link href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!} >
-    <DropdownMenuItem>
-      <CreditCard className="mr-2 h-4 w-4 cursor-pointer" />
-      <span className="cursor-pointer">Abonnement</span>
-    </DropdownMenuItem>
-  </Link>
-)}
+                      <Link
+                        href={
+                          process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!
+                        }
+                      >
+                        <DropdownMenuItem>
+                          <CreditCard className="mr-2 h-4 w-4 cursor-pointer" />
+                          <span className="cursor-pointer">Abonnement</span>
+                        </DropdownMenuItem>
+                      </Link>
+                    )}
+
+                    {utilisateurAdmin && (
+                      <Link href="/dashboard" className="cursor-pointer">
+                        <DropdownMenuItem>
+                          <Table className="mr-2 h-4 w-4 text-black" />
+                          <span className="cursor-pointer">
+                            Dashboard
+                          </span>
+                        </DropdownMenuItem>
+                      </Link>
+                    )}
 
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4 cursor-pointer" />
-                        <Link href={`/parametres/${session.user?.id}`} className="cursor-pointer">
+                        <Link
+                          href={`/parametres/${session.user?.id}`}
+                          className="cursor-pointer"
+                        >
                           Paramètres
                         </Link>
                       </DropdownMenuItem>
