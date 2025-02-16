@@ -16,6 +16,7 @@ model User {
   emailVerified    DateTime?
   password         String?
   image            String?
+  role Roles @default(utilisateur)
   resetToken       String?
   resetTokenExpiry DateTime?
   accounts         Account[]
@@ -37,6 +38,12 @@ model Abonnement {
   datedebut DateTime       @default(now())
   datefin   DateTime       @updatedAt
   user      User           @relation(fields: [userId], references: [id])
+}
+
+// Enum des roles 
+enum Roles {
+  Admin 
+  utilisateur
 }
 // Stripe Enum des noms de vos type d'abonnement en rajouter si besoin 
 enum Plan {
