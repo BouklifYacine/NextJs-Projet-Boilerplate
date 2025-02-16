@@ -15,12 +15,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StatsBlock } from "./components/Block";
-import { CreditCard, UserPlus, Users } from "lucide-react";
+import { CreditCard, Ellipsis, UserPlus, Users } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const Dashboard = async () => {
   const utilisateur = await GetUtilisateurs();
@@ -101,8 +102,9 @@ const Dashboard = async () => {
                   {new Date(user.createdAt).toLocaleDateString("fr-FR")}
                 </TableCell>
                 <TableCell> <Badge className={`${user.plan === "pro" ? "bg-green-500 text-white" : "bg-red-500 text-white"} `}>{user.plan.charAt(0).toUpperCase() + user.plan.slice(1)}</Badge></TableCell>
-                <TableCell>
+                <TableCell className="flex items-center gap-6 mt-1">
                   {user.abonnement?.[0]?.periode || "Aucun"}
+                  <Button>Modifier</Button>
                 </TableCell>
                 <TableCell>
                   {user.abonnement?.[0] ? (
