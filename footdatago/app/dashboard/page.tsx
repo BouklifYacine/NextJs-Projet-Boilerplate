@@ -20,6 +20,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 const Dashboard = async () => {
   const utilisateur = await GetUtilisateurs();
@@ -57,7 +58,7 @@ const Dashboard = async () => {
         <StatsBlock
           icon={CreditCard}
           title="Revenus par client"
-          value={RevenusParUtilisateur + "€"}
+          value={RevenusParUtilisateur.toFixed(2) + "€"}
         />
       </div>
 
@@ -66,13 +67,13 @@ const Dashboard = async () => {
           <TableHeader>
             <TableRow>
               <TableHead><Checkbox ></Checkbox></TableHead>
-              <TableHead className="font-bold text-black">Avatar</TableHead>
-              <TableHead className="font-bold text-black">Role</TableHead>
-              <TableHead className="font-bold text-black">Pseudo</TableHead>
-              <TableHead className="font-bold text-black">Email</TableHead>
-              <TableHead className="font-bold text-black">Créé le</TableHead>
-              <TableHead className="font-bold text-black">Abonnement</TableHead>
-              <TableHead className="font-bold text-black">Durée</TableHead>
+              <TableHead className="font-bold text-black ">Avatar</TableHead>
+              <TableHead className="font-bold text-black ">Role</TableHead>
+              <TableHead className="font-bold text-black ">Pseudo</TableHead>
+              <TableHead className="font-bold text-black ">Email</TableHead>
+              <TableHead className="font-bold text-black ">Créé le</TableHead>
+              <TableHead className="font-bold text-black ">Abonnement</TableHead>
+              <TableHead className="font-bold text-black ">Durée</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -99,7 +100,7 @@ const Dashboard = async () => {
                 <TableCell>
                   {new Date(user.createdAt).toLocaleDateString("fr-FR")}
                 </TableCell>
-                <TableCell>{user.plan.charAt(0).toUpperCase() + user.plan.slice(1) || "Standard"}</TableCell>
+                <TableCell> <Badge className={`${user.plan === "pro" ? "bg-green-500 text-white" : "bg-red-500 text-white"} `}>{user.plan.charAt(0).toUpperCase() + user.plan.slice(1)}</Badge></TableCell>
                 <TableCell>
                   {user.abonnement?.[0]?.periode || "Aucun"}
                 </TableCell>
