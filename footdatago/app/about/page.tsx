@@ -24,11 +24,9 @@ export default function About() {
           À propos
         </h1>
         <p className={`${theme.textColor} mb-4`}>
-          Ceci est la page À propos. Notez que le thème est conservé même en changeant de page.
+         Test voir si les couleurs et couleur container change
         </p>
-        <p className={`${theme.textColor}`}>
-          Les préférences de couleur sont stockées dans le localStorage et persistent à travers toute l'application.
-        </p>
+        
       </div>
     </div>
   );
