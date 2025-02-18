@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const session = await auth();
   const sessionId = session?.user?.id
-  if (sessionId)
+  if (!sessionId)
     return NextResponse.json("Vous devez etre connecté", { status: 401 });
 
   const admin = await prisma.user.findUnique({
@@ -37,19 +37,9 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  if (!utilisateurs || utilisateurs.length === 0) {
-    return NextResponse.json(
-      {
-        message: "Aucun utilisateur disponible",
-        data: [],
-      },
-      { status: 200 }
-    );
-  }
 
   return NextResponse.json({
     message: "Utilisateurs récupérés avec succès",
     data: utilisateurs,
-    totalutilisateur: utilisateurs.length,
   });
 }

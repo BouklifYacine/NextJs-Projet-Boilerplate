@@ -1,36 +1,44 @@
+'use client';
+
 import React from "react";
-import {
-  getAbonnementStats,
-  getTotalAbonnement,
-  getTotalUtilisateurs,
-  GetUtilisateurs,
-} from "./(actions)/Dashboard";
 import Header from "@/components/header";
-import { TableauDeBordClient } from ".//Tableau";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-import { prisma } from "@/prisma";
+import { TableauDeBordClient } from "./Tableau";
+import { useStats, useUtilisateurs } from "./(hooks)/UseDashboard";
 
-const TableauDeBord = async () => {
-  const utilisateurs = await GetUtilisateurs();
-  const totalUtilisateurs = await getTotalUtilisateurs();
-  const totalAbonnements = await getTotalAbonnement();
-  const statsAbonnements = await getAbonnementStats();
-  const totalRevenus = statsAbonnements.total.revenus;
-  const MRR = Number(statsAbonnements.total.mrr);
-  const RevenusParUtilisateurs = (
-    Number(totalRevenus) / totalUtilisateurs
-  ).toFixed(2);
+const TableauDeBord = () => {
+  const { 
+    data: dataStats, 
+    isLoading: isLoadingStats,
+    error: statsError 
+  } = useStats();
 
-  const session = await auth();
-  if (!session?.user?.id) redirect("/");
-  
-  const user = await prisma.user.findUnique({ 
-    where: { id: session.user.id },
-    select: { role: true } 
-  });
-  
-  if (!user || user.role !== "Admin") redirect("/");
+  const { 
+    data: dataUtilisateur, 
+    isLoading: isLoadingUtilisateur,
+    error: utilisateursError 
+  } = useUtilisateurs();
+
+  if (isLoadingStats || isLoadingUtilisateur) {
+    return <p>Ca charge khouya...</p>;
+  }
+
+  if (statsError || utilisateursError || !dataStats || !dataUtilisateur) {
+    return <p>Une erreur est survenue lors du chargement des données</p>;
+  }
+
+
+  const utilisateurs = dataUtilisateur.data;
+  const totalUtilisateurs = dataStats.data.users.total;
+  const totalAbonnements = dataStats.data.users.pro; 
+  const statsAbonnements = {
+    annuels: dataStats.data.abonnements.annuels,
+    mensuels: dataStats.data.abonnements.mensuels
+  };
+  const totalRevenus = Number(dataStats.data.abonnements.total.revenus);
+  const MRR = Number(dataStats.data.abonnements.total.mrr);
+  const RevenusParUtilisateurs = totalUtilisateurs > 0 
+    ? (totalRevenus / totalUtilisateurs)
+    : 0;
 
   const statistiques = {
     totalUtilisateurs,
