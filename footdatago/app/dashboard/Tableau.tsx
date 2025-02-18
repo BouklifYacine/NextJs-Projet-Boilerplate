@@ -27,7 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Role } from "./ModifierRole.action";
+
+export type Role = "Admin" | "utilisateur";
 
 interface Abonnement {
   periode: string;
@@ -83,10 +84,9 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   const [loadingUsers, setLoadingUsers] = useState<Record<string, boolean>>({});
 
   const { mutate: deleteUsers, isPending } = useDeleteUsers();
-  const { mutate: modifierRole, isPending: isChangingRole } = useModifierRole();
+  const { mutate: modifierRole } = useModifierRole();
 
   const handleRoleChange = async (userId: string, newRole: Role) => {
-    // Marquer cet utilisateur spécifique comme en cours de chargement
     setLoadingUsers((prev) => ({ ...prev, [userId]: true }));
 
     modifierRole(

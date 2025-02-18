@@ -1,4 +1,3 @@
-// app/api/modifier-role/route.ts
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { NextResponse } from "next/server";

@@ -5,7 +5,6 @@ import useThemeStore from '../(store)/UseThemeStore';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  // Gérer le montage pour éviter le flash
   const [mounted, setMounted] = useState(false);
   const { theme } = useThemeStore();
 
