@@ -10,18 +10,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StatsBlock } from "./components/Block";
-import { Badge } from "@/components/ui/badge";
 import { CreditCard, UserPlus, Users, Landmark, UserRound } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { useDeleteUsers, useModifierRole } from "./(hooks)/UseDashboard";
 import toast from "react-hot-toast";
 import { RoleSelect } from "./components/select";
 import BadgeAbonnement from "./components/BadgeAbonnement";
 import { TableauDeBordProps } from "./(interface-types)/Interface-Types";
 import BadgeRole from "./components/BadgeRole";
+import { Filtres } from "./components/Filtres";
+
+ type Role = "Admin" | "utilisateur";
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   utilisateurs,
@@ -134,27 +135,12 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         />
       </div>
 
-      <div className="flex justify-end gap-2">
-        <Button
-          onClick={() => setFiltreAbonnement(!filtreabonnement)}
-          variant={filtreabonnement ? "default" : "outline"}
-        >
-          Abonnement
-        </Button>
-        <Button
-          onClick={() => setFiltreAdmin(!filtreAdmin)}
-          variant={filtreAdmin ? "default" : "outline"}
-        >
-          Admin
-        </Button>
-        <Input
-          value={recherche}
-          onChange={(e) => setRecherche(e.target.value)}
-          className="w-52 mb-5"
-          type="text"
-          placeholder="Pseudo"
-        />
-      </div>
+      <Filtres  filtreabonnement={filtreabonnement}
+        setFiltreAbonnement={setFiltreAbonnement}
+        filtreAdmin={filtreAdmin}
+        setFiltreAdmin={setFiltreAdmin}
+        recherche={recherche}
+        setRecherche={setRecherche}></Filtres>
 
       <div className="rounded-md border">
         <Table>
