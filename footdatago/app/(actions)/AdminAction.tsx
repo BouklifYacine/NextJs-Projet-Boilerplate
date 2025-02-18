@@ -2,11 +2,10 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
-import { redirect } from "next/navigation";
 
 export async function UtilisateurAdmin() {
   const session = await auth();
-  if (!session) redirect("/");
+  if (!session?.user?.id) throw new Error("Tu n'es pas connecté fréro");
 
   const utilisateurexistant = await prisma.user.findUnique({
     where: { id: session.user?.id },

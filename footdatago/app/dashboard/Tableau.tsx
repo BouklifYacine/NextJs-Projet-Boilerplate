@@ -29,7 +29,7 @@ interface Utilisateur {
   name: string;
   email: string;
   plan: "pro" | "free";
-  role : "Admin" | "utilisateur";
+  role: "Admin" | "utilisateur";
   createdAt: string;
   abonnement?: Abonnement[];
 }
@@ -71,8 +71,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   >([]);
   const [recherche, setRecherche] = useState("");
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
-  const [filtreAdmin, setFiltreAdmin] = useState(false)
-
+  const [filtreAdmin, setFiltreAdmin] = useState(false);
 
   const utilisateurFiltre = useMemo(
     () =>
@@ -80,11 +79,15 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         const correspondancePseudo = utilisateur.name
           .toLowerCase()
           .includes(recherche.toLowerCase());
-        const correspondancePlan = !filtreabonnement || utilisateur.plan === "pro";
-        const conrrespondanceRole = !filtreAdmin || utilisateur.role === "Admin"
-        return correspondancePseudo && correspondancePlan && conrrespondanceRole ;
+        const correspondancePlan =
+          !filtreabonnement || utilisateur.plan === "pro";
+        const conrrespondanceRole =
+          !filtreAdmin || utilisateur.role === "Admin";
+        return (
+          correspondancePseudo && correspondancePlan && conrrespondanceRole
+        );
       }),
-    [utilisateursLocaux, recherche, filtreabonnement , filtreAdmin ]
+    [utilisateursLocaux, recherche, filtreabonnement, filtreAdmin]
   );
 
   const gererSelectionTotale = (coche: boolean) => {
@@ -157,7 +160,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         <StatsBlock icon={CreditCard} title="MRR" value={MRR + "€"} />
         <StatsBlock
           icon={UserRound}
-          title="RMPU "
+          title="Revenus/users "
           value={RevenusParUtilisateurs + "€"}
         />
       </div>

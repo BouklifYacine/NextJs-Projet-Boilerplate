@@ -1,4 +1,7 @@
+"use server"
+import { auth } from "@/auth";
 import { prisma } from "@/prisma";
+import { redirect } from "next/navigation";
 
 const PRIX = {
   MENSUEL: 9.99,
@@ -6,6 +9,18 @@ const PRIX = {
 };
 
 export async function GetUtilisateurs() {
+
+  const session = await auth();
+  if (!session?.user?.id)  throw new Error("Vous n'etes pas connecté !");
+
+  const utilisateur = await prisma.user.findUnique({
+    where : {id : session.user.id}, 
+    select : {role : true }
+  })
+
+  if (utilisateur?.role !== "Admin")  throw new Error("Vous n'etes pas Admin !")
+
+
   try {
     const users = await prisma.user.findMany({
       select: {
@@ -32,7 +47,7 @@ export async function GetUtilisateurs() {
   }
 }
 
-export async function getTotalUtilisateurs() {
+export async function getTotalUtilisateurs() { // Pour avoir le nombre simplement d'utilisateurs
   try {
     const totalUtilisateurs = await prisma.user.count();
     return totalUtilisateurs;
