@@ -28,20 +28,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type Role = "Admin" | "utilisateur"; 
+export type Role = "Admin" | "utilisateur";
 
 interface Abonnement {
-  periode: "mois" | "année"; 
-  datedebut: Date;           
-  datefin: Date;             
+  periode: "mois" | "année";
+  datedebut: Date;
+  datefin: Date;
 }
 interface Utilisateur {
   id: string;
-  image?: string | null;  
-  name: string | null;    
+  image?: string | null;
+  name: string | null;
   email: string | null;
   plan: "pro" | "free";
-  role: "Admin" | "utilisateur";  
+  role: "Admin" | "utilisateur";
   createdAt: Date;
   abonnement?: Abonnement | null;
 }
@@ -107,7 +107,8 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   const utilisateurFiltre = useMemo(
     () =>
       utilisateurs.filter((utilisateur) => {
-        const correspondancePseudo = utilisateur?.name?.toLowerCase()
+        const correspondancePseudo = utilisateur?.name
+          ?.toLowerCase()
           .includes(recherche.toLowerCase());
         const correspondancePlan =
           !filtreabonnement || utilisateur.plan === "pro";
@@ -233,8 +234,8 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   />
                 </TableCell>
                 <TableCell className="font-medium">
-                  {utilisateur.image && (
-                    <div className="relative h-10 w-12">
+                  <div className="relative h-10 w-10">
+                    {utilisateur.image ? (
                       <Image
                         src={utilisateur.image}
                         alt={utilisateur.name || "Avatar"}
@@ -242,8 +243,12 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                         height={40}
                         className="rounded-full object-cover"
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-black">
+                        {utilisateur?.name?.[0]?.toUpperCase() || "?"}
+                      </div>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell>
                   <Badge
@@ -300,12 +305,14 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-  <SelectGroup>
-    <SelectLabel>Roles</SelectLabel>
-    <SelectItem value="Admin">Administrateur</SelectItem>
-    <SelectItem value="utilisateur">Utilisateur</SelectItem>  {/* Modifié ici */}
-  </SelectGroup>
-</SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Roles</SelectLabel>
+                          <SelectItem value="Admin">Administrateur</SelectItem>
+                          <SelectItem value="utilisateur">
+                            Utilisateur
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
                     </Select>
                   </div>
                 </TableCell>
