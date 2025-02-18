@@ -3,7 +3,7 @@ import { Navigation } from '../marqueblanche/ComposantNavigation';
 import useThemeStore from '../(store)/UseThemeStore';
 import { useEffect, useState } from 'react';
 
-export default function About() {
+export default function MarqueBlanche2() {
   const [mounted, setMounted] = useState(false);
   const { theme } = useThemeStore();
 
@@ -20,10 +20,10 @@ export default function About() {
       <Navigation />
       <div className={`${theme.containerColor} p-6 rounded-lg`}>
         <h1 className={`text-2xl font-bold ${theme.textColor} mb-4`}>
-          À propos
+          MarqueBlanchev2
         </h1>
         <p className={`${theme.textColor} mb-4`}>
-         Test voir si les couleurs et couleur container change
+         Test wsur une troisième page 
         </p>
         
       </div>
