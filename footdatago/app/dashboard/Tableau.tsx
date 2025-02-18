@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useDeleteUsers } from "./(hooks)/UseDashboard";
 import toast from "react-hot-toast";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Abonnement {
   periode: string;
@@ -64,16 +65,14 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   MRR,
   RevenusParUtilisateurs,
 }) => {
-  // States pour la gestion de l'UI
+ 
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<string[]>([]);
   const [recherche, setRecherche] = useState("");
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
   const [filtreAdmin, setFiltreAdmin] = useState(false);
 
-  // Hook de mutation pour la suppression
   const { mutate: deleteUsers, isPending } = useDeleteUsers();
 
-  // Filtrage des utilisateurs
   const utilisateurFiltre = useMemo(
     () =>
       utilisateurs.filter((utilisateur) => {
@@ -237,6 +236,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   {new Date(utilisateur.createdAt).toLocaleDateString("fr-FR")}
                 </TableCell>
                 <TableCell>
+                  <div className="flex ">
                   <Badge
                     className={`
                       ${
@@ -249,8 +249,25 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   >
                     {utilisateur.plan.charAt(0).toUpperCase() +
                       utilisateur.plan.slice(1)}
+                      
                   </Badge>
+                  <Select>
+      <SelectTrigger className="w-[140px] ml-4">
+        <SelectValue placeholder="Modifier role" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Roles</SelectLabel>
+          <SelectItem value="apple" className=" cursor-pointer">Administrateur</SelectItem>
+          <SelectItem value="banana" className=" cursor-pointer">Utilisateur</SelectItem>
+         
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+                  </div>
+                
                 </TableCell>
+              
               </TableRow>
             ))}
           </TableBody>
