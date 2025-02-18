@@ -96,7 +96,7 @@ export function useDeleteUsers() {
 
 
 
-export const useRole = () => {
+export const useModifierRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -107,13 +107,16 @@ export const useRole = () => {
       userId: string;
       newRole: Role;
     }) => {
-      const response = await ModifierRole(userId, newRole);
+      const response = await axios.post('/api/modifier-role', {
+        userId,
+        newRole,
+      });
 
-      if (!response.success) {
-        throw new Error(response.message);
+      if (!response.data.success) {
+        throw new Error(response.data.message);
       }
 
-      return response;
+      return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["utilisateurs"] });

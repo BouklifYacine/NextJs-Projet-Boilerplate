@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useMemo, useState } from "react";
 import {
@@ -16,9 +16,18 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { useDeleteUsers } from "./(hooks)/UseDashboard";
+import { useDeleteUsers, useModifierRole } from "./(hooks)/UseDashboard";
 import toast from "react-hot-toast";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Role } from "./ModifierRole.action";
 
 interface Abonnement {
   periode: string;
@@ -65,13 +74,36 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   MRR,
   RevenusParUtilisateurs,
 }) => {
- 
-  const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<string[]>([]);
+  const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
+    string[]
+  >([]);
   const [recherche, setRecherche] = useState("");
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
   const [filtreAdmin, setFiltreAdmin] = useState(false);
+  const [loadingUsers, setLoadingUsers] = useState<Record<string, boolean>>({});
 
   const { mutate: deleteUsers, isPending } = useDeleteUsers();
+  const { mutate: modifierRole, isPending: isChangingRole } = useModifierRole();
+
+  const handleRoleChange = async (userId: string, newRole: Role) => {
+    // Marquer cet utilisateur spécifique comme en cours de chargement
+    setLoadingUsers((prev) => ({ ...prev, [userId]: true }));
+
+    modifierRole(
+      {
+        userId,
+        newRole,
+      },
+      {
+        onSuccess: () => {
+          setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
+        },
+        onError: () => {
+          setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
+        },
+      }
+    );
+  };
 
   const utilisateurFiltre = useMemo(
     () =>
@@ -113,12 +145,12 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
     deleteUsers(utilisateursSelectionnes, {
       onSuccess: () => {
-        toast.success('Utilisateurs supprimés avec succès');
+        toast.success("Utilisateurs supprimés avec succès");
         setUtilisateursSelectionnes([]);
       },
       onError: (error: Error) => {
-        toast.error(error.message || 'Erreur lors de la suppression');
-      }
+        toast.error(error.message || "Erreur lors de la suppression");
+      },
     });
   };
 
@@ -236,9 +268,9 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   {new Date(utilisateur.createdAt).toLocaleDateString("fr-FR")}
                 </TableCell>
                 <TableCell>
-                  <div className="flex ">
-                  <Badge
-                    className={`
+                  <div className="flex items-center">
+                    <Badge
+                      className={`
                       ${
                         utilisateur.plan === "pro"
                           ? "bg-green-100 text-green-800 border-green-200"
@@ -246,28 +278,41 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                       }
                       hover:bg-opacity-80 cursor-default font-medium px-2 py-1
                     `}
-                  >
-                    {utilisateur.plan.charAt(0).toUpperCase() +
-                      utilisateur.plan.slice(1)}
-                      
-                  </Badge>
-                  <Select>
-      <SelectTrigger className="w-[140px] ml-4">
-        <SelectValue placeholder="Modifier role" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Roles</SelectLabel>
-          <SelectItem value="apple" className=" cursor-pointer">Administrateur</SelectItem>
-          <SelectItem value="banana" className=" cursor-pointer">Utilisateur</SelectItem>
-         
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+                    >
+                      {utilisateur.plan.charAt(0).toUpperCase() +
+                        utilisateur.plan.slice(1)}
+                    </Badge>
+
+                    <Select
+                      value={utilisateur.role}
+                      onValueChange={(newRole: Role) =>
+                        handleRoleChange(utilisateur.id, newRole)
+                      }
+                      disabled={loadingUsers[utilisateur.id]}
+                    >
+                      <SelectTrigger className="w-[140px] ml-4">
+                        <SelectValue>
+                          {loadingUsers[utilisateur.id] ? (
+                            <div className="flex items-center">
+                              <span className="ml-2">Modification...</span>
+                            </div>
+                          ) : (
+                            utilisateur.role
+                          )}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Roles</SelectLabel>
+                          <SelectItem value="Admin">Administrateur</SelectItem>
+                          <SelectItem value="utilisateur">
+                            Utilisateur
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </div>
-                
                 </TableCell>
-              
               </TableRow>
             ))}
           </TableBody>
@@ -276,12 +321,14 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
       {utilisateursSelectionnes.length > 0 && (
         <div className="flex justify-end mt-4 gap-4">
-          <Button 
-            variant="destructive" 
+          <Button
+            variant="destructive"
             onClick={gererSuppression}
             disabled={isPending}
           >
-            {isPending ? 'Suppression...' : `Supprimer (${utilisateursSelectionnes.length})`}
+            {isPending
+              ? "Suppression..."
+              : `Supprimer (${utilisateursSelectionnes.length})`}
           </Button>
         </div>
       )}
