@@ -21,6 +21,7 @@ import BadgeAbonnement from "./components/BadgeAbonnement";
 import { TableauDeBordProps } from "./(interface-types)/Interface-Types";
 import BadgeRole from "./components/BadgeRole";
 import { Filtres } from "./components/Filtres";
+import { SectionStats } from "./components/SectionStats";
 
  type Role = "Admin" | "utilisateur";
 
@@ -111,29 +112,11 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
   return (
     <div className="container mx-auto">
-      <div className="flex flex-col md:flex-row gap-6 mb-8 mt-4">
-        <StatsBlock
-          icon={Users}
-          title="Nombre utilisateurs"
-          value={statistiques.totalUtilisateurs.toString()}
-        />
-        <StatsBlock
-          icon={UserPlus}
-          title="Nombre abonnés"
-          value={statistiques.totalAbonnements.toString()}
-        />
-        <StatsBlock
-          icon={Landmark}
-          title="Revenus total"
-          value={`${statistiques.totalRevenus}€`}
-        />
-        <StatsBlock icon={CreditCard} title="MRR" value={`${MRR}€`} />
-        <StatsBlock
-          icon={UserRound}
-          title="Revenus/users"
-          value={`${RevenusParUtilisateurs}€`}
-        />
-      </div>
+     <SectionStats
+  statistiques={statistiques}
+  MRR={MRR}
+  RevenusParUtilisateurs={RevenusParUtilisateurs}
+/>
 
       <Filtres  filtreabonnement={filtreabonnement}
         setFiltreAbonnement={setFiltreAbonnement}
