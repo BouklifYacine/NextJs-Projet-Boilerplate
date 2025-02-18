@@ -20,7 +20,8 @@ import { useDeleteUsers, useModifierRole } from "./(hooks)/UseDashboard";
 import toast from "react-hot-toast";
 import { RoleSelect } from "./components/select";
 import BadgeAbonnement from "./components/BadgeAbonnement";
-import { TableauDeBordProps } from "./Interface-Types";
+import { TableauDeBordProps } from "./(interface-types)/Interface-Types";
+import BadgeRole from "./components/BadgeRole";
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   utilisateurs,
@@ -205,19 +206,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge
-                    className={`
-                      ${
-                        utilisateur.role === "Admin"
-                          ? "bg-green-100 text-green-800 border-green-200"
-                          : "bg-red-100 text-red-800 border-red-200"
-                      }
-                      hover:bg-opacity-80 cursor-default font-medium px-2 py-1
-                    `}
-                  >
-                    {utilisateur.role.charAt(0).toUpperCase() +
-                      utilisateur.role.slice(1)}
-                  </Badge>
+                  <BadgeRole utilisateur={utilisateur}></BadgeRole>
                 </TableCell>
                 <TableCell>{utilisateur.name}</TableCell>
                 <TableCell>{utilisateur.email}</TableCell>
