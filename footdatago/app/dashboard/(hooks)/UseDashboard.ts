@@ -1,9 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { deleteUsers } from "../SupprimerUtilisateur.action";
-import { ModifierRole } from "../ModifierRole.action";
 import toast from "react-hot-toast";
-
 
 export interface StatsResponse {
   data: {
@@ -32,7 +30,7 @@ export interface User {
   id: string;
   name: string | null;
   email: string;
-  role: "Admin" | "User";
+  role: "Admin" | "utilisateur";
   image: string | null;
   plan: "free" | "pro";
   createdAt: Date;
@@ -93,9 +91,6 @@ export function useDeleteUsers() {
   });
 }
 
-
-
-
 export const useModifierRole = () => {
   const queryClient = useQueryClient();
 
@@ -107,7 +102,7 @@ export const useModifierRole = () => {
       userId: string;
       newRole: Role;
     }) => {
-      const response = await axios.post('/api/modifier-role', {
+      const response = await axios.post("/api/modifier-role", {
         userId,
         newRole,
       });

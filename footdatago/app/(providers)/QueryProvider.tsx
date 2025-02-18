@@ -7,19 +7,12 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
-       
-        retry: 2, // Nombre de fois qu'on fait des tentatives de query
-        
-        retryDelay: 3000, // Délai entre les tentatives de query en millisecondes
-       
-        staleTime: 50 * 1000, // 10 secondes  Durée de cache
-       
+        retry: 2, 
+        retryDelay: 3000,
+        staleTime: 20 * 1000,
       },
       mutations: {
-       
-        retry: 2,  // Tentatives pour les mutations 
-      
-        retryDelay: 3000,   // Délai entre les tentatives de mutation
+        retryDelay: 3000,  
       },
     },
   }))

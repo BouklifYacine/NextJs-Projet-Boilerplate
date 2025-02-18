@@ -28,23 +28,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type Role = "Admin" | "utilisateur";
+export type Role = "Admin" | "utilisateur"; 
 
 interface Abonnement {
-  periode: string;
-  datedebut: string;
-  datefin: string;
+  periode: "mois" | "année"; 
+  datedebut: Date;           
+  datefin: Date;             
 }
-
 interface Utilisateur {
   id: string;
-  image?: string;
-  name: string;
-  email: string;
+  image?: string | null;  
+  name: string | null;    
+  email: string | null;
   plan: "pro" | "free";
-  role: "Admin" | "utilisateur";
-  createdAt: string;
-  abonnement?: Abonnement[];
+  role: "Admin" | "utilisateur";  
+  createdAt: Date;
+  abonnement?: Abonnement | null;
 }
 
 interface StatsAbonnement {
@@ -108,8 +107,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   const utilisateurFiltre = useMemo(
     () =>
       utilisateurs.filter((utilisateur) => {
-        const correspondancePseudo = utilisateur.name
-          .toLowerCase()
+        const correspondancePseudo = utilisateur?.name?.toLowerCase()
           .includes(recherche.toLowerCase());
         const correspondancePlan =
           !filtreabonnement || utilisateur.plan === "pro";
@@ -302,14 +300,12 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Roles</SelectLabel>
-                          <SelectItem value="Admin">Administrateur</SelectItem>
-                          <SelectItem value="utilisateur">
-                            Utilisateur
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
+  <SelectGroup>
+    <SelectLabel>Roles</SelectLabel>
+    <SelectItem value="Admin">Administrateur</SelectItem>
+    <SelectItem value="utilisateur">Utilisateur</SelectItem>  {/* Modifié ici */}
+  </SelectGroup>
+</SelectContent>
                     </Select>
                   </div>
                 </TableCell>
