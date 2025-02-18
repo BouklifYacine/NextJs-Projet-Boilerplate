@@ -2,7 +2,7 @@
 
 import React from "react";
 import Header from "@/components/header";
-import { TableauDeBordClient } from "./Tableau";
+import { TableauDeBordClient } from "./TableauDeBordClient";
 import { useStats, useUtilisateurs } from "./(hooks)/UseDashboard";
 
 const TableauDeBord = () => {

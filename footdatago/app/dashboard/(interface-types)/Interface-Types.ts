@@ -5,7 +5,7 @@ interface Abonnement {
   datedebut: Date;
   datefin: Date;
 }
-interface Utilisateur {
+export interface Utilisateur {
   id: string;
   image?: string | null;
   name: string | null;
