@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useMemo, useState } from "react";
 import {
@@ -16,6 +16,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { useDeleteUsers } from "./(hooks)/UseDashboard";
+import toast from "react-hot-toast";
 
 interface Abonnement {
   periode: string;
@@ -36,6 +38,7 @@ interface Utilisateur {
 
 interface StatsAbonnement {
   nombre: number;
+  revenus: number;
 }
 
 interface Statistiques {
@@ -56,26 +59,24 @@ interface TableauDeBordProps {
 }
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
-  utilisateurs: utilisateursInitiaux,
-  statistiques: statistiquesInitiales,
-  MRR: MRR,
-  RevenusParUtilisateurs: RevenusParUtilisateurs,
+  utilisateurs,
+  statistiques,
+  MRR,
+  RevenusParUtilisateurs,
 }) => {
-  const [utilisateursLocaux, setUtilisateursLocaux] =
-    useState<Utilisateur[]>(utilisateursInitiaux);
-  const [statistiquesLocales, setStatistiquesLocales] = useState<Statistiques>(
-    statistiquesInitiales
-  );
-  const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
-    string[]
-  >([]);
+  // States pour la gestion de l'UI
+  const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<string[]>([]);
   const [recherche, setRecherche] = useState("");
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
   const [filtreAdmin, setFiltreAdmin] = useState(false);
 
+  // Hook de mutation pour la suppression
+  const { mutate: deleteUsers, isPending } = useDeleteUsers();
+
+  // Filtrage des utilisateurs
   const utilisateurFiltre = useMemo(
     () =>
-      utilisateursLocaux.filter((utilisateur) => {
+      utilisateurs.filter((utilisateur) => {
         const correspondancePseudo = utilisateur.name
           .toLowerCase()
           .includes(recherche.toLowerCase());
@@ -87,12 +88,12 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
           correspondancePseudo && correspondancePlan && conrrespondanceRole
         );
       }),
-    [utilisateursLocaux, recherche, filtreabonnement, filtreAdmin]
+    [utilisateurs, recherche, filtreabonnement, filtreAdmin]
   );
 
   const gererSelectionTotale = (coche: boolean) => {
     if (coche) {
-      setUtilisateursSelectionnes(utilisateursLocaux.map((user) => user.id));
+      setUtilisateursSelectionnes(utilisateurs.map((user) => user.id));
     } else {
       setUtilisateursSelectionnes([]);
     }
@@ -109,34 +110,17 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   };
 
   const gererSuppression = () => {
-    const utilisateursRestants = utilisateursLocaux.filter(
-      (user) => !utilisateursSelectionnes.includes(user.id)
-    );
+    if (!utilisateursSelectionnes.length) return;
 
-    const nouveauTotalUtilisateurs = utilisateursRestants.length;
-    const nouveauTotalAbonnements = utilisateursRestants.filter(
-      (user) => user.abonnement && user.abonnement.length > 0
-    ).length;
-
-    const nouveauxAbonnementsAnnuels = utilisateursRestants.filter(
-      (user) => user.abonnement?.[0]?.periode === "Annuel"
-    ).length;
-    const nouveauxAbonnementsMensuels = utilisateursRestants.filter(
-      (user) => user.abonnement?.[0]?.periode === "Mensuel"
-    ).length;
-
-    setUtilisateursLocaux(utilisateursRestants);
-    setStatistiquesLocales((prev) => ({
-      ...prev,
-      totalUtilisateurs: nouveauTotalUtilisateurs,
-      totalAbonnements: nouveauTotalAbonnements,
-      statsAbonnements: {
-        annuels: { nombre: nouveauxAbonnementsAnnuels },
-        mensuels: { nombre: nouveauxAbonnementsMensuels },
+    deleteUsers(utilisateursSelectionnes, {
+      onSuccess: () => {
+        toast.success('Utilisateurs supprimés avec succès');
+        setUtilisateursSelectionnes([]);
       },
-    }));
-
-    setUtilisateursSelectionnes([]);
+      onError: (error: Error) => {
+        toast.error(error.message || 'Erreur lors de la suppression');
+      }
+    });
   };
 
   return (
@@ -145,23 +129,23 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         <StatsBlock
           icon={Users}
           title="Nombre utilisateurs"
-          value={statistiquesLocales.totalUtilisateurs.toString()}
+          value={statistiques.totalUtilisateurs.toString()}
         />
         <StatsBlock
           icon={UserPlus}
           title="Nombre abonnés"
-          value={statistiquesLocales.totalAbonnements.toString()}
+          value={statistiques.totalAbonnements.toString()}
         />
         <StatsBlock
           icon={Landmark}
           title="Revenus total"
-          value={`${statistiquesLocales.totalRevenus}€`}
+          value={`${statistiques.totalRevenus}€`}
         />
-        <StatsBlock icon={CreditCard} title="MRR" value={MRR + "€"} />
+        <StatsBlock icon={CreditCard} title="MRR" value={`${MRR}€`} />
         <StatsBlock
           icon={UserRound}
-          title="Revenus/users "
-          value={RevenusParUtilisateurs + "€"}
+          title="Revenus/users"
+          value={`${RevenusParUtilisateurs}€`}
         />
       </div>
 
@@ -172,7 +156,6 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         >
           Abonnement
         </Button>
-
         <Button
           onClick={() => setFiltreAdmin(!filtreAdmin)}
           variant={filtreAdmin ? "default" : "outline"}
@@ -187,6 +170,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
           placeholder="Pseudo"
         />
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -194,8 +178,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
               <TableHead>
                 <Checkbox
                   checked={
-                    utilisateursSelectionnes.length ===
-                    utilisateursLocaux.length
+                    utilisateursSelectionnes.length === utilisateurs.length
                   }
                   onCheckedChange={gererSelectionTotale}
                 />
@@ -276,8 +259,12 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
 
       {utilisateursSelectionnes.length > 0 && (
         <div className="flex justify-end mt-4 gap-4">
-          <Button variant="destructive" onClick={gererSuppression}>
-            Supprimer ({utilisateursSelectionnes.length})
+          <Button 
+            variant="destructive" 
+            onClick={gererSuppression}
+            disabled={isPending}
+          >
+            {isPending ? 'Suppression...' : `Supprimer (${utilisateursSelectionnes.length})`}
           </Button>
         </div>
       )}

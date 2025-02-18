@@ -15,36 +15,52 @@ const TableauDeBord = () => {
   const { 
     data: dataUtilisateur, 
     isLoading: isLoadingUtilisateur,
-    error: utilisateursError 
+    error: utilisateurError 
   } = useUtilisateurs();
 
+
   if (isLoadingStats || isLoadingUtilisateur) {
-    return <p>Ca charge khouya...</p>;
+    return (
+      <>
+        <Header />
+        <div className="flex justify-center items-center min-h-screen">
+          <p>CA CHARGE !!!</p>
+        </div>
+      </>
+    );
   }
 
-  if (statsError || utilisateursError || !dataStats || !dataUtilisateur) {
-    return <p>Une erreur est survenue lors du chargement des données</p>;
+  if (statsError || utilisateurError || !dataStats || !dataUtilisateur) {
+    return (
+      <>
+        <Header />
+        <div className="flex justify-center items-center min-h-screen text-red-500">
+          Une erreur est survenue lors du chargement des données
+        </div>
+      </>
+    );
   }
-
 
   const utilisateurs = dataUtilisateur.data;
   const totalUtilisateurs = dataStats.data.users.total;
-  const totalAbonnements = dataStats.data.users.pro; 
+  const totalAbonnements = dataStats.data.users.pro;
   const statsAbonnements = {
     annuels: dataStats.data.abonnements.annuels,
     mensuels: dataStats.data.abonnements.mensuels
   };
   const totalRevenus = Number(dataStats.data.abonnements.total.revenus);
   const MRR = Number(dataStats.data.abonnements.total.mrr);
+  
+
   const RevenusParUtilisateurs = totalUtilisateurs > 0 
-    ? (totalRevenus / totalUtilisateurs)
+    ? Number((totalRevenus / totalUtilisateurs).toFixed(2))
     : 0;
 
   const statistiques = {
     totalUtilisateurs,
     totalAbonnements,
-    statsAbonnements,
-    totalRevenus
+    totalRevenus,
+    statsAbonnements
   };
 
   return (

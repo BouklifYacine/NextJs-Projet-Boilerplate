@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { deleteUsers } from "../SupprimerUtilisateur.action";
 
 export interface StatsResponse {
   data: {
@@ -64,5 +65,26 @@ export function useUtilisateurs() {
     },
     retry: 2,
     staleTime: 1000 * 60 * 5,
+  });
+}
+
+
+
+export function useDeleteUsers() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (ids: string[]) => {
+      const response = await deleteUsers(ids);
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      return response;
+    },
+    onSuccess: () => {
+
+      queryClient.invalidateQueries({ queryKey: ['utilisateurs'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+    },
   });
 }
