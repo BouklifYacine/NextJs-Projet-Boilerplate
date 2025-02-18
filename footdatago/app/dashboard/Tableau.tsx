@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RoleSelect } from "./components/select";
 
 export type Role = "Admin" | "utilisateur";
 
@@ -286,34 +287,11 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                         utilisateur.plan.slice(1)}
                     </Badge>
 
-                    <Select
-                      value={utilisateur.role}
-                      onValueChange={(newRole: Role) =>
-                        handleRoleChange(utilisateur.id, newRole)
-                      }
-                      disabled={loadingUsers[utilisateur.id]}
-                    >
-                      <SelectTrigger className="w-[140px] ml-4">
-                        <SelectValue>
-                          {loadingUsers[utilisateur.id] ? (
-                            <div className="flex items-center">
-                              <span className="ml-2">Modification...</span>
-                            </div>
-                          ) : (
-                            utilisateur.role
-                          )}
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Roles</SelectLabel>
-                          <SelectItem value="Admin">Administrateur</SelectItem>
-                          <SelectItem value="utilisateur">
-                            Utilisateur
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <RoleSelect
+      RoleActuel={utilisateur.role}
+      isLoading={loadingUsers[utilisateur.id]}
+      onRoleChange={(newRole) => handleRoleChange(utilisateur.id, newRole)}
+    />
                   </div>
                 </TableCell>
               </TableRow>
