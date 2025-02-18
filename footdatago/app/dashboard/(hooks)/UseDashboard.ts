@@ -1,6 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { deleteUsers } from "../SupprimerUtilisateur.action";
+import { ModifierRole } from "../ModifierRole.action";
+import toast from "react-hot-toast";
+
 
 export interface StatsResponse {
   data: {
@@ -44,6 +47,8 @@ interface UtilisateurReponse {
   data: User[];
 }
 
+export type Role = "Admin" | "utilisateur";
+
 export function useStats() {
   return useQuery<StatsResponse>({
     queryKey: ["stats"],
@@ -60,15 +65,15 @@ export function useUtilisateurs() {
   return useQuery<UtilisateurReponse>({
     queryKey: ["utilisateurs"],
     queryFn: async () => {
-      const {data} = await axios.get<UtilisateurReponse>("/api/totalutilisateur");
+      const { data } = await axios.get<UtilisateurReponse>(
+        "/api/totalutilisateur"
+      );
       return data;
     },
     retry: 2,
     staleTime: 1000 * 60 * 5,
   });
 }
-
-
 
 export function useDeleteUsers() {
   const queryClient = useQueryClient();
@@ -82,9 +87,40 @@ export function useDeleteUsers() {
       return response;
     },
     onSuccess: () => {
-
-      queryClient.invalidateQueries({ queryKey: ['utilisateurs'] });
-      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: ["utilisateurs"] });
+      queryClient.invalidateQueries({ queryKey: ["stats"] });
     },
   });
 }
+
+
+
+
+export const useRole = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      userId,
+      newRole,
+    }: {
+      userId: string;
+      newRole: Role;
+    }) => {
+      const response = await ModifierRole(userId, newRole);
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["utilisateurs"] });
+      toast.success("Rôle modifié avec succès");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Erreur lors de la modification du rôle");
+    },
+  });
+};
