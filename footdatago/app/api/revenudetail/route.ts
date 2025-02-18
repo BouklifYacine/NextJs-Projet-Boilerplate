@@ -25,7 +25,7 @@ interface StatsResponse {
 }
 
 const PRIX = {
-  MENSUEL: 9.99,
+  MENSUEL: 5,
   ANNUEL: 50.0,
 } as const;
 

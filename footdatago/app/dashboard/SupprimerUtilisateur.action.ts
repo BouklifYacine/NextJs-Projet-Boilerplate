@@ -54,8 +54,6 @@ export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
       });
     });
 
-    // revalidatePath('/dashboard');
-
     return {
       success: true,
       message: "Utilisateurs supprimés avec succès"
