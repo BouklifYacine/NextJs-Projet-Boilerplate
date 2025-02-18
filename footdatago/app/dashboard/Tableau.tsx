@@ -18,56 +18,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useDeleteUsers, useModifierRole } from "./(hooks)/UseDashboard";
 import toast from "react-hot-toast";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { RoleSelect } from "./components/select";
-
-export type Role = "Admin" | "utilisateur";
-
-interface Abonnement {
-  periode: "mois" | "année";
-  datedebut: Date;
-  datefin: Date;
-}
-interface Utilisateur {
-  id: string;
-  image?: string | null;
-  name: string | null;
-  email: string | null;
-  plan: "pro" | "free";
-  role: "Admin" | "utilisateur";
-  createdAt: Date;
-  abonnement?: Abonnement | null;
-}
-
-interface StatsAbonnement {
-  nombre: number;
-  revenus: number;
-}
-
-interface Statistiques {
-  totalUtilisateurs: number;
-  totalAbonnements: number;
-  totalRevenus: number;
-  statsAbonnements: {
-    annuels: StatsAbonnement;
-    mensuels: StatsAbonnement;
-  };
-}
-
-interface TableauDeBordProps {
-  utilisateurs: Utilisateur[];
-  statistiques: Statistiques;
-  MRR: number;
-  RevenusParUtilisateurs: number;
-}
+import BadgeAbonnement from "./components/BadgeAbonnement";
+import { TableauDeBordProps } from "./Interface-Types";
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   utilisateurs,
@@ -273,25 +226,17 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
-                    <Badge
-                      className={`
-                      ${
-                        utilisateur.plan === "pro"
-                          ? "bg-green-100 text-green-800 border-green-200"
-                          : "bg-red-100 text-red-800 border-red-200"
-                      }
-                      hover:bg-opacity-80 cursor-default font-medium px-2 py-1
-                    `}
-                    >
-                      {utilisateur.plan.charAt(0).toUpperCase() +
-                        utilisateur.plan.slice(1)}
-                    </Badge>
+                    <BadgeAbonnement
+                      utilisateur={utilisateur}
+                    ></BadgeAbonnement>
 
                     <RoleSelect
-      RoleActuel={utilisateur.role}
-      isLoading={loadingUsers[utilisateur.id]}
-      onRoleChange={(newRole) => handleRoleChange(utilisateur.id, newRole)}
-    />
+                      RoleActuel={utilisateur.role}
+                      isLoading={loadingUsers[utilisateur.id]}
+                      onRoleChange={(newRole) =>
+                        handleRoleChange(utilisateur.id, newRole)
+                      }
+                    />
                   </div>
                 </TableCell>
               </TableRow>
