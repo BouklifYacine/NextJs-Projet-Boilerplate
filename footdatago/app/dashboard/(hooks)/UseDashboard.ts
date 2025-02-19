@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { deleteUsers } from "../SupprimerUtilisateur.action";
 import toast from "react-hot-toast";
@@ -43,6 +43,8 @@ export interface User {
 
 interface UtilisateurReponse {
   data: User[];
+  totalPages: number;
+  message: string;
 }
 
 export type Role = "Admin" | "utilisateur";
@@ -59,17 +61,19 @@ export function useStats() {
   });
 }
 
-export function useUtilisateurs() {
+
+
+export function useUtilisateurs(page: number) {
   return useQuery<UtilisateurReponse>({
-    queryKey: ["utilisateurs"],
+    queryKey: ['utilisateurs', page], 
     queryFn: async () => {
       const { data } = await axios.get<UtilisateurReponse>(
-        "/api/totalutilisateur"
+        `/api/totalutilisateur?page=${page}`
       );
       return data;
     },
-    retry: 2,
-    staleTime: 1000 * 60 * 5,
+    placeholderData: keepPreviousData, 
+    staleTime: 1000 * 60 * 5, 
   });
 }
 

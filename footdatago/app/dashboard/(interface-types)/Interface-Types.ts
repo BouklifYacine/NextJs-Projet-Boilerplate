@@ -36,4 +36,7 @@ export interface TableauDeBordProps {
   statistiques: Statistiques;
   MRR: number;
   RevenusParUtilisateurs: number;
+  page: number;
+  setPage: (value: number | ((prevValue: number) => number)) => void;
+  totalPages: number; 
 }

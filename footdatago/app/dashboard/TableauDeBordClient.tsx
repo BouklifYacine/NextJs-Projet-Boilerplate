@@ -8,13 +8,9 @@ import { Filtres } from "./components/Filtres";
 import { SectionStats } from "./components/SectionStats";
 import { UsersTable } from "./components/Tableau";
 import { Role } from "./(interface-types)/Interface-Types";
+import { Button } from "@/components/ui/button";
 
-export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
-  utilisateurs,
-  statistiques,
-  MRR,
-  RevenusParUtilisateurs,
-}) => {
+export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs, statistiques, MRR, RevenusParUtilisateurs, page, setPage , totalPages}) => {
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
     string[]
   >([]);
@@ -22,6 +18,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
   const [filtreAdmin, setFiltreAdmin] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState<Record<string, boolean>>({});
+
 
   const { mutate: deleteUsers, isPending } = useDeleteUsers();
   const { mutate: modifierRole } = useModifierRole();
@@ -122,6 +119,28 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
         isPending={isPending}
         utilisateurs={utilisateurs}
       />
+
+<div className="flex justify-center gap-2 mt-4">
+<Button
+    variant="outline"
+    onClick={() => setPage((old) => Math.max(old - 1, 0))}
+    disabled={page === 0}
+  >
+    Précédent
+  </Button>
+
+  <span className="flex items-center px-4">
+    Page {page + 1} sur {totalPages}
+  </span>
+
+  <Button
+    variant="outline"
+    onClick={() => setPage((old) => old + 1)}
+    disabled={page >= totalPages - 1}
+  >
+    Suivant
+  </Button>
+      </div>
     </div>
   );
 };
