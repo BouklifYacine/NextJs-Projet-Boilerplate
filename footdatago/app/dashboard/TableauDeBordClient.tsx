@@ -9,6 +9,7 @@ import { SectionStats } from "./components/SectionStats";
 import { UsersTable } from "./components/Tableau";
 import { Role } from "./(interface-types)/Interface-Types";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs, statistiques, MRR, RevenusParUtilisateurs, page, setPage , totalPages}) => {
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
@@ -119,14 +120,15 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
         isPending={isPending}
         utilisateurs={utilisateurs}
       />
-
-<div className="flex justify-center gap-2 mt-4">
+s
+<div className="flex justify-center gap-2 my-4 ">
 <Button
     variant="outline"
     onClick={() => setPage((old) => Math.max(old - 1, 0))}
     disabled={page === 0}
+   
   >
-    Précédent
+  <ChevronLeft   />
   </Button>
 
   <span className="flex items-center px-4">
@@ -137,8 +139,9 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
     variant="outline"
     onClick={() => setPage((old) => old + 1)}
     disabled={page >= totalPages - 1}
+     
   >
-    Suivant
+   <ChevronRight  />
   </Button>
       </div>
     </div>
