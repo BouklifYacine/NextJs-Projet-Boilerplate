@@ -120,7 +120,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
         isPending={isPending}
         utilisateurs={utilisateurs}
       />
-s
+
 <div className="flex justify-center gap-2 my-4 ">
 <Button 
     variant="outline"
