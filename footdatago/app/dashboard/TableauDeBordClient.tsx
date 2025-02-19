@@ -122,27 +122,35 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
       />
 s
 <div className="flex justify-center gap-2 my-4 ">
+<Button 
+    variant="outline"
+    onClick={() => setPage((pageActuelle) => Math.max(pageActuelle - 1, 0))}
+    disabled={page === 0}
+    className={`${
+      page === 0 
+        ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed" 
+        : "bg-white text-gray-900 hover:bg-gray-100"
+    }`}
+>
+    <ChevronLeft />
+</Button>
+
+<span className="flex items-center px-4">
+    Page {page + 1} sur {totalPages}
+</span>
+
 <Button
     variant="outline"
-    onClick={() => setPage((old) => Math.max(old - 1, 0))}
-    disabled={page === 0}
-   
-  >
-  <ChevronLeft   />
-  </Button>
-
-  <span className="flex items-center px-4">
-    Page {page + 1} sur {totalPages}
-  </span>
-
-  <Button
-    variant="outline"
-    onClick={() => setPage((old) => old + 1)}
+    onClick={() => setPage((pageActuelle) => pageActuelle + 1)}
     disabled={page >= totalPages - 1}
-     
-  >
-   <ChevronRight  />
-  </Button>
+    className={`${
+      page >= totalPages - 1
+        ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+        : "bg-white text-gray-900 hover:bg-gray-100"
+    }`}
+>
+    <ChevronRight />
+</Button>
       </div>
     </div>
   );
