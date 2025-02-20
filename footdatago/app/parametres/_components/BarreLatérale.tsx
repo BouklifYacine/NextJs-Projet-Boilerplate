@@ -87,8 +87,8 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
 
       <div className="space-y-8">
         {sectionActive === 'profil' && <SectionProfil userId={userId} />}
-        {!hasProvider && sectionActive === 'email' && <SectionEmail userId={userId} />}
-        {!hasProvider && sectionActive === 'motdepasse' && <SectionMotDePasse userId={userId} />}
+        {!hasProvider && sectionActive === 'email' && <SectionEmail  />}
+        {!hasProvider && sectionActive === 'motdepasse' && <SectionMotDePasse  />}
         {!hasProvider && sectionActive === 'pseudo' && <SectionPseudo userId={userId} />}
         {sectionActive === 'suppression' && <SectionSuppression userId={userId} />}
       </div>
