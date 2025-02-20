@@ -111,7 +111,7 @@ export function useDeleteUsers() {
       if(anciennevaleur?.dataAncienne){
         queryClient.setQueryData(["utilisateurs"], anciennevaleur.dataAncienne)
       }
-      toast.error(`Erreur lors de la suppression d'utilisateurs"}`)
+      toast.error(`Erreur lors de la suppression d'utilisateurs`)
     },
 
     onSettled: () => {
@@ -162,7 +162,7 @@ export const useModifierRole = () => {
       return { dataAncienne };
     },
 
-    onSuccess: (dataAncienne, role) => {
+    onSuccess: (data, role) => {
       toast.success(`Role ${role.newRole} attribué`);
       
     },
@@ -172,7 +172,6 @@ export const useModifierRole = () => {
         queryClient.setQueryData(["utilisateurs"], context.dataAncienne);
       }
       toast.error( "Erreur lors de la modification du rôle");
-      console.log(error.message)
     },
 
     onSettled: () => {
