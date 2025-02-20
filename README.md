@@ -1,6 +1,6 @@
 #  Next.js Full-Stack DevGo Boilerplate v0.6
 
-Une boilerplate moderne et complet pour construire des applications web full-stack avec Next.js 15, conçu pour une expérience de développement optimale et pouvoir se concentrer sur les fonctionnalité métier 
+Une boilerplate moderne et complète pour construire des applications web full-stack avec Next.js 15, conçue pour une expérience de développement optimale et pour pouvoir se concentrer sur les fonctionnalités métier.
 
 ## ✨ Fonctionnalités Principales
 
@@ -42,13 +42,13 @@ Une boilerplate moderne et complet pour construire des applications web full-sta
 - En-têtes de sécurité optimisés
 - Sessions sécurisées
 - Gestion des erreurs
-- Route sécurisé avec session et roles
+- Routes sécurisées avec session et rôles
 
 ## 🛠️ Stack Technique
 
 ### Frontend
 - Next.js 15+
-- Typescript 
+- TypeScript 
 - React
 - Tailwind CSS
 - Shadcn UI
@@ -59,12 +59,12 @@ Une boilerplate moderne et complet pour construire des applications web full-sta
 
 ### Backend
 - Next.js API Routes
-- Typescript 
+- TypeScript 
 - Prisma ORM
 - PostgreSQL
 - AuthJS
 - Stripe
-- Nodemailer ( Resend dans la prochaine version )
+- Nodemailer (Resend dans la prochaine version)
 
 ## 📦 Installation
 
@@ -135,12 +135,10 @@ npx prisma db push
 - Configurer le webhook (URL: `/api/webhook`)
 
 #### 2. Email
-**Option Gmail:**
+**Option Gmail :**
 - Activer 2FA
 - Générer un mot de passe d'application
-- le rentrer ensuite dans le .env : SMTP_PASSWORD="mot-de-passe-app"
-
-
+- Le rentrer ensuite dans le .env : SMTP_PASSWORD="mot-de-passe-app"
 
 ## Démarrage
 
@@ -174,16 +172,14 @@ stripe listen --forward-to localhost:3000/api/webhook
 
 ### Panel Admin
 - Gestion des utilisateurs
-- Statistiques des revenus moyen de l'application par utilisateur  
+- Statistiques des revenus moyens de l'application par utilisateur  
 - Statistiques des revenus totaux de l'application
 - Statistiques des revenus par mois de l'application
-- Statistiques des revenus moyen de l'application
+- Statistiques des revenus moyens de l'application
 - Pagination dynamique 
-- Filtre par admin et abonnement pour voir si nos utilisateurs sont admins et ou ont des abonnements 
+- Filtre par admin et abonnement pour voir si les utilisateurs sont admins et/ou ont des abonnements 
 - Input de recherche par pseudo pour trouver les utilisateurs de votre site 
-- Possiblité par l'admin de passer des utilisateurs en Admin et passer des admins en utilisateur 
-- 
-
+- Possibilité pour l'admin de passer des utilisateurs en Admin et des admins en utilisateur 
 
 ##  Personnalisation
 
@@ -193,7 +189,7 @@ Les templates sont dans `app/(emails)/`
 // Exemple de modification
 <Text>Personnalisez votre message ici</Text>
 ```
-Les changer ensuite la ou ces emails sont utilisés checkez les API de bienvenue 
+Les changer ensuite là où ces emails sont utilisés. Vérifiez les API de bienvenue.
 
 ### Ajout de Plans d'Abonnement
 1. Créer le plan dans Stripe
@@ -201,141 +197,121 @@ Les changer ensuite la ou ces emails sont utilisés checkez les API de bienvenue
 3. Mettre à jour les composants UI
 
 ### Ajout de produits Stripe dans notre application 
-1. Aller sur mode Compte Stripe dans catalogue produits 
-2. Cliquez sur Créer un produit valider quand tout est bon 
-3. Aller dans catalogue de produit et cliquer sur l'id du produit que vous voulez récuperez 
-4. En mode test copier l'id du produit en cliquant sur les 3 petits point en mode dev copier directement l'id du produit afficher 
-5 Aller dans le .env et copier votre produit selon son type d'abonnement ici par mois STRIPE_MONTHLY_PRICE_ID="blabla"
-6. utiliser le .env dans votre code pour ne pas afficher le secret avec le proces.env.STRIPE_MONTHLY_PRICE_ID
+1. Aller sur le mode Compte Stripe dans catalogue produits 
+2. Cliquer sur Créer un produit, valider quand tout est bon 
+3. Aller dans catalogue de produits et cliquer sur l'ID du produit que vous voulez récupérer 
+4. En mode test, copier l'ID du produit en cliquant sur les 3 petits points. En mode dev, copier directement l'ID du produit affiché 
+5. Aller dans le .env et copier votre produit selon son type d'abonnement, ici par mois : STRIPE_MONTHLY_PRICE_ID="blabla"
+6. Utiliser le .env dans votre code pour ne pas afficher le secret avec process.env.STRIPE_MONTHLY_PRICE_ID
 
+### Version 1.0 qui commencera son développement en Mai 
 
-### Version 1.0 qui commencera son début de développement en Mai 
+# 🚀 FEATURES ESSENTIELLES
 
-🚀 FEATURES ESSENTIELLES
-🛠️ Architecture & Tech
+## 🛠️ Architecture & Tech
+- Dark Mode
+- Zustand pour state management
+- Redis pour le cache
+- Architecture modulaire
+- CI/CD (Github Actions)
+- Tests complets (Unit, E2E, Integration)
 
-Dark Mode
-Zustand pour state management
-Redis pour le cache
-Architecture modulaire
-CI/CD (Github Actions)
-Tests complets (Unit, E2E, Integration)
+## 🎨 Personnalisation
+- Système marque blanche
+  * Couleurs personnalisables
+  * Polices configurables
 
-🎨 Personnalisation
+## 🔒 Sécurité
+- 2FA (email)
+- Protection CSRF améliorée
+- Rate limiting
+- Super Admin unique
 
-Système marque blanche
+## 👤 ESPACE UTILISATEUR
+### Profil & Préférences
+- Upload photo de profil
+- Paramètres notifications
+- Préférences emails
+- Export données personnelles
+- Système de feedback/bug
 
-Couleurs personnalisables
-Polices configurables
+## 📊 DASHBOARD ADMIN
+### 🏠 Page d'Accueil
+#### Stats Aujourd'hui
+- Inscriptions du jour
+- Revenus journaliers
+- Utilisateurs actifs
+- Nouveaux abonnements
 
-🔒 Sécurité
+#### Vue Hebdomadaire
+- Graphique inscriptions
+- Total revenus semaine
+- Comparaison semaine -1
 
-2FA (email)
-Protection CSRF améliorée
-Rate limiting
-Super Admin unique
+### 👥 Gestion Utilisateurs
+#### Filtres Avancés
+- Période (aujourd'hui/7j/30j)
+- Source (Email/Google/GitHub)
+- Abonnement (Mensuel/Annuel)
 
-👤 ESPACE UTILISATEUR
-Profil & Préférences
+#### Actions
+- Export CSV
+- Ban/Unban
+- Gestion rôles
+- Vue détaillée
 
-Upload photo de profil
-Paramètres notifications
-Préférences emails
-Export données personnelles
-Système de feedback/bug
+### 💰 Section Revenus
+#### Stats Mensuelles
+- Total du mois
+- Comparaison M-1
+- Graphique journalier
+- Top 3 meilleurs jours
 
-📊 DASHBOARD ADMIN
-🏠 Page d'Accueil
-Stats Aujourd'hui
+#### Abonnements
+- Répartition (camembert)
+- Liste derniers abonnés
 
-Inscriptions du jour
-Revenus journaliers
-Utilisateurs actifs
-Nouveaux abonnements
+### 📝 Section Activité
+#### Timeline
+- Nouvelles inscriptions
+- Nouveaux abonnements
+- Changements de rôles
+- Actions importantes
 
-Vue Hebdomadaire
+### 🔔 Notifications
+#### Système Temps Réel
+##### Cloche notifications
+- Nouveaux abonnés
+- Feedbacks reçus
+- Utilisateurs bannis
 
-Graphique inscriptions
-Total revenus semaine
-Comparaison semaine -1
+#### Emails Admin
+- Rapport hebdo inscriptions
+- Rapport hebdo revenus
 
-👥 Gestion Utilisateurs
+## 🎨 UI/UX
+### Design
+- Design System complet
+- Composants réutilisables
+- Animations fluides
+- Tooltips contextuels
+- Skeleton loading
+- Full responsive
 
-Filtres Avancés
+## ⚡ PERFORMANCE
+### Optimisations
+- Images optimisées
+- Lazy loading
+- Cache stratégique
+- Monitoring temps réel
 
-Période (aujourd'hui/7j/30j)
-Source (Email/Google/GitHub)
-Abonnement (Mensuel/Annuel)
-
-Actions
-
-Export CSV
-Ban/Unban
-Gestion rôles
-Vue détaillée
-
-💰 Section Revenus
-Stats Mensuelles
-
-Total du mois
-Comparaison M-1
-Graphique journalier
-Top 3 meilleurs jours
-
-Abonnements
-
-Répartition (camembert)
-Liste derniers abonnés
-
-📝 Section Activité
-Timeline
-
-Nouvelles inscriptions
-Nouveaux abonnements
-Changes de rôles
-Actions importantes
-
-🔔 Notifications
-Système Temps Réel
-
-Cloche notifications
-
-Nouveaux abonnés
-Feedbacks reçus
-Utilisateurs bannis
-
-Emails Admin
-
-Rapport hebdo inscriptions
-Rapport hebdo revenus
-
-🎨 UI/UX
-Design
-
-Design System complet
-Composants réutilisables
-Animations fluides
-Tooltips contextuels
-Skeleton loading
-Full responsive
-
-⚡ PERFORMANCE
-Optimisations
-
-Images optimisées
-Lazy loading
-Cache stratégique
-Monitoring temps réel
-
-📚 DOCUMENTATION
-Guides
-
-Installation détaillée
-Guide développeur
-Guide customisation
-Bonnes pratiques
-Doc API complète
-
+## 📚 DOCUMENTATION
+### Guides
+- Installation détaillée
+- Guide développeur
+- Guide customisation
+- Bonnes pratiques
+- Doc API complète
 
 ### Problèmes Courants
 
