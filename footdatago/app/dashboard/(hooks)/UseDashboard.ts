@@ -1,4 +1,9 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import axios from "axios";
 import { deleteUsers } from "../SupprimerUtilisateur.action";
 import toast from "react-hot-toast";
@@ -61,19 +66,17 @@ export function useStats() {
   });
 }
 
-
-
 export function useUtilisateurs(page: number) {
   return useQuery<UtilisateurReponse>({
-    queryKey: ['utilisateurs', page], 
+    queryKey: ["utilisateurs", page],
     queryFn: async () => {
       const { data } = await axios.get<UtilisateurReponse>(
         `/api/totalutilisateur?page=${page}`
       );
       return data;
     },
-    placeholderData: keepPreviousData, 
-    staleTime: 1000 * 60 * 5, 
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -117,12 +120,40 @@ export const useModifierRole = () => {
 
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["utilisateurs"] });
-      toast.success("Rôle modifié avec succès");
+
+    onMutate: async ({ userId, newRole }) => {
+      await queryClient.cancelQueries({ queryKey: ["utilisateurs"] });
+
+      const dataAncienne = queryClient.getQueryData<UtilisateurReponse>([
+        "utilisateurs",
+      ]);
+
+      if (dataAncienne) {
+        queryClient.setQueryData<UtilisateurReponse>(["utilisateurs"], {
+          ...dataAncienne,
+          data: dataAncienne.data.map((user) =>
+            user.id === userId ? { ...user, role: newRole } : user
+          ),
+        });
+      }
+      return { dataAncienne };
     },
-    onError: (error: Error) => {
-      toast.error(error.message || "Erreur lors de la modification du rôle");
+
+    onSuccess: (dataAncienne, role) => {
+      toast.success(`Role ${role.newRole} attribué`);
+      console.log();
+    },
+
+    onError: (error, variables, context) => {
+      if (context?.dataAncienne) {
+        queryClient.setQueryData(["utilisateurs"], context.dataAncienne);
+      }
+      toast.error( "Erreur lors de la modification du rôle");
+      console.log(error.message)
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["utilisateurs"] });
     },
   });
 };
