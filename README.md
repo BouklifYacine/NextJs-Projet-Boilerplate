@@ -198,118 +198,110 @@ Version 1.0 a venir (Début du développement en Mai 2025)
 🚀 FEATURES ESSENTIELLES
 🛠️ Architecture & Tech
 
-Dark Mode
-Zustand pour state management
-Redis pour le cache
-Architecture modulaires
-CI/CD (Github Actions)
-Tests complets (Unit, E2E, Integration)
+- Dark Mode
+- Zustand pour state management
+- Redis pour le cache
+- Architecture modulaires
+- CI/CD (Github Actions)
+- Tests complets (Unit, E2E, Integration)
 
 🎨 Personnalisation
 
-Système marque blanche
-
-Couleurs personnalisables
-Polices configurables
+- Système marque blanche
+- Couleurs personnalisables
+- Polices configurables
 
 
 
 🔒 Sécurité
 
-2FA (email)
-Protection CSRF améliorée
-Rate limiting
-Super Admin unique
+- 2FA (email)
+- Protection CSRF améliorée
+- Rate limiting
+- Super Admin unique
 
 👤 ESPACE UTILISATEUR
 Profil & Préférences
 
-Upload photo de profil
-Paramètres notifications
-Préférences emails
-Export données personnelles
-Système de feedback/bug
+- Upload photo de profil
+- Paramètres notifications
+- Préférences emails
+- Export données personnelles
+- Système de feedback/bug
 
 📊 DASHBOARD ADMIN
 🏠 Page d'Accueil
 Stats Aujourd'hui
 
-Inscriptions du jour
-Revenus journaliers
-Utilisateurs actifs
-Nouveaux abonnements
+- Inscriptions du jour
+- Revenus journaliers
+- Utilisateurs actifs
+- Nouveaux abonnements
 
 Vue Hebdomadaire
 
-Graphique inscriptions
-Total revenus semaine
-Comparaison semaine -1
+- Graphique inscriptions
+- Total revenus semaine
+- Comparaison semaine -1
 
 👥 Gestion Utilisateurs
-Filtres Avancés
+- Filtres Avancés
 
-Période (aujourd'hui/7j/30j)
-Source (Email/Google/GitHub)
-Abonnement (Mensuel/Annuel)
+- Période (aujourd'hui/7j/30j)
+- Source (Email/Google/GitHub)
+- Abonnement (Mensuel/Annuel)
 
 Actions
 
-Export CSV
-Ban/Unban
-Gestion rôles
-Vue détaillée
+- Export CSV
+- Ban/Unban
+- Gestion rôles
+- Vue détaillée
 
 💰 Section Revenus
-Stats Mensuelles
+- Stats Mensuelles
 
-Total du mois
-Comparaison M-1
-Graphique journalier
-Top 3 meilleurs jours
+- Total du mois
+- Comparaison M-1
+- Graphique journalier
+- Top 3 meilleurs jours
 
 Abonnements
 
-Répartition (camembert)
-Liste derniers abonnés
+- Répartition (camembert)
+- Liste derniers abonnés
 
 📝 Section Activité
-Timeline
+- Timeline
 
-Nouvelles inscriptions
-Nouveaux abonnements
-Changes de rôles
-Actions importantes
+- Nouvelles inscriptions
+- Nouveaux abonnements
+- Changes de rôles
+- Actions importantes
 
 🔔 Notifications
-Système Temps Réel
-Cloche notifications
 
-Nouveaux abonnés
-Feedbacks reçus
-Utilisateurs bannis
-
-Emails Admin
-
-Rapport hebdo inscriptions
-Rapport hebdo revenus
+- Nouveaux abonnés
+- Feedbacks reçus
+- Utilisateurs bannis
+- Emails Admin
+- Rapport hebdo inscriptions
+- Rapport hebdo revenus
 
 🎨 UI/UX
-Design
 
-Design System complet
-Composants réutilisables
-Animations fluides
-Tooltips contextuels
-Skeleton loading
-Full responsive
+- Plus de composants réutilisables
+- Animations fluides
+- Tooltips contextuels
+- Skeleton loading
 
 ⚡ PERFORMANCE
-Optimisations
 
-Images optimisées
-Lazy loading
-Cache stratégique
-Monitoring temps réel
+
+- Images optimisées
+- Lazy loading
+- Cache Redis
+- Monitoring temps réel
 
 📚 DOCUMENTATION
 Guides
