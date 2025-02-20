@@ -83,7 +83,6 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
 
     deleteUsers(utilisateursSelectionnes, {
       onSuccess: () => {
-        toast.success("Utilisateurs supprimés avec succès");
         setUtilisateursSelectionnes([]);
       },
       onError: (error: Error) => {

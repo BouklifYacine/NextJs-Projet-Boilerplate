@@ -91,10 +91,33 @@ export function useDeleteUsers() {
       }
       return response;
     },
-    onSuccess: () => {
+    onMutate: async (ids) => {
+      await queryClient.cancelQueries({queryKey : ["utilisateurs"]})
+      
+      const dataAncienne = queryClient.getQueryData<UtilisateurReponse>(["utilisateurs"])
+
+      if(dataAncienne) queryClient.setQueryData<UtilisateurReponse>(["utilisateurs"] , {
+        ...dataAncienne, 
+        data : dataAncienne.data.filter((user) => !ids.includes(user.id))
+      })
+
+      return {dataAncienne}
+    },
+    onSuccess: (data, ids) => {
+      toast.success(`${ids.length} utilisateur${ids.length > 1 ? "s" : ""} supprimé${ids.length > 1 ? "s" : ""}`)
+    },
+
+    onError: (error, variables, anciennevaleur) => {
+      if(anciennevaleur?.dataAncienne){
+        queryClient.setQueryData(["utilisateurs"], anciennevaleur.dataAncienne)
+      }
+      toast.error(`Erreur lors de la suppression d'utilisateurs"}`)
+    },
+
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["utilisateurs"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
-    },
+    }
   });
 }
 
@@ -141,7 +164,7 @@ export const useModifierRole = () => {
 
     onSuccess: (dataAncienne, role) => {
       toast.success(`Role ${role.newRole} attribué`);
-      console.log();
+      
     },
 
     onError: (error, variables, context) => {
