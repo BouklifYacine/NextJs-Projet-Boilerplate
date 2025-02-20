@@ -45,7 +45,7 @@ const Section = () => {
         <div className="flex flex-col justify-center items-center gap-6 py-2">
           <div className="flex justify-center items-center pb-2">
             <ShimmerButton className="py-2 px-6 text-sm md:text-base font-medium tracking-tight">
-              FootDataGo version 0.6
+              DevGo version 0.6
             </ShimmerButton>
           </div>
 
@@ -62,13 +62,13 @@ const Section = () => {
           </h1>
 
           <p className="max-w-2xl text-base md:text-lg lg:text-xl text-center px-4 text-white/70 pt-3">
-            Grace à notre outil utilisez, comparez les datas des joueurs et
-            suivez leur performances au fil de la saison.
+            Grace à notre boilerplate gagnez plus de 80% de temps de configuration redondante pour des projets full-stack en NextJS.
+           
           </p>
 
           <div className="flex justify-center items-center pb-2 pt-3">
             <ShimmerButton className="py-4 px-8 md:py-5 md:px-12 text-lg md:text-xl font-medium tracking-tighter text-white  shadow-lg shadow-purple-500/40">
-              Utiliser FootDataGo
+              Utiliser DevGo
             </ShimmerButton>
           </div>
 
