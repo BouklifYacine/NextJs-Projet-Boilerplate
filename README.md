@@ -194,15 +194,14 @@ Les changer ensuite la ou ces emails sont utilisés checkez les API de bienvenue
 6. utiliser le .env dans votre code pour ne pas afficher le secret avec le proces.env.STRIPE_MONTHLY_PRICE_ID
 
 
-### Version 1.0 qui commencera son début de développement en Mai 
-
+Version 1.0 a venir (Début du développement en Mai 2025)
 🚀 FEATURES ESSENTIELLES
 🛠️ Architecture & Tech
 
 Dark Mode
 Zustand pour state management
 Redis pour le cache
-Architecture modulaire
+Architecture modulaires
 CI/CD (Github Actions)
 Tests complets (Unit, E2E, Integration)
 
@@ -212,6 +211,8 @@ Système marque blanche
 
 Couleurs personnalisables
 Polices configurables
+
+
 
 🔒 Sécurité
 
@@ -245,7 +246,6 @@ Total revenus semaine
 Comparaison semaine -1
 
 👥 Gestion Utilisateurs
-
 Filtres Avancés
 
 Période (aujourd'hui/7j/30j)
@@ -282,7 +282,6 @@ Actions importantes
 
 🔔 Notifications
 Système Temps Réel
-
 Cloche notifications
 
 Nouveaux abonnés
