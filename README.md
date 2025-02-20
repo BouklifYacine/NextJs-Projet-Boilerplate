@@ -1,12 +1,16 @@
 #  Next.js Full-Stack DevGo Boilerplate v0.6
 
-Une boilerplate moderne et complète pour construire des applications web full-stack avec Next.js 15, conçue pour une expérience de développement optimale et pour pouvoir se concentrer sur les fonctionnalités métier.
+Une boilerplate moderne et complet pour construire des applications web full-stack avec Next.js 15, conçu pour une expérience de développement optimale et pouvoir se concentrer sur les fonctionnalité métier 
 
 ## ✨ Fonctionnalités Principales
 
-### 🔐 Authentification & Autorisation
+### 🔐 Authentification  & Autorisation & Profil
 - Authentification complète avec email/mot de passe
-- Connexion sociale (Google, GitHub)
+- Modification email d'inscription 
+- Changement de mot de passe + notification par mail
+- Mise à jour du pseudo + notification par mail
+- Suppression de compte + notification par mail
+- Connexion providers (Google, GitHub)
 - Routes protégées et gestion des sessions
 - Système de réinitialisation de mot de passe avec code unique par email (expiration 1h)
 - Mot de passe oublié avec email 
@@ -27,6 +31,18 @@ Une boilerplate moderne et complète pour construire des applications web full-s
 - Historique des transactions
 - Mise à niveau/rétrogradation des abonnements en mode dev uniquement 
 
+📊 Dashboard Admin
+
+- Gestion complète des utilisateurs
+- Statistiques des revenus en temps réel
+- Statistiques des revenus moyens par utilisateur en temps réel 
+- Statistiques des revenus totaux de l'application en temps réel
+- Statistiques des revenus mensuels en temps réel
+- Pagination dynamique
+- Filtres avancés (admin, abonnement)
+- Recherche par pseudo
+- Gestion des rôles utilisateurs
+
 ### 🎨 Interface Utilisateur
 - Design moderne et responsive
 - Composants réutilisables avec shadcn/ui
@@ -42,13 +58,13 @@ Une boilerplate moderne et complète pour construire des applications web full-s
 - En-têtes de sécurité optimisés
 - Sessions sécurisées
 - Gestion des erreurs
-- Routes sécurisées avec session et rôles
+- Route sécurisé avec session et roles
 
 ## 🛠️ Stack Technique
 
 ### Frontend
 - Next.js 15+
-- TypeScript 
+- Typescript 
 - React
 - Tailwind CSS
 - Shadcn UI
@@ -59,12 +75,12 @@ Une boilerplate moderne et complète pour construire des applications web full-s
 
 ### Backend
 - Next.js API Routes
-- TypeScript 
+- Typescript 
 - Prisma ORM
 - PostgreSQL
 - AuthJS
 - Stripe
-- Nodemailer (Resend dans la prochaine version)
+- Nodemailer ( Resend dans la prochaine version )
 
 ## 📦 Installation
 
@@ -135,10 +151,12 @@ npx prisma db push
 - Configurer le webhook (URL: `/api/webhook`)
 
 #### 2. Email
-**Option Gmail :**
+**Option Gmail:**
 - Activer 2FA
 - Générer un mot de passe d'application
-- Le rentrer ensuite dans le .env : SMTP_PASSWORD="mot-de-passe-app"
+- le rentrer ensuite dans le .env : SMTP_PASSWORD="mot-de-passe-app"
+
+
 
 ## Démarrage
 
@@ -152,35 +170,6 @@ npm run dev
 stripe listen --forward-to localhost:3000/api/webhook
 ```
 
-##  Fonctionnalités et Utilisation
-
-### Gestion des Utilisateurs
-- Inscription avec email/mot de passe
-- Connexion sociale (Google/GitHub)
-- Gestion du profil :
-  - Modification email
-  - Changement de mot de passe
-  - Mise à jour du pseudo
-  - Suppression de compte
-
-### Système d'Abonnement
-- Plans disponibles : Gratuit et Pro
-- Changement de plan
-- Gestion de la facturation
-- Historique des paiements
-- Possibilité de résilier son abonnement 
-
-### Panel Admin
-- Gestion des utilisateurs
-- Statistiques des revenus moyens de l'application par utilisateur  
-- Statistiques des revenus totaux de l'application
-- Statistiques des revenus par mois de l'application
-- Statistiques des revenus moyens de l'application
-- Pagination dynamique 
-- Filtre par admin et abonnement pour voir si les utilisateurs sont admins et/ou ont des abonnements 
-- Input de recherche par pseudo pour trouver les utilisateurs de votre site 
-- Possibilité pour l'admin de passer des utilisateurs en Admin et des admins en utilisateur 
-
 ##  Personnalisation
 
 ### Modification des Templates Email
@@ -189,7 +178,7 @@ Les templates sont dans `app/(emails)/`
 // Exemple de modification
 <Text>Personnalisez votre message ici</Text>
 ```
-Les changer ensuite là où ces emails sont utilisés. Vérifiez les API de bienvenue.
+Les changer ensuite la ou ces emails sont utilisés checkez les API de bienvenue 
 
 ### Ajout de Plans d'Abonnement
 1. Créer le plan dans Stripe
@@ -197,121 +186,141 @@ Les changer ensuite là où ces emails sont utilisés. Vérifiez les API de bien
 3. Mettre à jour les composants UI
 
 ### Ajout de produits Stripe dans notre application 
-1. Aller sur le mode Compte Stripe dans catalogue produits 
-2. Cliquer sur Créer un produit, valider quand tout est bon 
-3. Aller dans catalogue de produits et cliquer sur l'ID du produit que vous voulez récupérer 
-4. En mode test, copier l'ID du produit en cliquant sur les 3 petits points. En mode dev, copier directement l'ID du produit affiché 
-5. Aller dans le .env et copier votre produit selon son type d'abonnement, ici par mois : STRIPE_MONTHLY_PRICE_ID="blabla"
-6. Utiliser le .env dans votre code pour ne pas afficher le secret avec process.env.STRIPE_MONTHLY_PRICE_ID
+1. Aller sur mode Compte Stripe dans catalogue produits 
+2. Cliquez sur Créer un produit valider quand tout est bon 
+3. Aller dans catalogue de produit et cliquer sur l'id du produit que vous voulez récuperez 
+4. En mode test copier l'id du produit en cliquant sur les 3 petits point en mode dev copier directement l'id du produit afficher 
+5 Aller dans le .env et copier votre produit selon son type d'abonnement ici par mois STRIPE_MONTHLY_PRICE_ID="blabla"
+6. utiliser le .env dans votre code pour ne pas afficher le secret avec le proces.env.STRIPE_MONTHLY_PRICE_ID
 
-### Version 1.0 qui commencera son développement en Mai 
 
-# 🚀 FEATURES ESSENTIELLES
+### Version 1.0 qui commencera son début de développement en Mai 
 
-## 🛠️ Architecture & Tech
-- Dark Mode
-- Zustand pour state management
-- Redis pour le cache
-- Architecture modulaire
-- CI/CD (Github Actions)
-- Tests complets (Unit, E2E, Integration)
+🚀 FEATURES ESSENTIELLES
+🛠️ Architecture & Tech
 
-## 🎨 Personnalisation
-- Système marque blanche
-  * Couleurs personnalisables
-  * Polices configurables
+Dark Mode
+Zustand pour state management
+Redis pour le cache
+Architecture modulaire
+CI/CD (Github Actions)
+Tests complets (Unit, E2E, Integration)
 
-## 🔒 Sécurité
-- 2FA (email)
-- Protection CSRF améliorée
-- Rate limiting
-- Super Admin unique
+🎨 Personnalisation
 
-## 👤 ESPACE UTILISATEUR
-### Profil & Préférences
-- Upload photo de profil
-- Paramètres notifications
-- Préférences emails
-- Export données personnelles
-- Système de feedback/bug
+Système marque blanche
 
-## 📊 DASHBOARD ADMIN
-### 🏠 Page d'Accueil
-#### Stats Aujourd'hui
-- Inscriptions du jour
-- Revenus journaliers
-- Utilisateurs actifs
-- Nouveaux abonnements
+Couleurs personnalisables
+Polices configurables
 
-#### Vue Hebdomadaire
-- Graphique inscriptions
-- Total revenus semaine
-- Comparaison semaine -1
+🔒 Sécurité
 
-### 👥 Gestion Utilisateurs
-#### Filtres Avancés
-- Période (aujourd'hui/7j/30j)
-- Source (Email/Google/GitHub)
-- Abonnement (Mensuel/Annuel)
+2FA (email)
+Protection CSRF améliorée
+Rate limiting
+Super Admin unique
 
-#### Actions
-- Export CSV
-- Ban/Unban
-- Gestion rôles
-- Vue détaillée
+👤 ESPACE UTILISATEUR
+Profil & Préférences
 
-### 💰 Section Revenus
-#### Stats Mensuelles
-- Total du mois
-- Comparaison M-1
-- Graphique journalier
-- Top 3 meilleurs jours
+Upload photo de profil
+Paramètres notifications
+Préférences emails
+Export données personnelles
+Système de feedback/bug
 
-#### Abonnements
-- Répartition (camembert)
-- Liste derniers abonnés
+📊 DASHBOARD ADMIN
+🏠 Page d'Accueil
+Stats Aujourd'hui
 
-### 📝 Section Activité
-#### Timeline
-- Nouvelles inscriptions
-- Nouveaux abonnements
-- Changements de rôles
-- Actions importantes
+Inscriptions du jour
+Revenus journaliers
+Utilisateurs actifs
+Nouveaux abonnements
 
-### 🔔 Notifications
-#### Système Temps Réel
-##### Cloche notifications
-- Nouveaux abonnés
-- Feedbacks reçus
-- Utilisateurs bannis
+Vue Hebdomadaire
 
-#### Emails Admin
-- Rapport hebdo inscriptions
-- Rapport hebdo revenus
+Graphique inscriptions
+Total revenus semaine
+Comparaison semaine -1
 
-## 🎨 UI/UX
-### Design
-- Design System complet
-- Composants réutilisables
-- Animations fluides
-- Tooltips contextuels
-- Skeleton loading
-- Full responsive
+👥 Gestion Utilisateurs
 
-## ⚡ PERFORMANCE
-### Optimisations
-- Images optimisées
-- Lazy loading
-- Cache stratégique
-- Monitoring temps réel
+Filtres Avancés
 
-## 📚 DOCUMENTATION
-### Guides
-- Installation détaillée
-- Guide développeur
-- Guide customisation
-- Bonnes pratiques
-- Doc API complète
+Période (aujourd'hui/7j/30j)
+Source (Email/Google/GitHub)
+Abonnement (Mensuel/Annuel)
+
+Actions
+
+Export CSV
+Ban/Unban
+Gestion rôles
+Vue détaillée
+
+💰 Section Revenus
+Stats Mensuelles
+
+Total du mois
+Comparaison M-1
+Graphique journalier
+Top 3 meilleurs jours
+
+Abonnements
+
+Répartition (camembert)
+Liste derniers abonnés
+
+📝 Section Activité
+Timeline
+
+Nouvelles inscriptions
+Nouveaux abonnements
+Changes de rôles
+Actions importantes
+
+🔔 Notifications
+Système Temps Réel
+
+Cloche notifications
+
+Nouveaux abonnés
+Feedbacks reçus
+Utilisateurs bannis
+
+Emails Admin
+
+Rapport hebdo inscriptions
+Rapport hebdo revenus
+
+🎨 UI/UX
+Design
+
+Design System complet
+Composants réutilisables
+Animations fluides
+Tooltips contextuels
+Skeleton loading
+Full responsive
+
+⚡ PERFORMANCE
+Optimisations
+
+Images optimisées
+Lazy loading
+Cache stratégique
+Monitoring temps réel
+
+📚 DOCUMENTATION
+Guides
+
+Installation détaillée
+Guide développeur
+Guide customisation
+Bonnes pratiques
+Doc API complète
+
 
 ### Problèmes Courants
 
