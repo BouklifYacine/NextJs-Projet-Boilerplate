@@ -60,19 +60,19 @@ const Header = () => {
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
             <Link
-              href="/data"
+              href="/"
               className="text-white hover:text-purple-600 opacity-80 transition-colors"
             >
               Data
             </Link>
             <Link
-              href="/classement"
+              href="/"
               className="text-white hover:text-purple-600 opacity-80 transition-colors"
             >
               Classement
             </Link>
             <Link
-              href="/favoris"
+              href="/"
               className="text-white hover:text-purple-600 opacity-80 transition-colors"
             >
               Favoris

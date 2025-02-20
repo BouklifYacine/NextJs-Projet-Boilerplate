@@ -21,11 +21,11 @@ const Faq = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2">
-                    Comment puis-je commencer à utiliser FootDataGo ?
+                    Comment puis-je commencer à utiliser DevGo ?
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-sm md:text-base px-1 md:px-2">
-                    Pour commencer, il suffit de créer un compte gratuit sur notre plateforme. 
-                    Vous aurez ensuite accès à toutes les statistiques et données des joueurs.
+                    Pour commencer, il suffit de créer un compte gratuit sur Github 
+                   Ensuite fork le projet
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -35,42 +35,19 @@ const Faq = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-2" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                    Quelles datas sont disponibles sur FootDataGo ?
+                    Quelles Fonctionnalité sont disponible sur DevGo?
                   </AccordionTrigger>
-                  <AccordionContent className="text-white/80 text-base">
+                  <AccordionContent className="text-white/80 text-sm md:text-base px-1 md:px-2">
         
-                  Buts passe décisives XG XA xG90 xA90 kp90 apparitions minutes et bien d'autres.
+               Système d'auth avec providers et credentials pret a l'emploir dashboard admin système de mailing et de payement voir le readme pour plus de détails 
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </div>
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-3" className="border-b-0">
-                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                    A quoi sert la section favoris ?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-white/80 text-base">
-               La section sert a suivre vos joueur favoris pour avoir directement les datas que vous voulez et sans devoir a aller dans l'outil de comparaison a chaque fois.
-              
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
+           
 
-            <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-3" className="border-b-0">
-                  <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                    Comment comparer les joueurs entre eux ?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-white/80 text-sm md:text-base">
-                  Aller dans la page comparaison taper les joueurs que vous voulez comparez et notre outil vous sortira des graphiques détaillés pour chaque joueurs.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
+           
 
             <div className='bg-gray-800/50 backdrop-blur-sm rounded-3xl md:rounded-2xl p-4 shadow-md shadow-purple-500/40'>
               <Accordion type="single" collapsible className="w-full">
@@ -78,8 +55,8 @@ const Faq = () => {
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
                     Des nouvelles fonctionnalités sont prévues ?
                   </AccordionTrigger>
-                  <AccordionContent className="text-white/80 text-base">
-                 Oui le site est en version 0.6 donc des nouvelles fonctionnalités prévues comme pouvoir comparer plus de 2 joueurs, pouvoir avoir plus de filtre de recherches et d'autres choses que je ne peux pas dire encore.
+                  <AccordionContent className="text-white/80 text-sm md:text-base px-1 md:px-2">
+                 Oui le site est en version 0.6 donc des nouvelles fonctionnalités prévues voir le readme
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -89,10 +66,10 @@ const Faq = () => {
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-3" className="border-b-0">
                   <AccordionTrigger className="text-white text-lg md:text-xl p-1 md:p-2 ">
-                   Comment vous contactez ? 
+                   Quel est la stack de cette boilerplate ? 
                   </AccordionTrigger>
-                  <AccordionContent className="text-white/80 text-base">
-                C'est tout simple allez dans la section retours et envoyer moi un mail en précisant la catégorie de votre demande 
+                  <AccordionContent className="text-white/80 text-sm md:text-base px-1 md:px-2">
+               NextJS TypeScript AuthJS Nodemailer Stripe Prisma PostgreSQL en autre 
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
