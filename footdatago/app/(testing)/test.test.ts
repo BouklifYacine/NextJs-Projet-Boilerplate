@@ -32,7 +32,15 @@ describe("CalculerMoyenne", () => {
     expect(CalculerMoyenne([])).toBe(NaN);
   });
 
-  test("Doit retourner la moyenne du tableau avec une valeur" , () => {
-    expect(CalculerMoyenne([5,15])).toBe(10)
-  })
+  test("Doit retourner la moyenne du tableau avec une valeur", () => {
+    expect(CalculerMoyenne([5, 15])).toBe(10);
+  });
+
+  test("Doit avoir au moins un element dans le tableau", () => {
+
+    const tableau = [5, 45]
+    expect(tableau.length).toBeGreaterThan(0);
+    const resultat = CalculerMoyenne(tableau)
+    expect(resultat).toBe(25)
+  });
 });
