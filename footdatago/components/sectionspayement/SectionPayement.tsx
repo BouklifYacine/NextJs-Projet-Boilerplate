@@ -42,7 +42,7 @@ const SectionPayement = async () => {
     <div className="min-h-screen bg-black py-20">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-white text-center mb-16 text-3xl md:text-5xl font-bold tracking-tight">
-          Passer au Next Level
+          Passez au Next Level
         </h2>
         <div className="flex justify-center w-full">
           <div className="w-full max-w-6xl">
