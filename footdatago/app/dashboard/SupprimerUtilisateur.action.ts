@@ -5,7 +5,6 @@ import { prisma } from "@/prisma";
 
 interface DeleteResponse {
   success: boolean;
-  message: string;
 }
 
 export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
@@ -14,7 +13,6 @@ export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
     if (!session?.user?.id) {
       return {
         success: false,
-        message: "Vous devez être connecté"
       };
     }
 
@@ -26,11 +24,9 @@ export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
     if (admin?.role !== "Admin") {
       return {
         success: false,
-        message: "Action non autorisée"
       };
     }
 
-   
     await prisma.$transaction(async (tx) => {
       
       await tx.session.deleteMany({
@@ -56,13 +52,11 @@ export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
 
     return {
       success: true,
-      message: "Utilisateurs supprimés avec succès"
     };
   } catch (error) {
     console.error("Erreur lors de la suppression:", error);
     return {
       success: false,
-      message: "Erreur lors de la suppression des utilisateurs"
     };
   }
 }

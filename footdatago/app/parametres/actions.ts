@@ -271,7 +271,6 @@ export async function supprimerCompte(codeVerification?: string) {
   try {
     const session = await auth()
     
-    // Vérifier que l'utilisateur est connecté
     if (!session?.user?.id) {
       throw new Error("Non autorisé")
     }
@@ -309,22 +308,18 @@ export async function supprimerCompte(codeVerification?: string) {
 
     try {
       await prisma.$transaction(async (db) => {
-        // Supprimer les sessions
         await db.session.deleteMany({
           where: { userId: session?.user?.id }
         })
 
-        // Supprimer les comptes liés (providers)
         await db.account.deleteMany({
           where: { userId: session?.user?.id }
         })
 
-        // Supprimer les authentificateurs
         await db.authenticator.deleteMany({
           where: { userId: session?.user?.id }
         })
 
-        // Supprimer l'abonnement si existe
         if (utilisateur.clientId) {
           try {
             await db.abonnement.delete({
@@ -335,7 +330,6 @@ export async function supprimerCompte(codeVerification?: string) {
           }
         }
 
-        // Supprimer l'utilisateur
         await db.user.delete({
           where: { id: session?.user?.id }
         })
