@@ -1,7 +1,17 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const StatsBlock = ({ icon: Icon, title, value }) => (
+interface StatsBlockProps {
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  title: string;
+  value: string | number;
+}
+
+export const StatsBlock: React.FC<StatsBlockProps> = ({ 
+  icon: Icon,
+  title,
+  value 
+}) => (
   <Card className="flex-1 md:m-4">
     <CardContent className="p-6">
       <div className="flex items-center space-x-4">

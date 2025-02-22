@@ -87,7 +87,7 @@ export function useDeleteUsers() {
     mutationFn: async (ids: string[]) => {
       const response = await deleteUsers(ids);
       if (!response.success) {
-        throw new Error(response.message);
+        throw new Error("Erreur sur la suppression des utilisateurs");
       }
       return response;
     },

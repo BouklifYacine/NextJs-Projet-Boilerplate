@@ -3,11 +3,8 @@ import { BarreLaterale } from "../_components/BarreLatérale";
 import { auth } from "@/auth";
 import Header from "@/components/header";
 
-interface Props {
-  params: { id: string };
-}
 
-export default async function PageParametres({ params }: Props) {
+export default async function PageParametres({params}: {params: Promise<{ id: string }>}) {
   const session = await auth();
   const { id } = await params;
 
