@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { UtilisateurAbonner } from "@/app/pro/action";
+import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 
 

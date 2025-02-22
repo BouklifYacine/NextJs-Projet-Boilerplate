@@ -9,7 +9,7 @@ import { inscriptionAction } from "@/app/(actions)/InscriptionAction";
 import { useRouter } from "next/navigation";
 import BoutonConnexionProviders from "@/components/BoutonConnexionProviders";
 import { z } from "zod";
-import SchemaInscription from "@/schema/SchemaInscription";
+import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { InputPassword } from "../parametres/_components/InputPassword";
 
 type Schema = z.infer<typeof SchemaInscription>;

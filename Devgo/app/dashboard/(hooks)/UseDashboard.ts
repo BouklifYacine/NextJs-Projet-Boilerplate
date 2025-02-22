@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import axios from "axios";
-import { deleteUsers } from "../SupprimerUtilisateur.action";
+import { deleteUsers } from "../../(actions)/SupprimerUtilisateur.action";
 import toast from "react-hot-toast";
 
 export interface StatsResponse {
@@ -58,7 +58,7 @@ export function useStats() {
   return useQuery<StatsResponse>({
     queryKey: ["stats"],
     queryFn: async () => {
-      const { data } = await axios.get<StatsResponse>("/api/revenudetail");
+      const { data } = await axios.get<StatsResponse>("/api/dashboard/revenudetail");
       return data;
     },
     retry: 2,
@@ -71,7 +71,7 @@ export function useUtilisateurs(page: number) {
     queryKey: ["utilisateurs", page],
     queryFn: async () => {
       const { data } = await axios.get<UtilisateurReponse>(
-        `/api/totalutilisateur?page=${page}`
+        `/api/dashboard/totalutilisateur?page=${page}`
       );
       return data;
     },

@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import SchemaInscription from "@/schema/SchemaInscription";
+import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { prisma } from "@/prisma";
 import EmailBienvenue from "@/app/(emails)/EmailBievenue";
 import { createElement } from "react";

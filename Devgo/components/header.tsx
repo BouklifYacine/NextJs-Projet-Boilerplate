@@ -11,7 +11,7 @@ import { Deconnexion } from "./BoutonDéconnexion";
 import { BoutonConnexion } from "./BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
-import { UtilisateurAbonner } from "@/app/pro/action";
+import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
 import {
   DropdownMenu,
   DropdownMenuContent,

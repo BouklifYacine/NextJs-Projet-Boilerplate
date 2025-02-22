@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import SchemaInscription from "@/schema/SchemaInscription";
+import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { prisma } from "@/prisma";
 import EmailBienvenue from "@/app/(emails)/EmailBievenue";
 import { createElement } from "react";

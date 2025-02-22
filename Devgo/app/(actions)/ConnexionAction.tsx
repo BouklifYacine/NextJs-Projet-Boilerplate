@@ -4,7 +4,7 @@ import { signIn } from "@/auth";
 import bcrypt from "bcryptjs";
 
 import { z } from "zod";
-import { SchemaConnexion } from "@/schema/SchemaConnexion";
+import { SchemaConnexion } from "@/app/(schema)/SchemaConnexion";
 import { prisma } from "@/prisma";
 
 type Schema = z.infer<typeof SchemaConnexion>;

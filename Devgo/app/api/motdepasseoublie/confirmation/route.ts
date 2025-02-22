@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
-import { ResetPasswordSchema } from "@/schema/SchemaMotDepasse";
+import { ResetPasswordSchema } from "@/app/(schema)/SchemaMotDepasse";
 
 export async function POST(request: NextRequest) {
   try {
