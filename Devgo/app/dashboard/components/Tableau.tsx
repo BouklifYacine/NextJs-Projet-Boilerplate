@@ -55,6 +55,8 @@ import {
                 <TableHead className="font-bold text-black">Email</TableHead>
                 <TableHead className="font-bold text-black">Créé le</TableHead>
                 <TableHead className="font-bold text-black">Abonnement</TableHead>
+                <TableHead className="font-bold text-black">Periode</TableHead>
+
               </TableRow>
             </TableHeader>
   
@@ -105,6 +107,9 @@ import {
                         }
                       />
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    {!utilisateur.abonnement?.periode ? "Freemium" : utilisateur.abonnement.periode.charAt(0).toUpperCase() + utilisateur.abonnement.periode.slice(1) }
                   </TableCell>
                 </TableRow>
               ))}

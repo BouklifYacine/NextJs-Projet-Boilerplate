@@ -17,6 +17,8 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
   >([]);
   const [recherche, setRecherche] = useState("");
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
+  const [filtreabonnementmensuel, setFiltreAbonnementMensuel] = useState(false)
+  const [filtreabommentannuel, setFiltreAbonnementAnnuel] = useState(false)
   const [filtreAdmin, setFiltreAdmin] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState<Record<string, boolean>>({});
 
@@ -49,15 +51,15 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
         const correspondancePseudo = utilisateur?.name
           ?.toLowerCase()
           .includes(recherche.toLowerCase());
-        const correspondancePlan =
-          !filtreabonnement || utilisateur.plan === "pro";
-        const conrrespondanceRole =
-          !filtreAdmin || utilisateur.role === "Admin";
+        const correspondancePlan = !filtreabonnement || utilisateur.plan === "pro";
+        const correspondanceplanmensuel = !filtreabonnementmensuel || utilisateur.plan === "pro" && utilisateur.abonnement?.periode === "mois"
+        const correspondanceplanannuel = !filtreabommentannuel || utilisateur.plan === "pro" && utilisateur.abonnement?.periode === "année"
+        const conrrespondanceRole =  !filtreAdmin || utilisateur.role === "Admin";
         return (
-          correspondancePseudo && correspondancePlan && conrrespondanceRole
+          correspondancePseudo && correspondancePlan && conrrespondanceRole && correspondanceplanmensuel && correspondanceplanannuel
         );
       }),
-    [utilisateurs, recherche, filtreabonnement, filtreAdmin]
+    [utilisateurs, recherche, filtreabonnement, filtreAdmin, filtreabommentannuel , filtreabonnementmensuel ]
   );
 
   const gererSelectionTotale = (coche: boolean) => {
@@ -102,6 +104,10 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
       <Filtres
         filtreabonnement={filtreabonnement}
         setFiltreAbonnement={setFiltreAbonnement}
+        filtreabommentannuel={filtreabommentannuel}
+        setFiltreAbonnementAnnuel={setFiltreAbonnementAnnuel}
+        filtreabonnementmensuel={filtreabonnementmensuel}
+        setFiltreAbonnementMensuel={setFiltreAbonnementMensuel}
         filtreAdmin={filtreAdmin}
         setFiltreAdmin={setFiltreAdmin}
         recherche={recherche}

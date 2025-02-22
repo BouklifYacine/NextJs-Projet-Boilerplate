@@ -4,6 +4,10 @@ import { Input } from "@/components/ui/input";
 interface FiltersSectionProps {
   filtreabonnement: boolean;
   setFiltreAbonnement: (value: boolean) => void;
+  filtreabommentannuel: boolean;
+  setFiltreAbonnementAnnuel: (value: boolean) => void;
+  filtreabonnementmensuel: boolean;
+  setFiltreAbonnementMensuel: (value: boolean) => void;
   filtreAdmin: boolean;
   setFiltreAdmin: (value: boolean) => void;
   recherche: string;
@@ -15,6 +19,10 @@ export const Filtres: React.FC<FiltersSectionProps> = ({
   setFiltreAbonnement,
   filtreAdmin,
   setFiltreAdmin,
+  filtreabommentannuel,
+  setFiltreAbonnementAnnuel,
+  filtreabonnementmensuel,
+  setFiltreAbonnementMensuel,
   recherche,
   setRecherche,
 }) => {
@@ -31,6 +39,18 @@ export const Filtres: React.FC<FiltersSectionProps> = ({
         variant={filtreAdmin ? "default" : "outline"}
       >
         Admin
+      </Button>
+      <Button
+        onClick={() => setFiltreAbonnementAnnuel(!filtreabommentannuel)}
+        variant={filtreabommentannuel ? "default" : "outline"}
+      >
+        Abo annuel
+      </Button>
+      <Button
+        onClick={() => setFiltreAbonnementMensuel(!filtreabonnementmensuel)}
+        variant={filtreabonnementmensuel ? "default" : "outline"}
+      >
+        Abo mensuel
       </Button>
       <Input
         value={recherche}
