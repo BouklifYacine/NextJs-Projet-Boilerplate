@@ -1,11 +1,12 @@
+"use server"
 import React from "react";
 import ComponentPage from "./components/componentspage";
 
-import { AdminMiddleware } from "../(middleware)/AdminMiddleware";
+import { AdminMiddlewareClient } from "../(middleware)/AdminMiddlewareClient";
 
 const DashboardServer = async () => {
  
-  await AdminMiddleware()
+  await AdminMiddlewareClient()
 
   return (
     <>
