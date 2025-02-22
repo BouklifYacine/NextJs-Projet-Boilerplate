@@ -12,6 +12,7 @@ import SuppressionCompte from "@/app/(emails)/SuppressionCompte"
 import { revalidatePath } from "next/cache"
 import { auth, signOut } from "@/auth"
 import { TypeEmail, TypeMotDePasse, TypePseudo } from "./schema"
+import EmailSuppressionCompte from "@/app/(emails)/SuppressionCompte"
 
 export async function verifierMotDePasse(motdepasse: string) {
   try {
@@ -334,6 +335,17 @@ export async function supprimerCompte(codeVerification?: string) {
           where: { id: session?.user?.id }
         })
       })
+
+      if (utilisateur.email) {
+        await sendEmail({
+          to: utilisateur.email,
+          subject: "Compte supprimé",
+          emailComponent: createElement(EmailSuppressionCompte, {
+            pseudo: utilisateur.name || "Pseudo inconnu"
+            
+          })
+        })
+      }
 
       // Déconnexion
       await signOut({ redirect: false })

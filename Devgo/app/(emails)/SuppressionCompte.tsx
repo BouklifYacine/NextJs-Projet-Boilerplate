@@ -12,7 +12,7 @@ interface SuppressionCompte {
   pseudo: string;
 }
 
-const SuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => {
+const EmailSuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => {
   return (
     <Html>
       <Head />
@@ -20,7 +20,7 @@ const SuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => {
         <Container>
           <Section>
             <Text>Bonjour {pseudo}</Text>
-            <Text>Votre compte a été supprimer définitivement. </Text>
+            <Text>Votre compte a été supprimer définitivement , ainsi que toute données liées a ce compte. </Text>
           
           </Section>
         </Container>
@@ -29,4 +29,4 @@ const SuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => {
   );
 };
 
-export default SuppressionCompte;
+export default EmailSuppressionCompte;

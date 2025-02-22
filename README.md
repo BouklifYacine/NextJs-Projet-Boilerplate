@@ -249,7 +249,7 @@ Vue Hebdomadaire
 
 - Période (aujourd'hui/7j/30j)
 - Source (Email/Google/GitHub)
-- Abonnement (Mensuel/Annuel)
+- Abonnement (Mensuel/Annuel) ✅
 
 Actions
 
@@ -296,7 +296,6 @@ Abonnements
 - Skeleton loading
 
 ⚡ PERFORMANCE
-
 
 - Images optimisées
 - Lazy loading
