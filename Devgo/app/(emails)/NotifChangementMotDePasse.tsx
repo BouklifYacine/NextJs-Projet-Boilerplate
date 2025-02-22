@@ -26,7 +26,7 @@ const NotifChangementMotDePasse: React.FC<NotifChangementMotDePasse> = ({
               Vous recevez ce mail car vous venez de changer de mot de passe{" "}
             </Text>
             <Text>
-              Si ce changement de mot de passe n'a pas été fait par vous
+              Si ce changement de mot de passe ne vient pas de vous
               sécurisez votre compte le plus vite possible
             </Text>
           </Section>

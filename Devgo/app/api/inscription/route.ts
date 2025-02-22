@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
   const motdepasse = await bcrypt.hash(password, 10);
 
-  const result = await sendEmail({
+  await sendEmail({
     to: email,
     subject: "Bienvenue!",
     emailComponent: emailElement,

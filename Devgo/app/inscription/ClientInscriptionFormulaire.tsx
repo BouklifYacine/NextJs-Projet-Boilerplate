@@ -36,9 +36,10 @@ const ClientInscriptionFormulaire = () => {
         reset();
         setErreurMessage("");
       } else {
-        setErreurMessage(result.error || "");
+        setErreurMessage("Inscription échouée");
       }
     } catch (error) {
+      console.error('Erreur API:', error);
       setErreurMessage("Une erreur est survenue");
     }
   };

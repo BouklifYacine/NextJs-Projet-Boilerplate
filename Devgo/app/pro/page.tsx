@@ -26,7 +26,7 @@ const ProPage = async () => {
     <div>  {sessiond && <p>Vous etes connecté </p> }
     {utilisateur?.plan === "pro" && <p>Vous etes abonné a notre offre </p>}
     <p>{sessiondetails}</p>
-    <p>Vous avez l'abonnement : {utilisateurtypeabonnement?.plan}</p>
+    <p>Vous avez un abonnement : {utilisateurtypeabonnement?.plan}</p>
     
     </div>
   )

@@ -39,7 +39,7 @@ const Faq = () => {
                   </AccordionTrigger>
                   <AccordionContent className="text-white/80 text-sm md:text-base px-1 md:px-2">
         
-               Système d'auth avec providers et credentials pret a l'emploir dashboard admin système de mailing et de payement voir le readme pour plus de détails 
+               Système de connexion avec providers et credentials, dashboard admin système de mailing et de payement voir le readme pour plus de détails 
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

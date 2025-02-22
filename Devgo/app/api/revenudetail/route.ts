@@ -95,6 +95,7 @@ export async function GET(): Promise<NextResponse<StatsResponse | { error: strin
       }
     });
   } catch (error) {
+    console.error('Erreur API:', error);
     return NextResponse.json(
       { error: "Erreur lors du calcul des statistiques" },
       { status: 500 }

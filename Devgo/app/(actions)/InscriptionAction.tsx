@@ -62,7 +62,7 @@ export async function inscriptionAction(data: Schema) {
   } catch (error) {
     return {
       success: false,
-      error: "Une erreur est survenue lors de l'inscription"
+      error: error || "Une erreur est survenue lors de l'inscription" 
     };
   }
 }

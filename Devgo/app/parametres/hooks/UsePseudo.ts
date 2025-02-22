@@ -8,7 +8,7 @@ import { verifierMotDePasse } from '../actions'
 import toast from 'react-hot-toast'
 import { TypePseudo } from '../schema'
 
-export function usePseudo(userId: string) {
+export function usePseudo() {
   const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
 
   const formVerification = useForm({

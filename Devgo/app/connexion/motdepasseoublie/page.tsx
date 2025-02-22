@@ -35,9 +35,9 @@ const AuthForm = () => {
       setTimeout(() => {
         router.push("/connexion/motdepasseoublie/code");
       }, 3000);
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage(
-        error.response?.data?.message || "Une erreur est survenue"
+         "Une erreur est survenue"
       );
       console.error("Erreur:", error);
     }

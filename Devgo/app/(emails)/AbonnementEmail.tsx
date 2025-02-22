@@ -45,7 +45,7 @@ import {
           <Container>
             <Section>
               <Text>Bonjour {name},</Text>
-              <Text>Votre changement d'abonnement a été effectué avec succès.</Text>
+              <Text>Votre changement de votre abonnement a été effectué avec succès.</Text>
               <Text>Vous êtes passé du plan {oldPlan} au plan {plan}.</Text>
             </Section>
           </Container>
@@ -66,7 +66,7 @@ import {
             <Section>
               <Text>Bonjour {name},</Text>
               <Text>Nous confirmons la résiliation de votre abonnement {plan}.</Text>
-              <Text>N'hésitez pas à nous recontacter si vous souhaitez vous réabonner.</Text>
+              <Text>Vous pouvez nous recontacter si vous souhaitez vous réabonner.</Text>
             </Section>
           </Container>
         </Body>

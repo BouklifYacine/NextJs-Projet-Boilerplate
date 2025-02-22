@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: "Code envoyé par email dans les spams " });
   } catch (error) {
+    console.error('Erreur API:', error);
     return NextResponse.json(
       { message: "Erreur serveur" },
       { status: 400 }

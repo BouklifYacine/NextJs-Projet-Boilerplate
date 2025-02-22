@@ -123,7 +123,7 @@ const ClientConnexionFormulaire = () => {
       <p className="text-center text-sm text-gray-600">
         Pas encore inscrit ?{" "}
         <Link href="/inscription" className="text-blue-600 hover:text-blue-700">
-          S'inscrire
+          Inscription
         </Link>
       </p>
     </form>

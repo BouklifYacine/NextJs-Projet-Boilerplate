@@ -4,7 +4,7 @@ import { forwardRef, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from "lucide-react"
 
-const InputPassword = forwardRef<HTMLInputElement, any>((props, ref) => {
+const InputPassword = forwardRef<HTMLInputElement>((props, ref) => {
   const [montrerMotDePasse, setMontrerMotDePasse] = useState(false)
 
   return (
