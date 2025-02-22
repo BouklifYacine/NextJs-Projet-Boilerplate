@@ -7,6 +7,7 @@ import {
 import axios from "axios";
 import { deleteUsers } from "../../(actions)/SupprimerUtilisateur.action";
 import toast from "react-hot-toast";
+import { ModifierRole } from "@/app/(actions)/ModifierRoleAction";
 
 export interface StatsResponse {
   data: {
@@ -132,16 +133,13 @@ export const useModifierRole = () => {
       userId: string;
       newRole: Role;
     }) => {
-      const response = await axios.post("/api/modifier-role", {
-        userId,
-        newRole,
-      });
+      const response = await ModifierRole(userId, newRole )
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+      if (!response.success) {
+        throw new Error("Impossible de changer de role");
       }
 
-      return response.data;
+      return response.message;
     },
 
     onMutate: async ({ userId, newRole }) => {

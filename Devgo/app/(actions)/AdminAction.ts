@@ -1,19 +1,18 @@
-"use server"
-import { auth } from "@/auth"
-import { prisma } from "@/prisma"
+"use server";
+import { auth } from "@/auth";
+import { prisma } from "@/prisma";
+import { redirect } from "next/navigation";
 
+export async function AdminAction() {
+  const session = await auth();
+  const sessionID = session?.user?.id;
 
-export async function AdminAction(){
-    const session = await auth()
-    const sessionID = session?.user?.id
+  if (!sessionID) redirect("/");
 
-    if(!sessionID) throw new Error('Accès non autorisé')
+  const utilisateur = await prisma.user.findUnique({
+    where: { id: sessionID },
+  });
+  if (utilisateur?.role !== "Admin") redirect("/");
 
-    const utilisateur = await prisma.user.findUnique({
-        where: {id: sessionID}
-    })
-    if(utilisateur?.role !== "Admin") throw new Error('Accès non autorisé non admin ')
-
-        return {success : true, Admin : utilisateur.role === "Admin"}
-    
+  return { success: true, Admin: utilisateur.role === "Admin" };
 }

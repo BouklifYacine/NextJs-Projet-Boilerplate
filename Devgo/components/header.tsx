@@ -23,8 +23,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 
-
-
 const Header = () => {
   const { data: session } = useSession();
 
@@ -40,8 +38,6 @@ const Header = () => {
 
   const utilisateurabonner = data?.abonner;
   const utilisateurAdmin = Admin?.Admin;
-
-  console.log(utilisateurAdmin)
 
   return (
     <header className="sticky top-0 z-50 pt-4 px-4 bg-black">

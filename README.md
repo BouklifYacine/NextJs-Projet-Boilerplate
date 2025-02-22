@@ -39,7 +39,7 @@ Une boilerplate moderne et complet pour construire des applications web full-sta
 - Statistiques des revenus totaux de l'application en temps réel
 - Statistiques des revenus mensuels en temps réel
 - Pagination dynamique
-- Filtres avancés (admin, abonnement)
+- Filtres avancés (admin, abonnement , abo mensuel / abo annuler)
 - Recherche par pseudo
 - Gestion des rôles utilisateurs
 
@@ -247,7 +247,6 @@ Vue Hebdomadaire
 
 - Période (aujourd'hui/7j/30j)
 - Source (Email/Google/GitHub)
-- Abonnement (Mensuel/Annuel) ✅
 
 Actions
 
