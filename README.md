@@ -296,6 +296,7 @@ Abonnements
 ⚡ PERFORMANCE
 
 - Images optimisées
+- Améliorer les requetes Prisma
 - Lazy loading
 - Cache Redis
 - Monitoring temps réel

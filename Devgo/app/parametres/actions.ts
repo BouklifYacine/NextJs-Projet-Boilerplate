@@ -38,10 +38,11 @@ export async function verifierMotDePasse(motdepasse: string) {
     if (!motDePasseValide) throw new Error("Mot de passe incorrect")
 
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString()
+    const hashedResetCode = await hash(resetCode, 10);
     await prisma.user.update({
       where: { id: session.user.id },
       data: {
-        resetToken: resetCode,
+        resetToken: hashedResetCode,
         resetTokenExpiry: new Date(Date.now() + 60 * 60 * 1000)
       }
     })
@@ -79,16 +80,14 @@ export async function changerEmail(donnees: TypeEmail) {
     const utilisateur = await prisma.user.findFirst({
       where: {
         id: session.user.id,
-        resetToken: codeverification,
-        resetTokenExpiry: { gt: new Date() }
       }
     })
 
-    if (!utilisateur) {
-      throw new Error("Code de vérification invalide ou expiré")
-    }
+    const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
+    const codevalide = await compare(codeverification , utilisateur?.resetToken || "" )
+    if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
 
-    const ancienEmail = utilisateur.email
+    const ancienEmail = utilisateur?.email
 
     await prisma.$transaction(async (db) => {
       await db.user.update({
@@ -109,7 +108,7 @@ export async function changerEmail(donnees: TypeEmail) {
         to: ancienEmail!,
         subject: "Changement de votre email",
         emailComponent: createElement(EmailChangement, {
-          pseudo: utilisateur.name || "",
+          pseudo: utilisateur?.name || "",
           email: nouvelEmail,
           ancienemail: ancienEmail || ""
         })
@@ -118,7 +117,7 @@ export async function changerEmail(donnees: TypeEmail) {
         to: nouvelEmail,
         subject: "Confirmation de votre nouvel email",
         emailComponent: createElement(EmailChangement, {
-          pseudo: utilisateur.name || "",
+          pseudo: utilisateur?.name || "",
           email: nouvelEmail,
           ancienemail: ancienEmail || ""
         })
@@ -142,14 +141,12 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
     const utilisateur = await prisma.user.findFirst({
       where: {
         id: session.user.id,
-        resetToken: codeverification,
-        resetTokenExpiry: { gt: new Date() }
       }
     })
 
-    if (!utilisateur) {
-      throw new Error("Code de vérification invalide ou expiré")
-    }
+    const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
+    const codevalide = await compare(codeverification , utilisateur?.resetToken || "" )
+    if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
 
     const motDePasseHashe = await hash(motdepasse, 10)
 
@@ -169,10 +166,10 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
     })
 
     await sendEmail({
-      to: utilisateur.email!,
+      to: utilisateur?.email || "",
       subject: "Changement de mot de passe",
       emailComponent: createElement(NotifChangementMotDePasse, {
-        pseudo: utilisateur.name || ""
+        pseudo: utilisateur?.name || ""
       })
     })
 
@@ -219,21 +216,18 @@ export async function changerPseudo(donnees: TypePseudo) {
       const utilisateurVerifie = await prisma.user.findFirst({
         where: {
           id: session.user.id,
-          resetToken: codeverification,
-          resetTokenExpiry: {
-            gt: new Date()
-          }
         }
       })
+      const TokenValide = utilisateurVerifie?.resetTokenExpiry && utilisateurVerifie.resetTokenExpiry > new Date();
+      const codevalidecredentials = await compare(codeverification, utilisateurVerifie?.resetToken || "")
 
-      if (!utilisateurVerifie) {
+      if (!codevalidecredentials || !TokenValide) {
         throw new Error("Code de vérification invalide ou expiré")
       }
     }
 
-    const ancienPseudo = utilisateur.name
+    
 
-    // Mise à jour du pseudo
     await prisma.user.update({
       where: { 
         id: session.user.id
@@ -247,8 +241,9 @@ export async function changerPseudo(donnees: TypePseudo) {
         })
       }
     })
+    
+    const ancienPseudo = utilisateur.name
 
-    // Envoyer l'email de confirmation
     if (utilisateur.email) {
       await sendEmail({
         to: utilisateur.email,
@@ -293,17 +288,9 @@ export async function supprimerCompte(codeVerification?: string) {
 
     // Vérifier le code uniquement pour les comptes sans provider
     if (!hasProvider) {
-      const utilisateurVerifie = await prisma.user.findFirst({
-        where: {
-          id: session.user.id,
-          resetToken: codeVerification,
-          resetTokenExpiry: { gt: new Date() }
-        }
-      })
-
-      if (!utilisateurVerifie) {
-        throw new Error("Code de vérification invalide ou expiré")
-      }
+      const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
+      const codevalide = await compare(codeVerification || "" , utilisateur?.resetToken || "" )
+      if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
     }
 
     try {
@@ -322,7 +309,7 @@ export async function supprimerCompte(codeVerification?: string) {
 
         if (utilisateur.clientId) {
           try {
-            await db.abonnement.delete({
+            await db.abonnement.deleteMany({
               where: { userId: session?.user?.id }
             })
           } catch (error) {
@@ -330,21 +317,22 @@ export async function supprimerCompte(codeVerification?: string) {
           }
         }
 
+        // Envoyer les mails avant la suppression pour anticiper une erreur 
+        if (utilisateur.email) {
+          await sendEmail({
+            to: utilisateur.email,
+            subject: "Compte supprimé",
+            emailComponent: createElement(EmailSuppressionCompte, {
+              pseudo: utilisateur.name || "Pseudo inconnu"
+              
+            })
+          })
+        }
+
         await db.user.delete({
           where: { id: session?.user?.id }
         })
       })
-
-      if (utilisateur.email) {
-        await sendEmail({
-          to: utilisateur.email,
-          subject: "Compte supprimé",
-          emailComponent: createElement(EmailSuppressionCompte, {
-            pseudo: utilisateur.name || "Pseudo inconnu"
-            
-          })
-        })
-      }
 
       // Déconnexion
       await signOut({ redirect: false })
