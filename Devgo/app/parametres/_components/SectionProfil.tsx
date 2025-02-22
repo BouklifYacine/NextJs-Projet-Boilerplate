@@ -126,7 +126,7 @@ export function SectionProfil({ userId }: SectionProfilProps) {
                         <Badge 
                           className={userData.plan === 'pro' 
                             ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                            : 'bg-gray-100 dark:bg-gray-800'
+                            : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
                           }
                         >
                           {userData.plan === 'pro' ? 'Premium' : 'Gratuit'}
