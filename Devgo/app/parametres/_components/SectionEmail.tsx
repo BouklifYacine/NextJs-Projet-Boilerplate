@@ -45,7 +45,6 @@ export function SectionEmail() {
             <div className="space-y-2">
               <Label htmlFor="motdepasse">Mot de passe actuel</Label>
               <InputPassword
-                id="motdepasse"
                 {...formMotDePasse.register('motdepasse')}
               />
               {formMotDePasse.formState.errors.motdepasse && (

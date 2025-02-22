@@ -49,7 +49,7 @@ export function SectionMotDePasse() {
             <div className="space-y-2">
               <Label htmlFor="motdepasse">Mot de passe actuel</Label>
               <InputPassword
-                id="motdepasse"
+               
                 {...formVerification.register('motdepasse')}
               />
               {formVerification.formState.errors.motdepasse && (
@@ -91,7 +91,6 @@ export function SectionMotDePasse() {
             <div className="space-y-2">
               <Label htmlFor="motdepasse">Nouveau mot de passe</Label>
               <InputPassword
-                id="motdepasse"
                 {...formChangement.register('motdepasse')}
               />
               {formChangement.formState.errors.motdepasse && (

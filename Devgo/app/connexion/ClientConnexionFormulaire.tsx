@@ -76,8 +76,6 @@ const ClientConnexionFormulaire = () => {
           />
         <InputPassword
                {...register("password")}
-               
-             
               />
         </div>
         {errors.password && (

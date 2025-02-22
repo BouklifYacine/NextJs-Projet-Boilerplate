@@ -109,7 +109,6 @@ export function SectionPseudo({ userId }: { userId: string }) {
           <div className="space-y-2">
             <Label htmlFor="motdepasse">Mot de passe actuel</Label>
             <InputPassword
-              id="motdepasse"
               {...formVerification.register('motdepasse')}
             />
             {formVerification.formState.errors.motdepasse && (
