@@ -1,8 +1,9 @@
+"use server"
 import { auth } from "@/auth"
 import { prisma } from "@/prisma"
 
 
-export async function AdminMiddlewareServeur(){
+export async function AdminAction(){
     const session = await auth()
     const sessionID = session?.user?.id
 
