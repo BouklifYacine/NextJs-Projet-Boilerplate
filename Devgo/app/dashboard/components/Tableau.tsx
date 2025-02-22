@@ -13,6 +13,7 @@ import {
   import BadgeAbonnement from "./BadgeAbonnement";
   import { RoleSelect } from "./select";
   import { Role, Utilisateur} from "../(interface-types)/Interface-Types";
+import BadgeTypeAbonnement from "./BadgeTypeAbonnement";
   
   interface UsersTableProps {
     utilisateurFiltre: Utilisateur[];
@@ -109,7 +110,7 @@ import {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {!utilisateur.abonnement?.periode ? "Freemium" : utilisateur.abonnement.periode.charAt(0).toUpperCase() + utilisateur.abonnement.periode.slice(1) }
+                    {!utilisateur.abonnement?.periode ? "Freemium" : <BadgeTypeAbonnement abonnement={utilisateur.abonnement.periode}/> }
                   </TableCell>
                 </TableRow>
               ))}
