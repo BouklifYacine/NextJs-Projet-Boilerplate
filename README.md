@@ -211,8 +211,6 @@ Version 1.0 a venir (Début du développement en Mai 2025)
 - Couleurs personnalisables
 - Polices configurables
 
-
-
 🔒 Sécurité
 
 - 2FA (email)

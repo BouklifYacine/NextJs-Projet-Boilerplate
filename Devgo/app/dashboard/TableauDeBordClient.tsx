@@ -10,8 +10,10 @@ import { UsersTable } from "./components/Tableau";
 import { Role } from "./(interface-types)/Interface-Types";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs, statistiques, MRR, RevenusParUtilisateurs, page, setPage , totalPages}) => {
+  
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
     string[]
   >([]);
@@ -22,9 +24,10 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
   const [filtreAdmin, setFiltreAdmin] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState<Record<string, boolean>>({});
 
-
   const { mutate: deleteUsers, isPending } = useDeleteUsers();
   const { mutate: modifierRole } = useModifierRole();
+
+  const router = useRouter();
 
   const handleRoleChange = async (userId: string, newRole: Role) => {
     setLoadingUsers((prev) => ({ ...prev, [userId]: true }));
@@ -37,6 +40,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
       {
         onSuccess: () => {
           setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
+          router.refresh();
         },
         onError: () => {
           setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
