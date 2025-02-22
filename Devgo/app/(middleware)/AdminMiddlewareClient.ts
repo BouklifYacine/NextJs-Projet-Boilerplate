@@ -12,5 +12,7 @@ export async function AdminMiddlewareClient(){
         where: {id: sessionID}
     })
     if(utilisateur?.role !== "Admin") redirect('/')
+
+        return { isAdmin: utilisateur?.role === "Admin" };
     
 }

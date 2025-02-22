@@ -21,7 +21,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UtilisateurAdmin } from "@/app/(actions)/AdminAction";
+import { AdminMiddlewareClient } from "@/app/(middleware)/AdminMiddlewareClient";
+
 
 const Header = () => {
   const { data: session } = useSession();
@@ -33,11 +34,11 @@ const Header = () => {
 
   const { data: Admin } = useQuery({
     queryKey: ["utilisateurAdmin"],
-    queryFn: async () => UtilisateurAdmin(),
+    queryFn: async () => AdminMiddlewareClient(),
   });
 
   const utilisateurabonner = data?.abonner;
-  const utilisateurAdmin = Admin?.Admin;
+  const utilisateurAdmin = Admin?.isAdmin;
 
   return (
     <header className="sticky top-0 z-50 pt-4 px-4 bg-black">

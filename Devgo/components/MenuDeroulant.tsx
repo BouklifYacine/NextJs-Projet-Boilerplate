@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/pro/action";
-import { UtilisateurAdmin } from "@/app/(actions)/AdminAction";
+import { AdminMiddlewareClient } from "@/app/(middleware)/AdminMiddlewareClient";
 
 export function MenuDeroulant() {
  const { data: session } = useSession()
@@ -27,11 +27,11 @@ export function MenuDeroulant() {
 
 const { data: Admin } = useQuery({
   queryKey: ["utilisateurAdmin"], 
-  queryFn : async () => UtilisateurAdmin()
+  queryFn : async () => await AdminMiddlewareClient()
 })
 
 const utilisateurabonner = data?.abonner
-const utilisateurAdmin = Admin?.Admin
+const utilisateurAdmin = Admin?.isAdmin
 
  return (
   <>

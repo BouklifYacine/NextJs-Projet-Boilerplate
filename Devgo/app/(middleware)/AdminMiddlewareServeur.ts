@@ -12,5 +12,7 @@ export async function AdminMiddlewareServeur(){
         where: {id: sessionID}
     })
     if(utilisateur?.role !== "Admin") throw new Error('Accès non autorisé non admin ')
+
+        return {success : true, Admin : utilisateur.role === "Admin"}
     
 }
