@@ -1,24 +1,17 @@
-import React from 'react'
-import ComponentPage from './components/componentspage'
-import { redirect } from 'next/navigation'
-import { auth } from '@/auth'
-import { prisma } from '@/prisma'
+import React from "react";
+import ComponentPage from "./components/componentspage";
+
+import { AdminMiddleware } from "../(middleware)/AdminMiddleware";
 
 const DashboardServer = async () => {
-  const session = await auth()
-  if(!session?.user?.id) redirect("/")
+ 
+  await AdminMiddleware()
 
-    const utilisateur = await prisma.user.findUnique({
-      where: {id :session?.user?.id }
-    })
-
-   if(utilisateur?.role !== "Admin") redirect("/")
-  
   return (
     <>
-    <ComponentPage></ComponentPage>
+      <ComponentPage></ComponentPage>
     </>
-  )
-}
+  );
+};
 
-export default DashboardServer
+export default DashboardServer;

@@ -24,7 +24,7 @@ const LogoAnimation = () => {
       <div className="container mx-auto mt-24 max-w-3xl md:max-w-6xl px-8">
         <div>
           <p className="text-center text-white py-8 mb-4 text-lg md:text-2xl font-medium">
-            Les clubs partenaires de FootDataGo
+            Les clubs partenaires de DevGo
           </p>
         </div>
         <div className="relative overflow-hidden before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-32 before:bg-gradient-to-r before:from-black before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-32 after:bg-gradient-to-l after:from-black after:to-transparent">
