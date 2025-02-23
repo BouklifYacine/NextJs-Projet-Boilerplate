@@ -11,6 +11,13 @@ type Schema = z.infer<typeof SchemaConnexion>;
 
 export async function connexionAction(data: Schema) {
   try {
+    const validation = SchemaConnexion.safeParse(data);
+    if (!validation.success) {
+      return {
+        success: false,
+        error: validation.error.errors[0].message,
+      };
+    }
     const user = await prisma.user.findUnique({
       where: {
         email: data.email,

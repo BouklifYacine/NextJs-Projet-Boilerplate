@@ -6,7 +6,7 @@ import { redirect } from "next/navigation"
 
 export async function UtilisateurAbonner(){
      const session = await auth()
-     if(!session) redirect('/')
+     if(!session?.user?.id) redirect('/')
 
     const utilisateurexistant = await prisma.user.findUnique({
         where : { id : session.user?.id}

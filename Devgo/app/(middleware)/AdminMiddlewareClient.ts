@@ -11,4 +11,5 @@ export async function AdminMiddlewareClient() {
   });
   const admin = utilisateur?.role === "Admin";
   if (!admin) redirect("/");
+  
 }

@@ -12,6 +12,14 @@ type Schema = z.infer<typeof SchemaInscription>;
 
 export async function inscriptionAction(data: Schema) {
   try {
+
+    const validation = SchemaInscription.safeParse(data)
+    if (!validation.success){
+      return {
+        success : false, 
+        
+      }
+    }
     const emailutilisateur = await prisma.user.findUnique({
       where: { email: data.email }
     });
