@@ -20,8 +20,19 @@ services:
         - path: .
           target: /app
           action: sync
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
     environment:
-      - DB_URL=postgresql://postgres:yacine@localhost:5432/FootDataGo?schema=public
-   
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
 volumes:
-  tasked:
+  postgres_data:
