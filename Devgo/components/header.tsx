@@ -27,17 +27,18 @@ const Header = () => {
   const { data: session } = useSession();
 
   const { data } = useQuery({
-    queryKey: ["utilisateurabonner"],
-    queryFn: async () => UtilisateurAbonner(),
+    queryKey: ["userStatus"],
+    queryFn: async () => {
+      const [abonnement, admin] = await Promise.all([
+        UtilisateurAbonner(),
+        AdminAction(),
+      ]);
+      return { abonnement, admin };
+    },
   });
 
-  const { data: Admin } = useQuery({
-    queryKey: ["utilisateurAdmin"],
-    queryFn: async () => AdminAction()
-  });
-
-  const utilisateurabonner = data?.abonner;
-  const utilisateurAdmin = Admin?.Admin;
+  const utilisateurabonner = data?.abonnement.abonner;
+  const utilisateurAdmin = data?.admin.Admin;
 
   return (
     <header className="sticky top-0 z-50 pt-4 px-4 bg-black">
@@ -164,9 +165,7 @@ const Header = () => {
                       <Link href="/dashboard" className="cursor-pointer">
                         <DropdownMenuItem>
                           <Table className="mr-2 h-4 w-4 text-black" />
-                          <span className="cursor-pointer">
-                            Dashboard
-                          </span>
+                          <span className="cursor-pointer">Dashboard</span>
                         </DropdownMenuItem>
                       </Link>
                     )}

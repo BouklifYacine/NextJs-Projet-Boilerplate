@@ -36,9 +36,7 @@ const AuthForm = () => {
       reset();
       setCode(response.data.message);
       setErrorMessage("");
-      setTimeout(() => {
-        router.push("/connexion");
-      }, 3000);
+      router.push("/connexion");
     } catch (error) {
       setErrorMessage(
          "Une erreur est survenue"

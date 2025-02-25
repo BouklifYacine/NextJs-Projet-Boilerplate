@@ -8,9 +8,7 @@ const DashboardServer = async () => {
   await AdminMiddlewareClient()
 
   return (
-    <>
-      <ComponentPage></ComponentPage>
-    </>
+    <> <ComponentPage></ComponentPage> </>
   );
 };
 

@@ -3,11 +3,19 @@
 import { prisma } from "@/prisma";
 import { SessionAdmin } from "../utils/SessionAdmin";
 import { revalidatePath } from "next/cache";
+import { ModifierRoleInputSchema } from "../(schema)/SchemaRole";
 
 export async function ModifierRole(
   id: string,
   newRole: "Admin" | "utilisateur"
 ) {
+
+  const validationinput = ModifierRoleInputSchema.safeParse({id , newRole})
+  if(!validationinput.success){
+    return {
+      success : false, 
+    }
+  }
   await SessionAdmin();
 
   await prisma.user.update({
