@@ -6,12 +6,12 @@ export async function AdminAction() {
   const session = await auth();
   const sessionID = session?.user?.id;
 
-  if (!sessionID) throw new Error("Vous n'avez pas de session ID")
+  if (!sessionID) return {success : false , message : "Vous n'avez pas de Session ID"}
 
   const utilisateur = await prisma.user.findUnique({
     where: { id: sessionID },
   });
-  if (utilisateur?.role !== "Admin") throw new Error("Vous n'etes pas admin")
+  if (utilisateur?.role !== "Admin") return {success : false , message : "Vous n'etes pas admin "}
 
   return { success: true, Admin: utilisateur.role === "Admin" };
 }

@@ -1,20 +1,21 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
+
 WORKDIR /app
 
-FROM base AS deps
 COPY package.json package-lock.json ./
-RUN npm ci
 
-FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
+COPY prisma ./prisma/
+
+RUN npm pkg delete scripts.postinstall
+
+RUN npm install
+
+RUN npx prisma generate
+
+RUN npm pkg set scripts.postinstall="prisma generate"
+
 COPY . .
-RUN npm run build
 
-FROM base AS production
-ENV NODE_ENV=production
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
