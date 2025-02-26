@@ -50,14 +50,14 @@ const Section = () => {
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-bold tracking-tighter text-white text-center px-4 max-w-8xl">
-            Comparez les{" "}
+            Créer votre {" "}
             <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text inline-block">
-              datas
+              projet
             </span>{" "}
-            des <br className="hidden md:block" />
-            joueurs de{" "}
+            à  <br className="hidden md:block" />
+            une vitesse {" "}
             <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text inline-block">
-              football
+             éclair
             </span>
           </h1>
 
