@@ -194,19 +194,21 @@ Les changer ensuite la ou ces emails sont utilisés checkez les API de bienvenue
 6. utiliser le .env dans votre code pour ne pas afficher le secret avec le proces.env.STRIPE_MONTHLY_PRICE_ID
 
 
-Version 1.0 a venir (Début du développement en Mai 2025)
-🚀 FEATURES ESSENTIELLES
+🚀Version 1.0 a venir (Début du développement en Mai 2025)
 🛠️ Architecture & Tech
 
 - Dark Mode
-- Zustand pour state management
-- Redis pour le cache
+- (Zustand pour state management)
 - Architecture modulaires
 - CI/CD (Github Actions)
-- Tests complets (Unit, E2E, Integration)
+- Tests complets (Unitaire, E2E, Integration)
+
+🔒 Migration système d'authentification
+- Passage de AuthJS a BetterAuth 
 
 🎨 Personnalisation
 
+- Design System
 - Système marque blanche
 - Couleurs personnalisables
 - Polices configurables
@@ -214,7 +216,6 @@ Version 1.0 a venir (Début du développement en Mai 2025)
 🔒 Sécurité
 
 - 2FA (email)
-- Protection CSRF améliorée
 - Rate limiting
 - Super Admin unique
 
@@ -257,7 +258,6 @@ Actions
 
 💰 Section Revenus
 - Stats Mensuelles
-
 - Total du mois
 - Comparaison M-1
 - Graphique journalier
@@ -287,6 +287,7 @@ Abonnements
 
 🎨 UI/UX
 
+- Design System
 - Plus de composants réutilisables
 - Animations fluides
 - Tooltips contextuels
@@ -297,8 +298,6 @@ Abonnements
 - Images optimisées
 - Améliorer les requetes Prisma
 - Lazy loading
-- Cache Redis
-- Monitoring temps réel
 
 📚 DOCUMENTATION
 Guides
