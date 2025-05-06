@@ -25,4 +25,9 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+  rateLimit: {
+    enabled : true,
+    window : 10, 
+    max: 100,
+  }
 });

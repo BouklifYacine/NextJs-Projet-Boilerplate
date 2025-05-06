@@ -7,10 +7,10 @@ import SectionPayement from "@/components/sectionspayement/SectionPayement";
 export default function Home() {
   return (
     <>
-      <Header />
+      {/* <Header />
       <Section />
-      <LogoAnimation></LogoAnimation>
-      <SectionPayement></SectionPayement>
+      <LogoAnimation></LogoAnimation> */}
+      {/* <SectionPayement></SectionPayement> */}
       <Faq></Faq>
     </>
   );
