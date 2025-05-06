@@ -11,7 +11,7 @@ const Salut = () => {
 
   return (
     <div className="flex gap-8">
-      <p>{session ? session.user.id : "Pas connecté"}</p>
+      <p>{session ? session.user.name : "Pas connecté"}</p>
       <p>
         {session ? <Boutondeconnexion></Boutondeconnexion> : "pas de bouton"}
       </p>

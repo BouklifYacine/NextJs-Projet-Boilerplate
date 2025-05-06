@@ -1,5 +1,7 @@
-import { auth } from '@/auth'
+
+import { auth } from '@/auth';
 import ClientSidePayment from './ClientPayement'
+import { headers } from 'next/headers';
 
 const abonnements = [
   {
@@ -36,7 +38,9 @@ const abonnements = [
 ]
 
 const SectionPayement = async () => {
-  const session = await auth()
+const session = await auth.api.getSession({
+    headers: await headers() // you need to pass the headers object.
+});
 
   return (
     <div className="min-h-screen bg-black py-20">

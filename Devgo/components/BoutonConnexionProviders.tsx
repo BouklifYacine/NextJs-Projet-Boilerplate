@@ -9,6 +9,7 @@ const BoutonConnexionProviders = () => {
   const GoogleConnexion = async () => {
     const data = await authClient.signIn.social({
       provider: "google",
+      callbackURL:'/salut'
     });
     return data;
   };

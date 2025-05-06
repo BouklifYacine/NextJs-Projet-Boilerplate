@@ -6,12 +6,11 @@ import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
 import { Deconnexion } from "./BoutonDéconnexion";
 import { BoutonConnexion } from "./BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
-import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
+import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +21,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
+import { authClient } from "@/lib/auth-client";
 
 const Header = () => {
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   const { data } = useQuery({
     queryKey: ["userStatus"],

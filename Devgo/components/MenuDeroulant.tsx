@@ -12,7 +12,6 @@ import {
   Table2,
   User,
 } from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,11 +24,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
+import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
 import { AdminAction } from "@/app/(actions)/AdminAction";
+import { authClient } from "@/lib/auth-client";
+import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient";
 
 export function MenuDeroulant() {
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   const { data } = useQuery({
     queryKey: ["userStatus"],
@@ -120,7 +121,7 @@ export function MenuDeroulant() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => signOut()}>
+              <DropdownMenuItem onClick={async () => DeconnexionClient}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Déconnexion</span>
               </DropdownMenuItem>

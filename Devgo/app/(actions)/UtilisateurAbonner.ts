@@ -1,11 +1,14 @@
 "use server"
 
-import { auth } from "@/auth"
+import { auth } from "@/auth";
 import { prisma } from "@/prisma"
+import { headers } from "next/headers";
 import { redirect } from "next/navigation"
 
 export async function UtilisateurAbonner(){
-     const session = await auth()
+  const session = await auth.api.getSession({
+      headers: await headers() 
+  });
      if(!session?.user?.id) redirect('/')
 
     const utilisateurexistant = await prisma.user.findUnique({

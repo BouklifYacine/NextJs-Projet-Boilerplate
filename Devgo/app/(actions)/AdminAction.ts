@@ -1,9 +1,12 @@
 "use server";
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
+import { headers } from "next/headers";
 
 export async function AdminAction() {
-  const session = await auth();
+const session = await auth.api.getSession({
+    headers: await headers() 
+});
   const sessionID = session?.user?.id;
 
   if (!sessionID)

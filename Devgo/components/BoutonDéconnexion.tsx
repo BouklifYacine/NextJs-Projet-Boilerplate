@@ -1,14 +1,28 @@
-"use client"
+"use client";
 
-import { Button } from "./ui/button"
-import { LogOut } from "lucide-react"
- 
+import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+
 export function Deconnexion() {
-  return  <Button 
-  // onClick={() => signOut()}
-  variant="ghost" 
-  className="hover:bg-gray-300 bg-white text-black flex items-center gap-2"
->
-  Déconnexion <LogOut size={16} />
-</Button>
+  const Router = useRouter();
+  const Deconnexion = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          Router.push("/");
+        },
+      },
+    });
+  };
+  return (
+    <Button
+      onClick={Deconnexion}
+      variant="ghost"
+      className="hover:bg-gray-300 bg-white text-black flex items-center gap-2"
+    >
+      Déconnexion <LogOut size={16} />
+    </Button>
+  );
 }
