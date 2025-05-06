@@ -36,9 +36,6 @@ interface AccountData {
   updatedAt: Date;
   userId: string;
 }
-
-
-
 interface SectionProfilProps {
   userId: string
 }
@@ -57,8 +54,6 @@ export function SectionProfil({ userId }: SectionProfilProps) {
 
   const provider = userAccounts?.[0]?.providerId
 
- 
-
   const { data: userData, isLoading } = useQuery<UserData>({
     queryKey: ['userData', userId],
     queryFn: async () => {
@@ -67,8 +62,11 @@ export function SectionProfil({ userId }: SectionProfilProps) {
       return response.json()
     }
   })
+const tailleaccount = userAccounts?.length
 
-  const hasProvider = userAccounts!.length > 0
+  const aUnProvider = tailleaccount ? tailleaccount > 0 : false
+
+
 
   if (isLoading) {
     return (
@@ -107,7 +105,7 @@ export function SectionProfil({ userId }: SectionProfilProps) {
 
               <div className="space-y-3">
                 <h2 className="text-2xl font-bold">{userData.name}</h2>
-                {hasProvider && (
+                {aUnProvider && (
                   <Badge variant="outline" className="bg-white/90 dark:bg-gray-800/90">
                     <span className="flex items-center gap-1.5">
                     Connecté via {provider}
@@ -130,7 +128,7 @@ export function SectionProfil({ userId }: SectionProfilProps) {
                 content={userData.name ?? '-'}
               />
 
-              {!hasProvider && (
+              {!aUnProvider && (
                 <InfoCard
                   icon={<Lock className="w-5 h-5" />}
                   title="Mot de passe"

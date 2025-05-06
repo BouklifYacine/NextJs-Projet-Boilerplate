@@ -1,12 +1,13 @@
 "use server"
 
-import bcrypt from "bcryptjs";
 import { z } from "zod";
 import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { prisma } from "@/prisma";
 import EmailBienvenue from "@/app/(emails)/EmailBievenue";
 import { createElement } from "react";
 import { sendEmail } from "@/lib/email";
+import { auth } from "@/auth";
+import { authClient } from "@/lib/auth-client";
 
 type Schema = z.infer<typeof SchemaInscription>;
 
@@ -42,8 +43,6 @@ export async function inscriptionAction(data: Schema) {
       };
     }
 
-    const motdepasse = await bcrypt.hash(data.password, 10);
-
     const emailElement = createElement(EmailBienvenue, { name: data.name });
     await sendEmail({
       to: data.email,
@@ -51,18 +50,16 @@ export async function inscriptionAction(data: Schema) {
       emailComponent: emailElement,
     });
 
-    const nouvelutilisateur = await prisma.user.create({
-      data: {
-        email: data.email,
-        password: data.password,
-        name: data.name,
-      }
-    });
+    await authClient.signUp.email({
+        name: validation.data.name,
+        email : validation.data.email,
+        password: validation.data.password
+    })
 
     return {
       success: true,
       data: {
-        name: nouvelutilisateur.name,
+        name: validation.data.name,
         message: "Inscription réussie"
       }
     };

@@ -30,6 +30,8 @@ const ClientInscriptionFormulaire = () => {
   const onSubmit = async (data: Schema) => {
     try {
       const result = await inscriptionAction(data);
+      console.log(data)
+      console.log(result)
 
       if (result.success) {
         router.push("/connexion");

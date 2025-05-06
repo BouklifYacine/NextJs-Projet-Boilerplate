@@ -1,16 +1,15 @@
 "use server";
 
-import { signIn } from "@/auth";
-import bcrypt from "bcryptjs";
-
 import { z } from "zod";
 import { SchemaConnexion } from "@/app/(schema)/SchemaConnexion";
-import { prisma } from "@/prisma";
+import { auth } from "@/auth";
+import { authClient } from "@/lib/auth-client";
 
 type Schema = z.infer<typeof SchemaConnexion>;
 
 export async function connexionAction(data: Schema) {
   try {
+   
     const validation = SchemaConnexion.safeParse(data);
     if (!validation.success) {
       return {
@@ -18,36 +17,26 @@ export async function connexionAction(data: Schema) {
         error: validation.error.errors[0].message,
       };
     }
-    const user = await prisma.user.findUnique({
-      where: {
-        email: data.email,
+
+
+    const response = await auth.api.signInEmail({
+      body: {
+          email : validation.data.email,
+          password : validation.data.password
       },
-    });
+      asResponse: true // returns a response object instead of data
+  });
 
-    if (!user?.password) {
+    if (!response.ok) {
       return {
         success: false,
         error: "Email ou mot de passe incorrect",
       };
     }
-
-    const Motdepassevalide = await bcrypt.compare(data.password, user.password);
-
-    if (!Motdepassevalide) {
-      return {
-        success: false,
-        error: "Email ou mot de passe incorrect",
-      };
-    }
-
-    await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
 
     return {
       success: true,
+     
     };
   } catch (error) {
     console.error("Erreur de connexion:", error);
