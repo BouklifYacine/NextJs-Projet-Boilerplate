@@ -8,7 +8,7 @@ import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schema'
 import { verifierMotDePasse, changerMotDePasse } from '../actions'
 import toast from 'react-hot-toast'
 import { TypeMotDePasse } from '../schema'
-import { signOut } from 'next-auth/react'
+import { DeconnexionClient } from '@/lib/FonctionDeconnexionClient'
 
 export function useMotDePasse() {
   const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
@@ -54,7 +54,7 @@ export function useMotDePasse() {
     },
     onSuccess: () => {
       toast.success('Mot de passe modifié avec succès')
-      signOut({ callbackUrl: "/connexion" })
+      DeconnexionClient()
     },
     onError: (error: Error) => {
       toast.error(error.message)

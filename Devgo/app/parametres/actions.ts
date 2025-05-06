@@ -9,13 +9,19 @@ import EmailChangement from "@/app/(emails)/ChangementEmail"
 import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse"
 import EmailChangementPseudo from "@/app/(emails)/EmailChangementPseudo"
 import { revalidatePath } from "next/cache"
-import { auth, signOut } from "@/auth"
+
 import { TypeEmail, TypeMotDePasse, TypePseudo } from "./schema"
 import EmailSuppressionCompte from "@/app/(emails)/SuppressionCompte"
+import { auth } from "@/auth"
+import { headers } from "next/headers"
+import { authClient } from "@/lib/auth-client"
+import { redirect } from "next/navigation"
 
 export async function verifierMotDePasse(motdepasse: string) {
   try {
-    const session = await auth()
+   const session = await auth.api.getSession({
+         headers: await headers()
+     })
     if (!session?.user?.id) throw new Error("Non autorisé")
 
     const utilisateur = await prisma.user.findUnique({
@@ -26,7 +32,7 @@ export async function verifierMotDePasse(motdepasse: string) {
     if (!utilisateur) throw new Error("Utilisateur non trouvé")
 
     if (utilisateur.accounts.length > 0) {
-      const provider = utilisateur.accounts[0].provider
+      const provider = utilisateur.accounts[0].providerId
       throw new Error(`Cette fonctionnalité n'est pas disponible car votre compte est lié à ${provider}`)
     }
 
@@ -64,7 +70,9 @@ export async function verifierMotDePasse(motdepasse: string) {
 
 export async function changerEmail(donnees: TypeEmail) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: await headers()
+  })
     if (!session?.user?.id) throw new Error("Non autorisé")
 
     const { nouvelEmail, codeverification } = donnees
@@ -133,7 +141,9 @@ export async function changerEmail(donnees: TypeEmail) {
 
 export async function changerMotDePasse(donnees: TypeMotDePasse) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: await headers()
+  })
     if (!session?.user?.id) throw new Error("Non autorisé")
 
     const { motdepasse, codeverification } = donnees
@@ -182,7 +192,9 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
 
 export async function changerPseudo(donnees: TypePseudo) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: await headers()
+  })
     if (!session?.user?.id) throw new Error("Non autorisé")
 
     const { pseudo, codeverification } = donnees
@@ -201,9 +213,6 @@ export async function changerPseudo(donnees: TypePseudo) {
     const pseudoExistant = await prisma.user.findUnique({
       where: { 
         name: pseudo,
-        NOT: {
-          id: session.user.id
-        }
       }
     })
 
@@ -264,7 +273,9 @@ export async function changerPseudo(donnees: TypePseudo) {
 
 export async function supprimerCompte(codeVerification?: string) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: await headers()
+  })
     
     if (!session?.user?.id) {
       throw new Error("Non autorisé")
@@ -303,9 +314,6 @@ export async function supprimerCompte(codeVerification?: string) {
           where: { userId: session?.user?.id }
         })
 
-        await db.authenticator.deleteMany({
-          where: { userId: session?.user?.id }
-        })
 
         if (utilisateur.clientId) {
           try {
@@ -335,7 +343,13 @@ export async function supprimerCompte(codeVerification?: string) {
       })
 
       // Déconnexion
-      await signOut({ redirect: false })
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+          redirect("/login")
+          },
+        },
+      });
 
       return { success: true }
     } catch (error) {

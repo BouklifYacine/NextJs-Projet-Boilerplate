@@ -1,12 +1,11 @@
 "use server";
 
-
+import { signIn } from "@/auth";
 import bcrypt from "bcryptjs";
 
 import { z } from "zod";
 import { SchemaConnexion } from "@/app/(schema)/SchemaConnexion";
 import { prisma } from "@/prisma";
-import { authClient } from "@/lib/auth-client";
 
 type Schema = z.infer<typeof SchemaConnexion>;
 
@@ -41,9 +40,10 @@ export async function connexionAction(data: Schema) {
       };
     }
 
-   await authClient.signUp.email({
-      email: "test@example.com",
-      password: "password1234",
+    await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
     });
 
     return {

@@ -1,12 +1,12 @@
 'use client'
 
-import { useSession } from "next-auth/react"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Mail, Lock, User, CreditCard, Calendar, Clock } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { Badge } from "@/components/ui/badge"
 import { InfoCard } from "../_components/InfoCard"
+import { authClient } from "@/lib/auth-client"
 
 interface UserData {
   id: string
@@ -21,14 +21,32 @@ interface UserData {
   } | null
 }
 
+interface AccountData {
+  accessToken: string;
+  accessTokenExpiresAt: Date;
+  accountId: string;
+  createdAt: Date;
+  id: string;
+  idToken: string;
+  password: null;
+  providerId: 'google';
+  refreshToken: null;
+  refreshTokenExpiresAt: null;
+  scope: string;
+  updatedAt: Date;
+  userId: string;
+}
+
+
+
 interface SectionProfilProps {
   userId: string
 }
 
 export function SectionProfil({ userId }: SectionProfilProps) {
-  const { data: session } = useSession()
+  const { data: session } = authClient.useSession();
 
-  const { data: userAccounts } = useQuery({
+  const { data: userAccounts } = useQuery<AccountData[]>({
     queryKey: ['userAccounts', userId],
     queryFn: async () => {
       const response = await fetch(`/api/user/accounts?userId=${userId}`)
@@ -36,6 +54,10 @@ export function SectionProfil({ userId }: SectionProfilProps) {
       return response.json()
     }
   })
+
+  const provider = userAccounts?.[0]?.providerId
+
+ 
 
   const { data: userData, isLoading } = useQuery<UserData>({
     queryKey: ['userData', userId],
@@ -46,7 +68,7 @@ export function SectionProfil({ userId }: SectionProfilProps) {
     }
   })
 
-  const hasProvider = userAccounts?.length > 0
+  const hasProvider = userAccounts!.length > 0
 
   if (isLoading) {
     return (
@@ -88,7 +110,7 @@ export function SectionProfil({ userId }: SectionProfilProps) {
                 {hasProvider && (
                   <Badge variant="outline" className="bg-white/90 dark:bg-gray-800/90">
                     <span className="flex items-center gap-1.5">
-                    Connecté via {userAccounts[0]?.provider.charAt(0).toUpperCase() + userAccounts[0]?.provider.slice(1).toLowerCase()}
+                    Connecté via {provider}
                     </span>
                   </Badge>
                 )}

@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
 import { schemaVerificationMotDePasse } from "../schema";
 import { supprimerCompte, verifierMotDePasse } from "../actions";
+import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient";
 
 export type DeleteAccountSteps = "verification" | "confirmation";
 
@@ -66,7 +66,7 @@ export function useSuppressionCompte(userId: string) {
     },
     onSuccess: () => {
       toast.success("Compte supprimé avec succès");
-      signOut({ redirectTo: "/connexion" });
+      DeconnexionClient()
       router.push("/connexion");
       router.refresh();
     },

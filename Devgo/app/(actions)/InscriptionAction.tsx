@@ -32,7 +32,7 @@ export async function inscriptionAction(data: Schema) {
     }
 
     const nomutilisateur = await prisma.user.findUnique({
-      where: { name: data.name }
+      where: { name : data.name }
     });
     
     if (nomutilisateur) {
@@ -54,7 +54,7 @@ export async function inscriptionAction(data: Schema) {
     const nouvelutilisateur = await prisma.user.create({
       data: {
         email: data.email,
-        password: motdepasse,
+        password: data.password,
         name: data.name,
       }
     });
