@@ -27,7 +27,7 @@ const LogoAnimation = () => {
             Les clubs partenaires de DevGo
           </p>
         </div>
-        <div className="relative overflow-hidden before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-32 before:bg-gradient-to-r before:from-black before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-32 after:bg-gradient-to-l after:from-black after:to-transparent">
+        <div className="relative overflow-hidden before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-32 before:bg-linear-to-r before:from-black before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-32 after:bg-linear-to-l after:from-black after:to-transparent">
           <motion.div
             className="flex gap-8 md:gap-24"
             initial={{ x: "0%" }}
@@ -44,7 +44,7 @@ const LogoAnimation = () => {
                 key={index}
                 src={logo.src}
                 alt={logo.alt}
-                className="w-auto h-12 md:h-20 lg:h-24 flex-shrink-0"
+                className="w-auto h-12 md:h-20 lg:h-24 shrink-0"
                 priority
               />
             ))}

@@ -106,7 +106,7 @@ const ClientSidePayment = ({
               <ul className="space-y-3">
                 {abonnement.avantages.map((avantage, index) => (
                   <li key={index} className="flex items-center">
-                    <Check className="h-5 w-5 text-purple-500 mr-3 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-purple-500 mr-3 shrink-0" />
                     <span>{avantage}</span>
                   </li>
                 ))}

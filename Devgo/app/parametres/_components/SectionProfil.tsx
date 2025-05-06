@@ -66,9 +66,9 @@ export function SectionProfil({ userId }: SectionProfilProps) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 shadow-xl rounded-xl overflow-hidden">
+      <Card className="backdrop-blur-xs bg-white/90 dark:bg-gray-900/90 shadow-xl rounded-xl overflow-hidden">
         <div className="relative">
-          <div className="absolute inset-0 h-32 bg-gradient-to-r from-purple-600 to-blue-600 opacity-90" />
+          <div className="absolute inset-0 h-32 bg-linear-to-r from-purple-600 to-blue-600 opacity-90" />
           
           <div className="relative pt-16 px-6 pb-6">
             <div className="flex flex-col items-center text-center gap-6">
@@ -78,7 +78,7 @@ export function SectionProfil({ userId }: SectionProfilProps) {
                   alt={session?.user?.name ?? "Avatar"}
                   className="object-cover"
                 />
-                <AvatarFallback className="text-2xl bg-gradient-to-br from-purple-500 to-blue-500 text-white">
+                <AvatarFallback className="text-2xl bg-linear-to-br from-purple-500 to-blue-500 text-white">
                   {session?.user?.name?.[0]?.toUpperCase() ?? "U"}
                 </AvatarFallback>
               </Avatar>
@@ -125,8 +125,8 @@ export function SectionProfil({ userId }: SectionProfilProps) {
                       <div className="flex flex-wrap items-center gap-2">
                         <Badge 
                           className={userData.plan === 'pro' 
-                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white' 
-                            : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                            ? 'bg-linear-to-r from-purple-600 to-blue-600 text-white' 
+                            : 'bg-linear-to-r from-purple-600 to-blue-600 text-white'
                           }
                         >
                           {userData.plan === 'pro' ? 'Premium' : 'Gratuit'}
