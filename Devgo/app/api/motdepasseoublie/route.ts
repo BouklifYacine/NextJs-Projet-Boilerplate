@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import { createElement } from "react";
-import { sendEmail } from "@/app/utils/email";
+import { sendEmail } from "@/lib/email";
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
 
 export async function POST(request: NextRequest) {

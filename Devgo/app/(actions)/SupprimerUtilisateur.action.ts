@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/prisma";
-import { SessionAdmin } from "../utils/SessionAdmin";
+import { SessionAdmin } from "../../lib/SessionAdmin";
 import { Prisma } from "@prisma/client";
 
 interface DeleteResponse {

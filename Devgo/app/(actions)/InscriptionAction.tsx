@@ -6,7 +6,7 @@ import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { prisma } from "@/prisma";
 import EmailBienvenue from "@/app/(emails)/EmailBievenue";
 import { createElement } from "react";
-import { sendEmail } from "@/app/utils/email";
+import { sendEmail } from "@/lib/email";
 
 type Schema = z.infer<typeof SchemaInscription>;
 

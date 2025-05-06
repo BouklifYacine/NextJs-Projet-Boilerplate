@@ -2,7 +2,7 @@
 
 import { prisma } from "@/prisma"
 import { compare, hash } from "bcryptjs"
-import { sendEmail } from "@/app/utils/email"
+import { sendEmail } from "@/lib/email"
 import { createElement } from "react"
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation"
 import EmailChangement from "@/app/(emails)/ChangementEmail"
