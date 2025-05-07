@@ -1,32 +1,24 @@
-import {
-  Html,
-  Head,
-  Body,
-  Container,
-  Section,
-  Text,
-} from "@react-email/components";
+
+import { Text } from "@react-email/components";
 import * as React from "react";
+import { BaseEmailLayout } from "./TemplateMail";
 
 interface SuppressionCompte {
   pseudo: string;
 }
 
-const EmailSuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => {
-  return (
-    <Html>
-      <Head />
-      <Body>
-        <Container>
-          <Section>
-            <Text>Bonjour {pseudo}</Text>
-            <Text>Votre compte a été supprimer définitivement , ainsi que toute données liées a ce compte. </Text>
-          
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  );
-};
+const EmailSuppressionCompte: React.FC<SuppressionCompte> = ({ pseudo }) => (
+  <BaseEmailLayout title="Suppression de compte">
+    <Text style={{ fontSize: 16, color: "#222" }}>
+      Bonjour <b>{pseudo}</b>,
+    </Text>
+    <Text style={{ fontSize: 16, color: "#222" }}>
+      Votre compte a été <b>supprimé définitivement</b>, ainsi que toutes les données associées.
+    </Text>
+    <Text style={{ fontSize: 14, color: "#888", marginTop: 24 }}>
+      Si vous n’êtes pas à l’origine de cette action, contactez-nous immédiatement.
+    </Text>
+  </BaseEmailLayout>
+);
 
 export default EmailSuppressionCompte;

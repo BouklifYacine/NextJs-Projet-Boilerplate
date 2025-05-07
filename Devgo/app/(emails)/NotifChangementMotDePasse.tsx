@@ -1,12 +1,7 @@
-import {
-  Html,
-  Head,
-  Body,
-  Container,
-  Section,
-  Text,
-} from "@react-email/components";
+
+import { Text } from "@react-email/components";
 import * as React from "react";
+import { BaseEmailLayout } from "./TemplateMail";
 
 interface NotifChangementMotDePasse {
   pseudo: string;
@@ -14,26 +9,18 @@ interface NotifChangementMotDePasse {
 
 const NotifChangementMotDePasse: React.FC<NotifChangementMotDePasse> = ({
   pseudo,
-}) => {
-  return (
-    <Html>
-      <Head />
-      <Body>
-        <Container>
-          <Section>
-            <Text>Bonjour {pseudo} </Text>
-            <Text>
-              Vous recevez ce mail car vous venez de changer de mot de passe{" "}
-            </Text>
-            <Text>
-              Si ce changement de mot de passe ne vient pas de vous
-              sécurisez votre compte le plus vite possible
-            </Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  );
-};
+}) => (
+  <BaseEmailLayout title="Changement de mot de passe">
+    <Text style={{ fontSize: 16, color: "#222" }}>
+      Bonjour <b>{pseudo}</b>,
+    </Text>
+    <Text style={{ fontSize: 16, color: "#222" }}>
+      Vous recevez ce mail car votre mot de passe vient d’être modifié.
+    </Text>
+    <Text style={{ fontSize: 16, color: "#222" }}>
+      Si ce changement n’est pas de votre fait, <b>sécurisez votre compte</b> immédiatement.
+    </Text>
+  </BaseEmailLayout>
+);
 
 export default NotifChangementMotDePasse;
