@@ -1,8 +1,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
-import bcrypt from "bcryptjs";
 import { ResetPasswordSchema } from "@/app/(schema)/SchemaMotDepasse";
+import { auth } from "@/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,16 +38,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const ctx = await auth.$context;
+    const hashedPassword = await ctx.password.hash(newPassword);
 
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        password: hashedPassword,
         resetToken: null,
         resetTokenExpiry: null,
       },
     });
+
+    const account = await prisma.account.findFirst({
+      where: {
+        userId: user.id,
+      }
+    });
+    
+    if (account) {
+      await prisma.account.update({
+        where: { id: account.id },
+        data: {
+          password: hashedPassword
+        }
+      });
+    }
 
     return NextResponse.json({ message: "Mot de passe mis à jour" });
   } catch (error) {
