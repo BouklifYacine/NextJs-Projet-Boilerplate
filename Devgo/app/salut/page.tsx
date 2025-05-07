@@ -1,20 +1,17 @@
-"use client"
+"use client";
 
 import React from "react";
 import { authClient } from "@/lib/auth-client";
 
-const Salut =   () => {
-  const { data: session } = authClient.useSession()
+const Salut = () => {
+  const { data: session } = authClient.useSession();
 
-
-console.log(session?.user)
+  console.log(session?.user);
 
   return (
     <div className="flex gap-8">
+      <p>{session?.user.name}</p>
       <p>tg</p>
-      <p>
-        tg
-      </p>
     </div>
   );
 };
