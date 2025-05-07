@@ -3,13 +3,13 @@
 import { z } from "zod";
 import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { prisma } from "@/prisma";
-import EmailBienvenue from "@/app/(emails)/EmailBievenue";
-import { createElement } from "react";
-import { sendEmail } from "@/lib/email";
-import { auth } from "@/auth";
+import EmailBienvenue from "@/app/(emails)/EmailBienvenue";
 import { authClient } from "@/lib/auth-client";
+import React from "react";
+import { Resend } from "resend";
 
 type Schema = z.infer<typeof SchemaInscription>;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function inscriptionAction(data: Schema) {
   try {
@@ -42,13 +42,12 @@ export async function inscriptionAction(data: Schema) {
         error: "Ce pseudo est déja utilisé"
       };
     }
-
-    const emailElement = createElement(EmailBienvenue, { name: data.name });
-    await sendEmail({
-      to: data.email,
-      subject: "Bienvenue!",
-      emailComponent: emailElement,
-    });
+    await resend.emails.send({
+        from: 'yacine@footygogo.com',
+        to: data.email,
+        subject: 'Test Resend',
+        react: React.createElement(EmailBienvenue, { name: data.name }),
+      });
 
     await authClient.signUp.email({
         name: validation.data.name,
