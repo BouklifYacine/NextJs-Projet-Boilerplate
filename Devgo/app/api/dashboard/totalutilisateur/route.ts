@@ -1,10 +1,13 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 
 export async function GET(request: NextRequest) {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers() 
+})
   const sessionId = session?.user?.id;
   if (!sessionId)
     return NextResponse.json("Vous devez etre connecté", { status: 401 });

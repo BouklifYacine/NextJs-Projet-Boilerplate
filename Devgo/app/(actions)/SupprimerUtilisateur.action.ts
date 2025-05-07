@@ -21,10 +21,6 @@ export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
         where: { userId: { in: ids } },
       });
 
-      await tx.authenticator.deleteMany({
-        where: { userId: { in: ids } },
-      });
-
       await tx.abonnement.deleteMany({
         where: { userId: { in: ids } },
       });

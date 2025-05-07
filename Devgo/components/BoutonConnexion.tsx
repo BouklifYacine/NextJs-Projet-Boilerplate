@@ -7,7 +7,7 @@ export function BoutonConnexion() {
       <Link href="/connexion">
         <Button
           variant="ghost"
-          className="hover:bg-gray-300 bg-white text-black flex items-center gap-2"
+          className="hover:bg-gray-300 bg-white text-black flex items-center gap-2 cursor-pointer"
         >
           Connexion
         </Button>
