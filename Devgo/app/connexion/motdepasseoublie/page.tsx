@@ -28,6 +28,8 @@ const AuthForm = () => {
   const onSubmit = async (data: Schema) => {
     try {
       const response = await axios.post("/api/motdepasseoublie", data);
+      console.log(response)
+      console.log(data)
 
       reset();
       setCode(response.data.message);

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
-import { createElement } from "react";
-import { sendEmail } from "@/lib/email";
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
+import React from "react";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,6 +12,7 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { email },
+      include : {accounts : true},
     });
 
     if (!user) {
@@ -19,9 +22,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!user.password) {
+    if (user.accounts[0].providerId !== "credential") {
       return NextResponse.json(
-        { message: "Ce compte utilise une connexion via Google/Github. La réinitialisation de mot de passe n'est pas disponible." },
+        { message: "Ce compte utilise une connexion via Google ou Github. La réinitialisation de mot de passe n'est pas disponible." },
         { status: 404 }
       );
     }
@@ -38,11 +41,11 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const emailElement = createElement(CodeConfirmation, { resetCode , pseudo : user.email || "" });
-    await sendEmail({
+    await resend.emails.send({
+      from: 'yacine@footygogo.com',
       to: email,
-      subject: "Code de réinitialisation",
-      emailComponent: emailElement,
+      subject: 'Changement de mot de passe',
+      react: React.createElement(CodeConfirmation, { resetCode , pseudo : user.email || "" }),
     });
 
     return NextResponse.json({ message: "Code envoyé par email dans les spams " });
