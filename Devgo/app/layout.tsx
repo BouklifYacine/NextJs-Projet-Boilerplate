@@ -4,6 +4,7 @@ import "./globals.css";
 import clsx from "clsx";
 import QueryProvider from "./(providers)/QueryProvider";
 import { Toaster } from 'react-hot-toast'
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"], 
@@ -29,7 +30,14 @@ export default function RootLayout({
       )}>
         <QueryProvider>
 
-        {children}
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         <Toaster position="top-center" />
         </QueryProvider>
       </body>
