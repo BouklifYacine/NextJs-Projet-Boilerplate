@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
+import { auth } from "@/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +10,7 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { email },
+      include : {accounts : true},
     });
 
     if (!user?.password) {
@@ -26,12 +28,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const MotDePasseHache = await bcrypt.hash(nouveaumotdepasse, 10);
-    await prisma.user.update({
-      where: { email },
-      data: { password: MotDePasseHache },
-    });
+     const ctx = await auth.$context;
+     const MotDePasseHache = await ctx.password.hash(nouveaumotdepasse);
 
+     const account = await prisma.account.findFirst({
+      where: {
+        userId: user.id,
+      }
+    });
+    
+    if (account) {
+      await prisma.account.update({
+        where: { id: account.id },
+        data: {
+          password: MotDePasseHache
+        }
+      });
+    }
+;
     return NextResponse.json({ message: "Mot de passe mis à jour" });
   } catch (error) {
     return NextResponse.json(

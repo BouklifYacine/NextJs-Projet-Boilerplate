@@ -19,6 +19,8 @@ import { redirect } from "next/navigation"
 
 export async function verifierMotDePasse(motdepasse: string) {
   try {
+
+    // Fix ce code pour demain pour bien récuperer les credentials dans la bdd
    const session = await auth.api.getSession({
          headers: await headers()
      })
