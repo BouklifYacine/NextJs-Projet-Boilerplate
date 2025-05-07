@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
         resetTokenExpiry: {
           gt: new Date(),
         },
+        
       },
+      include : {accounts : true}
     });
 
     if (!user) {
