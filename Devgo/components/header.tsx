@@ -167,7 +167,7 @@ const Header = () => {
                     {utilisateurAdmin && (
                       <Link href="/dashboard" className="cursor-pointer">
                         <DropdownMenuItem>
-                          <Table className="mr-2 h-4 w-4 text-black" />
+                          <Table className="mr-2 h-4 w-4 " />
                           <span className="cursor-pointer">Dashboard</span>
                         </DropdownMenuItem>
                       </Link>

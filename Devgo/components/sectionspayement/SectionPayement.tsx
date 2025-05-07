@@ -39,13 +39,13 @@ const abonnements = [
 
 const SectionPayement = async () => {
 const session = await auth.api.getSession({
-    headers: await headers() // you need to pass the headers object.
+    headers: await headers() 
 });
 
   return (
-    <div className="min-h-screen bg-black py-20">
+    <div className="min-h-screen  py-20">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-white text-center mb-16 text-3xl md:text-5xl font-bold tracking-tight">
+        <h2 className=" text-center mb-16 text-3xl md:text-5xl font-bold tracking-tight">
           Passez au Next Level
         </h2>
         <div className="flex justify-center w-full">
