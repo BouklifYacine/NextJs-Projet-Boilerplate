@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import { authClient } from "@/lib/auth-client";
+import { DarkMode } from "./BoutonDarkMode/DarkMode";
 
 const Header = () => {
   const { data: session } = authClient.useSession();
@@ -41,7 +42,7 @@ const Header = () => {
   const utilisateurAdmin = data?.admin.Admin;
 
   return (
-    <header className="sticky top-0 z-50 pt-4 px-4 bg-black">
+    <header className="sticky top-0 z-50 pt-4 px-4 ">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <Link href="/">
@@ -55,26 +56,28 @@ const Header = () => {
             />
           </Link>
 
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            
             <MenuDeroulant />
+            <DarkMode></DarkMode>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
             <Link
               href="/"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+              className=" hover:text-purple-600 opacity-80 transition-colors"
             >
               Data
             </Link>
             <Link
               href="/"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+              className=" hover:text-purple-600 opacity-80 transition-colors"
             >
               Classement
             </Link>
             <Link
               href="/"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+              className=" hover:text-purple-600 opacity-80 transition-colors"
             >
               Favoris
             </Link>
@@ -185,6 +188,7 @@ const Header = () => {
                 </DropdownMenu>
               </div>
             )}
+            <DarkMode></DarkMode>
           </nav>
         </div>
       </div>

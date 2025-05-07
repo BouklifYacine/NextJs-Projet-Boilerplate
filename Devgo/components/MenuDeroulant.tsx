@@ -77,16 +77,16 @@ export function MenuDeroulant() {
               className="cursor-pointer"
             >
               <DropdownMenuItem>
-                <CreditCard className="mr-2 h-4 w-4 text-black" />
-                <span className="text-black font-medium">Abonnement</span>
+                <CreditCard className="mr-2 h-4 w-4 " />
+                <span className=" font-medium">Abonnement</span>
               </DropdownMenuItem>
             </Link>
           )}
           {session && utilisateurAdmin && (
             <Link href="/dashboard" className="cursor-pointer">
               <DropdownMenuItem>
-                <Table className="mr-2 h-4 w-4 text-black" />
-                <span className="text-black font-medium">Dashboard</span>
+                <Table className="mr-2 h-4 w-4 " />
+                <span className="">Dashboard</span>
               </DropdownMenuItem>
             </Link>
           )}
@@ -120,11 +120,13 @@ export function MenuDeroulant() {
                   Paramètres
                 </Link>
               </DropdownMenuItem>
+             
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={async () => DeconnexionClient}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Déconnexion</span>
               </DropdownMenuItem>
+              
             </DropdownMenuGroup>
           ) : (
             <Link href="connexion">

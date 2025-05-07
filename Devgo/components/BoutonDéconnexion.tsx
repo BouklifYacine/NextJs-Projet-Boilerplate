@@ -20,7 +20,7 @@ export function Deconnexion() {
     <Button
       onClick={Deconnexion}
       variant="ghost"
-      className="hover:bg-gray-300 bg-white text-black flex items-center gap-2 cursor-pointer"
+      className=" border-blue-500 border flex items-center gap-2 cursor-pointer"
     >
       Déconnexion <LogOut size={16} />
     </Button>
