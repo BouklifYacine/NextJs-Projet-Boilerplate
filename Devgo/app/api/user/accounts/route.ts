@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
   }
 
   const accounts = await prisma.account.findMany({
-    where: { userId }
+    where: { userId }, 
+    select : {providerId : true}
   })
 
   return NextResponse.json(accounts)

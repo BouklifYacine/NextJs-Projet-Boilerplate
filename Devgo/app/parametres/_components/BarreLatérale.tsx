@@ -17,10 +17,14 @@ interface BarreLateraleProps {
   userId: string;
 }
 
+interface Api{
+  providerId: string;
+}
+
 export function BarreLaterale({ userId }: BarreLateraleProps) {
   const [sectionActive, setSectionActive] = useState<Section>('profil')
 
-  const { data: userAccounts } = useQuery({
+  const { data: userAccounts } = useQuery<Api[]>({
     queryKey: ['userAccounts', userId],
     queryFn: async () => {
       const response = await fetch(`/api/user/accounts?userId=${userId}`)
@@ -29,7 +33,11 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
     }
   })
 
-  const hasProvider = userAccounts?.length > 0
+  const hasProvider = userAccounts && userAccounts.length > 0 
+  ? userAccounts[0].providerId !== "credential"
+  : false
+
+
 
   const sections = [
     {
