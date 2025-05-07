@@ -45,7 +45,7 @@ export async function inscriptionAction(data: Schema) {
     await resend.emails.send({
         from: 'yacine@footygogo.com',
         to: data.email,
-        subject: 'Test Resend',
+        subject: 'Bienvenue',
         react: React.createElement(EmailBienvenue, { name: data.name }),
       });
 

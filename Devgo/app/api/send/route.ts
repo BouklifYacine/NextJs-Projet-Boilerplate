@@ -6,13 +6,15 @@ import { NextResponse } from 'next/server';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Route API pour tester sur Postman que tout fonctionne avec Resend 
+
 export async function POST() {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'yacine@footygogo.com',
-      to: 'ybouklif@gmail.com',
-      subject: 'Test',
-      react: React.createElement(EmailTemplate, { firstName: 'John' }),
+      from: 'yacine@footygogo.com', // Votre nom de domaine 
+      to: 'ybouklif@gmail.com', // mail a envoyer sur les API routes on va récuperer l'email avec la bdd normalement
+      subject: 'Test', // Titre 
+      react: React.createElement(EmailTemplate, { name: 'John' }),
     });
 
     if (error) {
