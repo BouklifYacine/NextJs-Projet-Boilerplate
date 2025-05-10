@@ -6,7 +6,11 @@ import { CircleXIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function InputResetBouton() {
+interface Props {
+    texte : string
+}
+
+export default function InputResetBouton({texte} : Props) {
   const id = useId()
   const [inputValue, setInputValue] = useState("Click to clear")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -20,13 +24,13 @@ export default function InputResetBouton() {
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>Input with clear button</Label>
+      <Label htmlFor={id}>{texte}</Label>
       <div className="relative">
         <Input
           id={id}
           ref={inputRef}
           className="pe-9"
-          placeholder="Type something..."
+          placeholder="ecrivez"
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

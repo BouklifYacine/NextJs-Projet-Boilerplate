@@ -10,11 +10,11 @@ export default function InputOTP() {
   const id = useId()
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>OTP input (spaced)</Label>
+      <Label htmlFor={id}>Code de confirmation</Label>
       <OTPInput
         id={id}
         containerClassName="flex items-center gap-3 has-disabled:opacity-50"
-        maxLength={4}
+        maxLength={6}
         render={({ slots }) => (
           <div className="flex gap-2">
             {slots.map((slot, idx) => (
@@ -23,21 +23,7 @@ export default function InputOTP() {
           </div>
         )}
       />
-      <p
-        className="text-muted-foreground mt-2 text-xs"
-        role="region"
-        aria-live="polite"
-      >
-        Built with{" "}
-        <a
-          className="hover:text-foreground underline"
-          href="https://github.com/guilhermerodz/input-otp"
-          target="_blank"
-          rel="noopener nofollow"
-        >
-          Input OTP
-        </a>
-      </p>
+      
     </div>
   )
 }

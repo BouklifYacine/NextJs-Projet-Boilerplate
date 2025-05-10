@@ -18,7 +18,7 @@ export default function InputTexteLimite() {
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>Input with character limit</Label>
+      <Label htmlFor={id}>Mot de passe </Label>
       <div className="relative">
         <Input
           id={id}
