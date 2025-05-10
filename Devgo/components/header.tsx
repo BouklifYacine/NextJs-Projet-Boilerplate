@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import { authClient } from "@/lib/auth-client";
-import { DarkMode } from "./BoutonDarkMode/DarkMode";
+
+import { BoutonDarkMode2 } from "./BoutonDarkMode/BoutonDarkMode2";
 
 const Header = () => {
   const { data: session } = authClient.useSession();
@@ -59,7 +60,7 @@ const Header = () => {
           <div className="md:hidden flex items-center gap-4">
             
             <MenuDeroulant />
-            <DarkMode></DarkMode>
+            <BoutonDarkMode2></BoutonDarkMode2>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
@@ -188,7 +189,7 @@ const Header = () => {
                 </DropdownMenu>
               </div>
             )}
-            <DarkMode></DarkMode>
+            <BoutonDarkMode2></BoutonDarkMode2>
           </nav>
         </div>
       </div>
