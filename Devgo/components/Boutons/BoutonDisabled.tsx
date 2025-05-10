@@ -1,17 +1,22 @@
+// Ton composant BoutonDisabled
+// Fichier: '@/components/Boutons/BoutonDisabled.tsx'
+'use client' // Ajouté, car il utilise des composants clients (Button, LoaderCircle)
+
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 
 interface Props {
     texte : string
+    classnameButton : string
+    classnameLoader:string
 }
 
-function BoutonDisabled({texte} : Props) {
+function BoutonDisabled({texte,classnameButton,classnameLoader} : Props) {
   return (
-    <Button disabled>
+  
+    <Button disabled className={classnameButton}>
       <LoaderCircle
-        className="-ms-1 me-2 animate-spin"
-        size={16}
-        strokeWidth={2}
+        className={`${classnameLoader} animate-spin`} 
         aria-hidden="true"
       />
       {texte}
@@ -20,3 +25,4 @@ function BoutonDisabled({texte} : Props) {
 }
 
 export { BoutonDisabled };
+

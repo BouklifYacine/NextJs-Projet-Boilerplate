@@ -408,20 +408,23 @@ const allLogos = [
   { name: "OpenAI", id: 14, img: OpenAIIconBlack },
 ];
 
-export function CarouselTitreLogo() {
+interface Props {
+  Titre : string, 
+
+}
+
+export function CarouselTitreLogo({Titre, } : Props) {
   return (
     <div className="space-y-8 py-24">
-      <div className="mx-auto flex w-full max-w-screen-lg flex-col items-center space-y-8">
+      <div className="mx-auto flex w-full  flex-col items-center space-y-8 max-w-6xl flex-wrap">
         <div className="text-center">
-          <GradientHeading variant="secondary">
-            The best are already here
+          <GradientHeading variant="default" size="xxl">
+            {Titre}
           </GradientHeading>
-          <a href="https://www.newcult.co" target="_blank">
-            <GradientHeading size="xxl">Join new cult</GradientHeading>
-          </a>
+         
         </div>
 
-        <LogoCarousel columnCount={3} logos={allLogos} /> 
+        <LogoCarousel columnCount={4} logos={allLogos} /> 
       </div>
     </div>
   );

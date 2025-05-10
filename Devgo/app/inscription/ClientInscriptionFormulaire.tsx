@@ -11,6 +11,7 @@ import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProvid
 import { z } from "zod";
 import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { InputPassword } from "../parametres/_components/InputPassword";
+import { BoutonDisabled } from "@/components/Boutons/BoutonDisabled";
 
 type Schema = z.infer<typeof SchemaInscription>;
 
@@ -49,7 +50,7 @@ const ClientInscriptionFormulaire = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">Nom</label>
+        <label className="block text-sm font-medium dark:text-black">Nom</label>
         <div className="relative">
           <User
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -58,12 +59,12 @@ const ClientInscriptionFormulaire = () => {
           <input
             {...register("name")}
             type="text"
-            className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Votre nom"
           />
         </div>
         {errors.name && (
-          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+          <p className="text-red-500 text-md mt-1">{errors.name.message}</p>
         )}
       </div>
 
@@ -77,12 +78,12 @@ const ClientInscriptionFormulaire = () => {
           <input
             {...register("email")}
             type="email"
-            className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="votre@email.com"
           />
         </div>
         {errors.email && (
-          <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+          <p className="text-red-500 text-md mt-1">{errors.email.message}</p>
         )}
       </div>
 
@@ -101,23 +102,28 @@ const ClientInscriptionFormulaire = () => {
                         />
         </div>
         {errors.password && (
-          <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+          <p className="text-red-500 text-md mt-1">{errors.password.message}</p>
         )}
       </div>
 
       {erreurmessage && (
-        <p className="text-red-500 text-sm text-center">{erreurmessage}</p>
+        <p className="text-red-500 text-md text-center">{erreurmessage}</p>
       )}
 
-      <button
+      {isSubmitting ? (
+                <BoutonDisabled texte="Inscription en cours..." classnameButton="w-full bg-blue-500/80 text-white" classnameLoader="mr-2 h-4 w-4" />
+              ) : (
+                <button
         type="submit"
         className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${
           isSubmitting ? "opacity-50" : ""
         }`}
         disabled={isSubmitting}
       >
-        {isSubmitting ? "Chargement" : "S'inscrire"}
+        S'inscrire
+     
       </button>
+              )}
 
       <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
@@ -130,7 +136,7 @@ const ClientInscriptionFormulaire = () => {
 
       <BoutonConnexionProviders />
 
-      <p className="text-center text-sm text-gray-600 mt-4">
+      <p className="text-center text-md text-gray-600 mt-4">
         Déjà inscrit?{" "}
         <Link href="/connexion" className="text-blue-600 hover:text-blue-700">
           Se connecter

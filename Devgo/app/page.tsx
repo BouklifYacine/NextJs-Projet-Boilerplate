@@ -1,3 +1,5 @@
+import { CarouselLogoDefilement } from "@/components/Carousel/CarouselLogoDefilement";
+import { CarouselTitreLogo } from "@/components/Carousel/CarouselTitreLogo";
 import Faq from "@/components/Faq";
 import Header from "@/components/header";
 import LogoAnimation from "@/components/LogoAnimation";
@@ -9,7 +11,7 @@ export default function Home() {
     <>
       <Header />
       <Section />
-      <LogoAnimation></LogoAnimation>
+      <CarouselLogoDefilement ></CarouselLogoDefilement>
       <SectionPayement></SectionPayement>
       <Faq></Faq>
     </>
