@@ -3,12 +3,10 @@
 import React from "react";
 import { authClient } from "@/lib/auth-client";
 import { DarkMode } from "@/components/BoutonDarkMode/DarkMode";
-import { AvatarEnLigne } from "@/components/Avatar/AvatarEnLigne";
-import { BoutonCopier } from "@/components/Boutons/BoutonCopier";
-import { BoutonLogoPlus } from "@/components/Boutons/BoutonLogoPlus";
-import { BoutonDisabled } from "@/components/Boutons/BoutonDisabled";
-import { BoutonRetourPage } from "@/components/Boutons/BoutonRetourPage";
-import { BoutonSuivant } from "@/components/Boutons/BoutonSuivant";
+
+import { BlockTeamInvitation } from "@/components/Blocks/BlockInvitation";
+import { TextAreaAnimation } from "@/components/Blocks/TextArea";
+import { BoutonAjouter } from "@/components/Boutons/BoutonAjouter";
 
 const Salut = () => {
   const { data: session } = authClient.useSession();
@@ -23,13 +21,10 @@ const Salut = () => {
       <p>{session?.user.name}</p>
       <p>tg</p>
       <DarkMode></DarkMode>
-      <AvatarEnLigne Fallback="avatar" texte="test"></AvatarEnLigne>
 
-      <BoutonCopier></BoutonCopier>
-      <BoutonLogoPlus></BoutonLogoPlus>
-      <BoutonDisabled></BoutonDisabled>
-      <BoutonRetourPage></BoutonRetourPage>
-      <BoutonSuivant></BoutonSuivant>
+      <BlockTeamInvitation></BlockTeamInvitation>
+      <TextAreaAnimation></TextAreaAnimation>
+      <BoutonAjouter></BoutonAjouter>
     </div>
   );
 };
