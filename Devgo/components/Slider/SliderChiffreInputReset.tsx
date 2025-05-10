@@ -53,7 +53,7 @@ export default function Component() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="px-2 py-1 text-xs">
-                Reset to default
+                Reset 
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
