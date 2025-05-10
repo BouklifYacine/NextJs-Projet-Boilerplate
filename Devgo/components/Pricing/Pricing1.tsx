@@ -42,8 +42,8 @@ const demoData = {
   ],
 };
 
-function Pricing2Demo() {
+function Pricing1() {
   return <Pricing2 {...demoData} />;
 }
 
-export { Pricing2Demo };
+export { Pricing1 };

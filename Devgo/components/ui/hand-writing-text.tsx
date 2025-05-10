@@ -7,8 +7,8 @@ interface HandWrittenTitleProps {
 }
 
 function HandWrittenTitle({
-    title = "Hand Written",
-    subtitle = "Optional subtitle",
+    title ,
+    subtitle 
 }: HandWrittenTitleProps) {
     const draw = {
         hidden: { pathLength: 0, opacity: 0 },

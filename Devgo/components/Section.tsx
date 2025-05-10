@@ -2,6 +2,9 @@ import React from "react";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { IoStarSharp } from "react-icons/io5";
+import { TexteEntoureAnimation } from "./Texte/TexteEntoureAnimation";
+import { HandWrittenTitle, TexteEntourer } from "./ui/hand-writing-text";
+import { GlowEffectButton } from "./Boutons/BoutonGlowCTA";
 
 
 
@@ -41,12 +44,14 @@ const avatars = [
 const Section = () => {
   return (
     <section>
-      <div className="mx-auto  pt-20 h-full">
+      <div className="mx-auto pt-20 h-full">
+      <HandWrittenTitle title="DevGogogo" subtitle="" />
         <div className="flex flex-col justify-center items-center gap-6 py-2">
           <div className="flex justify-center items-center pb-2">
             {/* <ShimmerButton className="py-2 px-6 text-sm md:text-base font-medium tracking-tight">
               DevGo version 0.6
             </ShimmerButton> */}
+         
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-bold tracking-tighter  text-center px-4 max-w-8xl">
@@ -67,15 +72,13 @@ const Section = () => {
           </p>
 
           <div className="flex justify-center items-center pb-2 pt-3">
-            {/* <ShimmerButton className="py-4 px-8 md:py-5 md:px-12 text-lg md:text-xl font-medium tracking-tighter text-white  shadow-lg shadow-purple-500/40">
-              Utiliser DevGo
-            </ShimmerButton> */}
+          <GlowEffectButton texte="Rejoindre"></GlowEffectButton>
           </div>
 
           <div className="flex flex-col items-center justify-center md:flex-row gap-3">
         
             <AvatarCircles numPeople={100} avatarUrls={avatars}  />
-            <span className="text-base md:text-lg text-white">
+            <span className="text-base md:text-lg ">
               Approuvé par +100 utilisateurs
             </span>
           </div>

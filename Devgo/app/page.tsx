@@ -1,18 +1,18 @@
 import { CarouselLogoDefilement } from "@/components/Carousel/CarouselLogoDefilement";
-import { CarouselTitreLogo } from "@/components/Carousel/CarouselTitreLogo";
 import Faq from "@/components/Faq";
 import Header from "@/components/header";
-import LogoAnimation from "@/components/LogoAnimation";
+import { Pricing2 } from "@/components/pricing2";
 import Section from "@/components/Section";
-import SectionPayement from "@/components/sectionspayement/SectionPayement";
+import { TestimonialsListe } from "@/components/Testimonials/Testimonials";
 
 export default function Home() {
   return (
     <>
       <Header />
       <Section />
-      <CarouselLogoDefilement ></CarouselLogoDefilement>
-      <SectionPayement></SectionPayement>
+      <CarouselLogoDefilement></CarouselLogoDefilement>
+      
+      <Pricing2></Pricing2>
       <Faq></Faq>
     </>
   );

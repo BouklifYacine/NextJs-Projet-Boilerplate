@@ -12,6 +12,8 @@ import { InputTexteAnimation } from "@/components/Inputs/InputTexteAnimation";
 import InputTexteLimite from "@/components/Inputs/InputTexteLimite";
 import InputResetBouton from "@/components/Inputs/InputResetBouton";
 import AlerteDIalogueIcone from "@/components/AlertDialog/AlerteDialogueIcone";
+import { TexteEntourer } from "@/components/ui/hand-writing-text";
+import { HandWrittenTitleDemo } from "@/components/Texte/TexteEntoureAnimation";
 
 const Salut = () => {
   const { data: session } = authClient.useSession();
@@ -24,6 +26,8 @@ const Salut = () => {
   return <>
  <div className="flex gap-4 flex-wrap">
 <AlerteDIalogueIcone TexteBouton="Supprimer" Titre="Voulez vous supprimez?"  description="T'es con"></AlerteDIalogueIcone>
+<HandWrittenTitleDemo></HandWrittenTitleDemo>
+
 
  </div>
   </>;
