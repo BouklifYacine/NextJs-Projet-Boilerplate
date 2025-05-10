@@ -1,7 +1,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import { useId } from "react";
 
-export function TextAreaAnimation() {
+export function InputTexteAnimation() {
   const id = useId();
   return (
     <div className="group relative min-w-[300px]">
