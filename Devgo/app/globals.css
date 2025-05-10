@@ -288,3 +288,49 @@
     @apply bg-background text-foreground;
   }
 }
+
+/*
+  ---break---
+*/
+
+:root {
+  --icon-foreground: hsl(222.2 47.4% 11.2%);
+  --icon-background: hsl(0 0% 100%);
+  --tremor-ring: 229 231 235;
+  --dark-tremor-ring: 31 41 55;
+}
+
+/*
+  ---break---
+*/
+
+.dark {
+  --icon-foreground: hsl(210 40% 98%);
+  --icon-background: hsl(222.2 47.4% 11.2%);
+  --tremor-ring: 31 41 55;
+  --dark-tremor-ring: 229 231 235;
+}
+
+/*
+  ---break---
+*/
+
+@theme inline {
+  --color-icon-foreground: var(----icon-foreground);
+  --color-icon-background: var(----icon-background);
+  --dark-tremor-ring: var(----dark-tremor-ring);
+  --tremor-ring: var(----tremor-ring);
+}
+
+/*
+  ---break---
+*/
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
