@@ -2,11 +2,8 @@
 
 import React from "react";
 import { authClient } from "@/lib/auth-client";
-import { DarkMode } from "@/components/BoutonDarkMode/DarkMode";
-
-import { BlockTeamInvitation } from "@/components/Blocks/BlockInvitation";
-import { TextAreaAnimation } from "@/components/Blocks/TextArea";
-import { BoutonAjouter } from "@/components/Boutons/BoutonAjouter";
+import { DarkMode } from "@/components/BoutonDarkMode/DarkMode";;
+import { BoutonSupprimer } from "@/components/Boutons/BoutonSupprimer";
 
 const Salut = () => {
   const { data: session } = authClient.useSession();
@@ -21,10 +18,9 @@ const Salut = () => {
       <p>{session?.user.name}</p>
       <p>tg</p>
       <DarkMode></DarkMode>
+      <BoutonSupprimer></BoutonSupprimer>
 
-      <BlockTeamInvitation></BlockTeamInvitation>
-      <TextAreaAnimation></TextAreaAnimation>
-      <BoutonAjouter></BoutonAjouter>
+    
     </div>
   );
 };
