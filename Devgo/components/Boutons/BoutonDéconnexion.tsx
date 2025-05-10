@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
-export function Deconnexion() {
+export function BoutonDeconnexion() {
   const Router = useRouter();
   const Deconnexion = async () => {
     await authClient.signOut({

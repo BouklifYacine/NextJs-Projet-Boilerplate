@@ -6,8 +6,8 @@ import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Deconnexion } from "./BoutonDéconnexion";
-import { BoutonConnexion } from "./BoutonConnexion";
+import { BoutonDeconnexion, Deconnexion } from "./Boutons/BoutonDéconnexion";
+import { BoutonConnexion } from "./Boutons/BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
@@ -121,7 +121,7 @@ const Header = () => {
               </div>
             ) : (
               <div className="flex items-center gap-6">
-                <Deconnexion />
+                <BoutonDeconnexion />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">

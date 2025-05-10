@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inscriptionAction } from "@/app/(actions)/InscriptionAction";
 import { useRouter } from "next/navigation";
-import BoutonConnexionProviders from "@/components/BoutonConnexionProviders";
+import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProviders";
 import { z } from "zod";
 import SchemaInscription from "@/app/(schema)/SchemaInscription";
 import { InputPassword } from "../parametres/_components/InputPassword";
