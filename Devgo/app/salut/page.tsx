@@ -8,6 +8,9 @@ import { TexteTaperV2 } from "@/components/Texte/TexteTaperV2";
 import { BlocStats } from "@/components/Blocks/BlocStats";
 import { BadgeStatsChiffrePositif } from "@/components/Badge/BadgeStatsChiffrePositif";
 import { BadgeTexteIcone } from "@/components/Badge/BadgeTexteIcone";
+import { Section1 } from "@/components/Sections/Section1";
+import { DisplayCard } from "@/components/Card/DisplayCard";
+import { BentoDemo } from "@/components/Blocks/BentoGrid";
 
 const Salut = () => {
   const { data: session } = authClient.useSession();
@@ -19,22 +22,7 @@ const Salut = () => {
 
   return (
     <div >
-      <div>
-      <p>{session?.user.name}</p>
-      <p>tg</p>
-      <DarkMode></DarkMode>
-      <BoutonSupprimer></BoutonSupprimer>
-      <TexteTaperV2></TexteTaperV2>
-      </div>
-
-      <div>
-        <BlocStats></BlocStats>
-    
-        <BadgeStatsChiffrePositif></BadgeStatsChiffrePositif>
-        <BadgeTexteIcone></BadgeTexteIcone>
-      </div>
-
-    
+      <BentoDemo></BentoDemo>  
     </div>
   );
 };
