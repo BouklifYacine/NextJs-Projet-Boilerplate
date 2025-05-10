@@ -30,5 +30,5 @@ export const auth = betterAuth({
     window : 10, 
     max: 100,
   }, 
-  plugins:[nextCookies()]
+  plugins:[nextCookies(), ]
 });

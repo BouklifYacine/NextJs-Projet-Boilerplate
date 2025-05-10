@@ -1,4 +1,4 @@
-import { NumberTicker } from "../magicui/number-ticker";
+import { NumberTicker } from "../ui/number-ticker";
 
 
 export function NombreAnime() {

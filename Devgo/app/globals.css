@@ -298,6 +298,7 @@
   --icon-background: hsl(0 0% 100%);
   --tremor-ring: 229 231 235;
   --dark-tremor-ring: 31 41 55;
+  --icon-color: hsl(0 0% 0%);
 }
 
 /*
@@ -309,6 +310,7 @@
   --icon-background: hsl(222.2 47.4% 11.2%);
   --tremor-ring: 31 41 55;
   --dark-tremor-ring: 229 231 235;
+  --icon-color: hsl(0 0% 100%);
 }
 
 /*
@@ -320,6 +322,7 @@
   --color-icon-background: var(----icon-background);
   --dark-tremor-ring: var(----dark-tremor-ring);
   --tremor-ring: var(----tremor-ring);
+  --color-icon-color: var(----icon-color);
 }
 
 /*
