@@ -31,15 +31,15 @@ const ClientInscriptionFormulaire = () => {
   const onSubmit = async (data: Schema) => {
     try {
       const result = await inscriptionAction(data);
-      console.log(data)
-      console.log(result)
-
+  
       if (result.success) {
         router.push("/connexion");
         reset();
         setErreurMessage("");
       } else {
-        setErreurMessage("Inscription échouée");
+        const messageErreur = String(result?.error || "Une erreur inconnue est survenue");
+        setErreurMessage(messageErreur);
+        
       }
     } catch (error) {
       console.error('Erreur API:', error);

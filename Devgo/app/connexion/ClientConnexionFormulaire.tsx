@@ -57,11 +57,11 @@ const ClientConnexionFormulaire = () => {
             {...register("email")}
             type="email"
             placeholder="votre@email.com"
-            className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-3 py-2 rounded-md border text-black border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         {errors.email && (
-          <p className="text-red-500 text-xs">{errors.email.message}</p>
+          <p className="text-red-500 text-md">{errors.email.message}</p>
         )}
       </div>
 
@@ -79,11 +79,11 @@ const ClientConnexionFormulaire = () => {
               />
         </div>
         {errors.password && (
-          <p className="text-red-500 text-xs">{errors.password.message}</p>
+          <p className="text-red-500 text-md">{errors.password.message}</p>
         )}
       </div>
 
-      <div className="flex justify-end text-xs text-blue-600 hover:text-blue-700 underline">
+      <div className="flex justify-end text-md text-blue-600 hover:text-blue-700 underline">
         <Link href="/connexion/motdepasseoublie">
           Mot de passe oublié?
         </Link>
@@ -99,7 +99,7 @@ const ClientConnexionFormulaire = () => {
         {isSubmitting ? "Connexion..." : "Se connecter"}
       </button>
       {erreurIdentifiant && (
-        <span className="text-red-500 text-xs block text-center">
+        <span className="text-red-500 md:text-md block text-center">
           {erreurIdentifiant}
         </span>
       )}
@@ -117,7 +117,7 @@ const ClientConnexionFormulaire = () => {
 
       <BoutonConnexionProviders />
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-md text-gray-600">
         Pas encore inscrit ?{" "}
         <Link href="/inscription" className="text-blue-600 hover:text-blue-700">
           Inscription

@@ -12,6 +12,7 @@ export function BoutonDeconnexion() {
       fetchOptions: {
         onSuccess: () => {
           Router.push("/");
+          Router.refresh()
         },
       },
     });
