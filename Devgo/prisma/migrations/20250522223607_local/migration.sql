@@ -11,13 +11,15 @@ CREATE TYPE "PlanAbonnement" AS ENUM ('mois', 'année');
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL,
     "image" TEXT,
     "role" "Roles" NOT NULL DEFAULT 'utilisateur',
     "plan" "Plan" NOT NULL DEFAULT 'free',
     "clientId" TEXT,
+    "resetToken" TEXT,
+    "resetTokenExpiry" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -80,6 +82,9 @@ CREATE TABLE "verification" (
 
     CONSTRAINT "verification_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_name_key" ON "user"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_clientId_key" ON "user"("clientId");
