@@ -3,7 +3,6 @@ import Faq from "@/components/Faq";
 import Header from "@/components/header";
 import { Pricing2 } from "@/components/pricing2";
 import Section from "@/components/Section";
-import { TestimonialsListe } from "@/components/Testimonials/Testimonials";
 
 export default function Home() {
   return (

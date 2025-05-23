@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { SchemaConnexion } from "@/app/(schema)/SchemaConnexion";
 import { auth } from "@/auth";
-import { authClient } from "@/lib/auth-client";
 
 type Schema = z.infer<typeof SchemaConnexion>;
 

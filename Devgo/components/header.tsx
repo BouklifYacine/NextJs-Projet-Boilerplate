@@ -6,7 +6,7 @@ import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BoutonDeconnexion, Deconnexion } from "./Boutons/BoutonDéconnexion";
+import { BoutonDeconnexion } from "./Boutons/BoutonDéconnexion";
 import { BoutonConnexion } from "./Boutons/BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";

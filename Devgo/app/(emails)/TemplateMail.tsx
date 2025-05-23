@@ -7,8 +7,8 @@ import {
     Section,
     Text,
   } from "@react-email/components";
+import Image from "next/image";
   import * as React from "react";
-  import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
   
   interface BaseEmailLayoutProps {
     children: React.ReactNode;
@@ -40,7 +40,7 @@ import {
           }}
         >
           <Section style={{ textAlign: "center", marginBottom: 24 }}>
-            <img
+            <Image
               src={"Logo_FC_Liverpool.svg.png"}
               alt="Logo"
               width={48}

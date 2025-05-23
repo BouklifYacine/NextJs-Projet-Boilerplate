@@ -1,9 +1,7 @@
 import React from "react";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { IoStarSharp } from "react-icons/io5";
-import { TexteEntoureAnimation } from "./Texte/TexteEntoureAnimation";
-import { HandWrittenTitle, TexteEntourer } from "./ui/hand-writing-text";
+import { HandWrittenTitle } from "./ui/hand-writing-text";
 import { GlowEffectButton } from "./Boutons/BoutonGlowCTA";
 
 

@@ -120,7 +120,7 @@ const ClientInscriptionFormulaire = () => {
         }`}
         disabled={isSubmitting}
       >
-        S'inscrire
+       Inscription
      
       </button>
               )}

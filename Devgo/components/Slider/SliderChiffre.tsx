@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export function SliderChiffre() {
   const [value, setValue] = useState(100);
-  const [width, setWidth] = useState(0);
+  // const [width, setWidth] = useState(0);
 
   return (
     <div className='flex flex-col items-start gap-0'>
