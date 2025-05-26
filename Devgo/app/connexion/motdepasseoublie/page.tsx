@@ -26,24 +26,28 @@ const AuthForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data: Schema) => {
-    try {
-      const response = await axios.post("/api/motdepasseoublie", data);
-      console.log(response)
-      console.log(data)
+  try {
+    console.log("Données envoyées:", data);
+    const response = await axios.post("/api/motdepasseoublie", data);
+    console.log("Réponse API:", response);
 
-      reset();
-      setCode(response.data.message);
-      setErrorMessage("");
-      setTimeout(() => {
-        router.push("/connexion/motdepasseoublie/code");
-      }, 3000);
-    } catch (error) {
+    reset();
+    setCode(response.data.message);
+    setErrorMessage("");
+    router.push("/connexion/motdepasseoublie/code");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data || error.message);
       setErrorMessage(
-         "Une erreur est survenue"
+        error.response?.data?.message || "Une erreur est survenue"
       );
-      console.error("Erreur:", error);
+    } else {
+      console.error("Erreur inconnue:", error);
+      setErrorMessage("Une erreur est survenue");
     }
-  };
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">

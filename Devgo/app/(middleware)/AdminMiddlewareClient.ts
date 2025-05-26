@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 export async function AdminMiddlewareClient() {
   const session = await auth.api.getSession({
-    headers: await headers() // you need to pass the headers object.
+    headers: await headers() 
 });
   const sessionID = session?.user?.id;
   if (!sessionID) redirect("/");

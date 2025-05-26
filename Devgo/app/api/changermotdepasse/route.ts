@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
-import { auth } from "@/auth";
+import { HashPassword, verifyPassword } from "@/lib/argon2";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,17 +11,33 @@ export async function POST(request: NextRequest) {
       include: { accounts: true },
     });
 
-    if (!user?.password) {
+    if (!user || !user.accounts.length) {
       return NextResponse.json(
         { message: "Compte non trouvé" },
         { status: 404 }
       );
     }
 
-    const MotdePasseValide = await bcrypt.compare(
-      motdepasseactuel,
-      user.password
-    );
+    const account = user.accounts[0];
+
+    if (!account.password) {
+      return NextResponse.json(
+        { message: "Mot de passe non défini pour ce compte" },
+        { status: 404 }
+      );
+    }
+
+    if (account.providerId !== "credential") {
+      return NextResponse.json({
+        message: `Vous ne pouvez pas changer de compte avec ${account.providerId}`,
+      });
+    }
+
+    const MotdePasseValide = await verifyPassword({
+      password: motdepasseactuel,
+      hash: account.password,
+    });
+
     if (!MotdePasseValide) {
       return NextResponse.json(
         { message: "Mot de passe actuel incorrect" },
@@ -30,27 +45,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const ctx = await auth.$context;
-    const MotDePasseHache = await ctx.password.hash(nouveaumotdepasse);
+    const MotDePasseHache = await HashPassword(nouveaumotdepasse);
 
-    const account = await prisma.account.findFirst({
-      where: {
-        userId: user.id,
+    await prisma.account.update({
+      where: { id: account.id },
+      data: {
+        password: MotDePasseHache,
       },
     });
 
-    if (account) {
-      await prisma.account.update({
-        where: { id: account.id },
-        data: {
-          password: MotDePasseHache,
-        },
-      });
-    }
     return NextResponse.json({ message: "Mot de passe mis à jour" });
   } catch (error) {
     return NextResponse.json(
-      { message: error || "erreur serveur" },
+      { message: error instanceof Error ? error.message : "erreur serveur" },
       { status: 500 }
     );
   }

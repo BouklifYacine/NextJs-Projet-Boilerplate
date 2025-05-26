@@ -38,11 +38,16 @@ const AuthForm = () => {
       setErrorMessage("");
       router.push("/connexion");
     } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data || error.message);
       setErrorMessage(
-         "Une erreur est survenue"
+        error.response?.data?.message || "Une erreur est survenue"
       );
-      console.error("Erreur:", error);
+    } else {
+      console.error("Erreur inconnue:", error);
+      setErrorMessage("Une erreur est survenue");
     }
+  }
   };
 
   return (
