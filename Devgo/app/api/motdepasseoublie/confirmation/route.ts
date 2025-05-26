@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import { ResetPasswordSchema } from "@/app/(schema)/SchemaMotDepasse";
 import { HashPassword } from "@/lib/argon2";
+import React from "react";
+import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -65,6 +71,16 @@ export async function POST(request: NextRequest) {
         },
       }),
     ]);
+
+ await resend.emails.send({
+      from: 'yacine@footygogo.com',
+      to: email,
+      subject: 'Mot de passe mis à jour',
+      react: React.createElement(
+        NotifChangementMotDePasse,
+        { pseudo: user.name || user.email || "" }
+      ),
+    });
 
     return NextResponse.json({ message: "Mot de passe mis à jour" });
   } catch (error) {
