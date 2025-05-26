@@ -50,9 +50,9 @@ const AuthForm = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen  flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">
+        <h2 className="text-2xl font-bold text-center text-black mb-6">
           Mot de passe oublié ?
         </h2>
 
@@ -69,7 +69,7 @@ const AuthForm = () => {
               <input
                 {...register("email")}
                 type="email"
-                className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 text-black pr-3 py-2 rounded-md border border-gray-300 focus:ring-2  focus:border-transparent"
                 placeholder="Rentrez votre email"
               />
             </div>

@@ -92,7 +92,7 @@ const ClientConnexionFormulaire = () => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${
+        className={`w-full bg-blue-600 cursor-pointer text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${
           isSubmitting ? "opacity-50" : ""
         }`}
       >

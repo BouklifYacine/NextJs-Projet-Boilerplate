@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     if (user.accounts[0].providerId !== "credential") {
       return NextResponse.json(
-        { message: "Ce compte utilise une connexion via Google ou Github. La réinitialisation de mot de passe n'est pas disponible." },
+        { message: `Compte relié a ${user.accounts[0].providerId} impossible de changer de mot de passe` },
         { status: 404 }
       );
     }
