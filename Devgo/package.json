@@ -16,6 +16,7 @@
     "@auth/prisma-adapter": "^2.7.4",
     "@hookform/resolvers": "^3.10.0",
     "@neondatabase/serverless": "^1.0.0",
+    "@node-rs/argon2": "^2.0.2",
     "@number-flow/react": "^0.5.9",
     "@prisma/adapter-neon": "^6.8.2",
     "@prisma/client": "^6.4.1",

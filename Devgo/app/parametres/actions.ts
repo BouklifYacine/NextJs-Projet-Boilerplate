@@ -33,7 +33,9 @@ export async function verifierMotDePasse(motdepasse: string) {
 
     if (!utilisateur) throw new Error("Utilisateur non trouvé")
 
-    if (utilisateur.accounts.length > 0) {
+      const credential = utilisateur.accounts[0].providerId === "credential"
+
+    if (!credential) {
       const provider = utilisateur.accounts[0].providerId
       throw new Error(`Cette fonctionnalité n'est pas disponible car votre compte est lié à ${provider}`)
     }
