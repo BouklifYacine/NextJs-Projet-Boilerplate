@@ -1,7 +1,6 @@
 'use server'
 
 import { prisma } from "@/prisma"
-import { compare, hash } from "bcryptjs"
 import { sendEmail } from "@/lib/email"
 import { createElement } from "react"
 import CodeConfirmation from "@/app/(emails)/CodeConfirmation"
@@ -9,18 +8,17 @@ import EmailChangement from "@/app/(emails)/ChangementEmail"
 import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse"
 import EmailChangementPseudo from "@/app/(emails)/EmailChangementPseudo"
 import { revalidatePath } from "next/cache"
-
 import { TypeEmail, TypeMotDePasse, TypePseudo } from "./schema"
 import EmailSuppressionCompte from "@/app/(emails)/SuppressionCompte"
 import { auth } from "@/auth"
 import { headers } from "next/headers"
 import { authClient } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
+import { Hash, HashPassword, VerifyElement, verifyPassword } from "@/lib/argon2"
 
 export async function verifierMotDePasse(motdepasse: string) {
   try {
 
-    // Fix ce code pour demain pour bien récuperer les credentials dans la bdd
    const session = await auth.api.getSession({
          headers: await headers()
      })
@@ -31,6 +29,8 @@ export async function verifierMotDePasse(motdepasse: string) {
       include: { accounts: true }
     })
 
+    const userpassword = utilisateur?.accounts[0].password
+
     if (!utilisateur) throw new Error("Utilisateur non trouvé")
 
       const credential = utilisateur.accounts[0].providerId === "credential"
@@ -40,15 +40,18 @@ export async function verifierMotDePasse(motdepasse: string) {
       throw new Error(`Cette fonctionnalité n'est pas disponible car votre compte est lié à ${provider}`)
     }
 
-    if (!utilisateur.password) {
+    if (!userpassword) {
       throw new Error("Aucun mot de passe défini pour ce compte")
     }
 
-    const motDePasseValide = await compare(motdepasse, utilisateur.password)
+    const motDePasseValide = await verifyPassword({
+      password: motdepasse,
+      hash: userpassword,
+    });
     if (!motDePasseValide) throw new Error("Mot de passe incorrect")
 
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString()
-    const hashedResetCode = await hash(resetCode, 10);
+    const hashedResetCode = await Hash(resetCode);
     await prisma.user.update({
       where: { id: session.user.id },
       data: {
@@ -159,10 +162,21 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
     })
 
     const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
-    const codevalide = await compare(codeverification , utilisateur?.resetToken || "" )
+    
+ if (!utilisateur?.resetToken) {
+  throw new Error("Aucun code de vérification n'a été généré.");
+}
+
+const codevalide = await VerifyElement({
+  element: codeverification,
+  hash: utilisateur.resetToken
+});
+
+
     if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
 
-    const motDePasseHashe = await hash(motdepasse, 10)
+    // const motDePasseHashe = await hash(motdepasse, 10)
+      const motDePasseHashe = await HashPassword(motdepasse)
 
     await prisma.$transaction(async (db) => {
       await db.user.update({

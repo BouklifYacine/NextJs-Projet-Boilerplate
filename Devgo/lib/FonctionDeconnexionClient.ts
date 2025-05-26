@@ -6,7 +6,7 @@ import { authClient } from "./auth-client";
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-         redirect('/')
+         redirect('/connexion')
         },
       },
     });
