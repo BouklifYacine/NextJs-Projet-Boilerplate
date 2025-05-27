@@ -14,7 +14,7 @@ import { auth } from "@/auth"
 import { headers } from "next/headers"
 import { authClient } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
-import { Hash, HashPassword, VerifyElement, verifyPassword } from "@/lib/argon2"
+import { hashElement, HashPassword, VerifierElement, verifyPassword } from "@/lib/argon2"
 
 export async function verifierMotDePasse(motdepasse: string) {
   try {
@@ -44,14 +44,11 @@ export async function verifierMotDePasse(motdepasse: string) {
       throw new Error("Aucun mot de passe défini pour ce compte")
     }
 
-    const motDePasseValide = await verifyPassword({
-      password: motdepasse,
-      hash: userpassword,
-    });
+    const motDePasseValide = await verifyPassword(motdepasse,userpassword);
     if (!motDePasseValide) throw new Error("Mot de passe incorrect")
 
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString()
-    const hashedResetCode = await Hash(resetCode);
+    const hashedResetCode = await hashElement(resetCode);
     await prisma.user.update({
       where: { id: session.user.id },
       data: {
@@ -99,7 +96,13 @@ export async function changerEmail(donnees: TypeEmail) {
     })
 
     const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
-    const codevalide = await compare(codeverification , utilisateur?.resetToken || "" )
+ 
+     if (!utilisateur?.resetToken) {
+  throw new Error("Aucun code de vérification n'a été généré.");
+}
+
+    const codevalide = await VerifierElement(codeverification , utilisateur.resetToken)
+    
     if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
 
     const ancienEmail = utilisateur?.email
@@ -167,10 +170,7 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
   throw new Error("Aucun code de vérification n'a été généré.");
 }
 
-const codevalide = await VerifyElement({
-  element: codeverification,
-  hash: utilisateur.resetToken
-});
+const codevalide = await VerifierElement( codeverification, utilisateur.resetToken );
 
 
     if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
@@ -246,7 +246,7 @@ export async function changerPseudo(donnees: TypePseudo) {
         }
       })
       const TokenValide = utilisateurVerifie?.resetTokenExpiry && utilisateurVerifie.resetTokenExpiry > new Date();
-      const codevalidecredentials = await compare(codeverification, utilisateurVerifie?.resetToken || "")
+      const codevalidecredentials = await VerifierElement(codeverification, utilisateurVerifie?.resetToken || "")
 
       if (!codevalidecredentials || !TokenValide) {
         throw new Error("Code de vérification invalide ou expiré")
@@ -318,7 +318,7 @@ export async function supprimerCompte(codeVerification?: string) {
     // Vérifier le code uniquement pour les comptes sans provider
     if (!hasProvider) {
       const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
-      const codevalide = await compare(codeVerification || "" , utilisateur?.resetToken || "" )
+      const codevalide = await VerifierElement(codeVerification || "" , utilisateur?.resetToken || "" )
       if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
     }
 
@@ -364,7 +364,7 @@ export async function supprimerCompte(codeVerification?: string) {
       await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
-          redirect("/inscription")
+          redirect("/connexion")
           },
         },
       });

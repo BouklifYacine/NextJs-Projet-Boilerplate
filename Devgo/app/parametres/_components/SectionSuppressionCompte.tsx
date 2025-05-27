@@ -46,7 +46,7 @@ export function SectionSuppression({ userId }: { userId: string }) {
     <Card className="p-6 border-destructive">
       <div className="space-y-6">
         <div>
-          <h2 className="text-xl font-semibold text-destructive">
+          <h2 className="text-xl font-semibold text-red-500 ">
             Supprimer le compte
           </h2>
           <p className="text-sm text-gray-500">
@@ -58,7 +58,7 @@ export function SectionSuppression({ userId }: { userId: string }) {
         {!confirmation ? (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive">Supprimer mon compte</Button>
+              <Button className="bg-red-500 text-white hover:bg-red-700 cursor-pointer">Supprimer mon compte</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -69,10 +69,10 @@ export function SectionSuppression({ userId }: { userId: string }) {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                <AlertDialogCancel className="cursor-pointer">Annuler</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={startDeleteProcess}
-                  className="bg-destructive hover:bg-destructive/90"
+                  className="bg-red-500 text-white hover:bg-red-700 cursor-pointer"
                 >
                   Continuer
                 </AlertDialogAction>
@@ -155,7 +155,7 @@ export function SectionSuppression({ userId }: { userId: string }) {
                 ) : (
                   <div className="flex gap-2">
                     <Button
-                      variant="destructive"
+                      className="bg-red-500 text-white hover:bg-red-700 cursor-pointer"
                       disabled={supprimerCompteMutation.isPending}
                       onClick={() => handleSuppression()}
                     >

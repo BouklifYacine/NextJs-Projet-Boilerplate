@@ -83,7 +83,7 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
             <Button
               key={section.id}
               variant={sectionActive === section.id ? 'default' : 'ghost'}
-              className={`justify-start ${section.danger ? 'text-destructive hover:text-destructive' : ''}`}
+              className={`justify-start ${section.danger ? 'text-red-500 hover:text-red-500' : ''}`}
               onClick={() => setSectionActive(section.id)}
             >
               <section.icon className="mr-2 h-4 w-4" />

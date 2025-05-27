@@ -67,8 +67,6 @@ export function useSuppressionCompte(userId: string) {
     onSuccess: () => {
       toast.success("Compte supprimé avec succès");
       DeconnexionClient()
-      router.push("/connexion");
-      router.refresh();
     },
     onError: (error: Error) => {
       toast.error(error.message || "Une erreur est survenue");

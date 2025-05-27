@@ -7,28 +7,18 @@ const opts: Options = {
   parallelism: 1,
 };
 
-export async function HashPassword(password: string) {
-  const result = await hash(password, opts);
-  return result;
-}
-// J'ai fais cette fonction car j'ai la flemme de modifier toutes modif de hachage hors mot de passe je le ferais après 
-export async function Hash(element: string) {
-  const result = await hash(element, opts);
-  return result;
+// Hashage générique
+export async function hashElement(element: string) {
+  return await hash(element, opts);
 }
 
-// J'ai fais cette fonction car j'ai la flemme de modifier toutes modif de hachage hors mot de passe je le ferais après 
-export async function VerifyElement(data: { element: string; hash: string }) {
-  const { element, hash } = data;
-  const result = await verify(hash, element, opts)
-  return result
+// Alias pour la clarté
+export const HashPassword = hashElement;
+
+// Vérification générique
+export async function VerifierElement(element: string, hashed: string) {
+  return await verify(hashed, element, opts);
 }
 
-
-export async function verifyPassword(data: { password: string; hash: string }) {
-  const { password, hash } = data;
-  const result = await verify(hash, password, opts)
-  return result
-}
-
-
+// Alias pour la clarté
+export const verifyPassword = VerifierElement;
