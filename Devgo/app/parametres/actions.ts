@@ -44,7 +44,10 @@ export async function verifierMotDePasse(motdepasse: string) {
       throw new Error("Aucun mot de passe défini pour ce compte")
     }
 
-    const motDePasseValide = await verifyPassword(motdepasse,userpassword);
+const motDePasseValide = await verifyPassword({
+  password: motdepasse,
+  hash: userpassword
+});
     if (!motDePasseValide) throw new Error("Mot de passe incorrect")
 
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString()
@@ -153,40 +156,57 @@ export async function changerMotDePasse(donnees: TypeMotDePasse) {
   try {
     const session = await auth.api.getSession({
       headers: await headers()
-  })
+    })
     if (!session?.user?.id) throw new Error("Non autorisé")
 
     const { motdepasse, codeverification } = donnees
 
+    // ✅ Récupérer l'utilisateur avec ses accounts
     const utilisateur = await prisma.user.findFirst({
       where: {
         id: session.user.id,
+      },
+      include: {
+        accounts: true // Inclure les accounts
       }
     })
 
     const TokenValide = utilisateur?.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
     
- if (!utilisateur?.resetToken) {
-  throw new Error("Aucun code de vérification n'a été généré.");
-}
+    if (!utilisateur?.resetToken) {
+      throw new Error("Aucun code de vérification n'a été généré.");
+    }
 
-const codevalide = await VerifierElement( codeverification, utilisateur.resetToken );
-
+    const codevalide = await VerifierElement(codeverification, utilisateur.resetToken);
 
     if (!TokenValide || !codevalide) throw new Error("Code de vérification invalide ou expiré");
 
-    // const motDePasseHashe = await hash(motdepasse, 10)
-      const motDePasseHashe = await HashPassword(motdepasse)
+    // ✅ Trouver l'account credential
+    const accountCredential = utilisateur.accounts.find(acc => acc.providerId === "credential");
+    
+    if (!accountCredential) {
+      throw new Error("Aucun compte avec mot de passe trouvé");
+    }
+
+    const motDePasseHashe = await HashPassword(motdepasse);
 
     await prisma.$transaction(async (db) => {
       await db.user.update({
         where: { id: session?.user?.id },
         data: {
-          password: motDePasseHashe,
           resetToken: null,
           resetTokenExpiry: null
         }
       })
+
+      // ✅ Utiliser l'ID de l'account
+      await db.account.update({
+        where: { id: accountCredential.id }, 
+        data: {
+          password: motDePasseHashe
+        }
+      })
+
       // Suppression de toutes les sessions
       await db.session.deleteMany({
         where: { userId: session?.user?.id }
@@ -201,73 +221,63 @@ const codevalide = await VerifierElement( codeverification, utilisateur.resetTok
       })
     })
 
-    revalidatePath('/parametres')
+    revalidatePath(`/parametres/${utilisateur.id}`)
     return { success: true }
   } catch (error) {
     return { error: (error as Error).message }
   }
 }
 
+
 export async function changerPseudo(donnees: TypePseudo) {
   try {
-    const session = await auth.api.getSession({
+const session = await auth.api.getSession({
       headers: await headers()
-  })
-    if (!session?.user?.id) throw new Error("Non autorisé")
+    });
+    if (!session?.user?.id) throw new Error("Non autorisé");
 
-    const { pseudo, codeverification } = donnees
+    const { pseudo, codeverification } = donnees;
 
-    // Vérifier l'utilisateur et ses accounts
+    // Récupérer l'utilisateur et ses comptes
     const utilisateur = await prisma.user.findUnique({
       where: { id: session.user.id },
       include: { accounts: true }
-    })
+    });
 
-    if (!utilisateur) throw new Error("Utilisateur non trouvé")
-
-    const hasProvider = utilisateur.accounts.length > 0
+    if (!utilisateur) throw new Error("Utilisateur non trouvé");
 
     // Vérifier si le pseudo existe déjà
     const pseudoExistant = await prisma.user.findUnique({
-      where: { 
-        name: pseudo,
-      }
-    })
+      where: { name: pseudo }
+    });
 
     if (pseudoExistant) {
-      throw new Error("Ce pseudo est déjà utilisé")
+      throw new Error("Ce pseudo est déjà utilisé");
     }
 
+    // Vérifier si l'utilisateur a un compte credentials
+    const hasCredentials = utilisateur.accounts.some(acc => acc.providerId === "credentials");
+
     // Pour les utilisateurs avec credentials, vérifier le code
-    if (!hasProvider) {
-      const utilisateurVerifie = await prisma.user.findFirst({
-        where: {
-          id: session.user.id,
-        }
-      })
-      const TokenValide = utilisateurVerifie?.resetTokenExpiry && utilisateurVerifie.resetTokenExpiry > new Date();
-      const codevalidecredentials = await VerifierElement(codeverification, utilisateurVerifie?.resetToken || "")
+    if (hasCredentials) {
+      const TokenValide = utilisateur.resetTokenExpiry && utilisateur.resetTokenExpiry > new Date();
+      const codevalidecredentials = await VerifierElement(codeverification, utilisateur.resetToken || "");
 
       if (!codevalidecredentials || !TokenValide) {
-        throw new Error("Code de vérification invalide ou expiré")
+        throw new Error("Code de vérification invalide ou expiré");
       }
     }
 
-    
-
     await prisma.user.update({
-      where: { 
-        id: session.user.id
-      },
+      where: { id: session.user.id },
       data: {
         name: pseudo,
-        // Réinitialiser le token après utilisation
-        ...((!hasProvider) && {
+        ...(hasCredentials && {
           resetToken: null,
           resetTokenExpiry: null
         })
       }
-    })
+    });
     
     const ancienPseudo = utilisateur.name
 
@@ -282,7 +292,7 @@ export async function changerPseudo(donnees: TypePseudo) {
       })
     }
 
-    revalidatePath('/parametres')
+    revalidatePath(`/parametres/${utilisateur.id}`)
     return { success: true }
   } catch (error) {
     return { error: (error as Error).message }

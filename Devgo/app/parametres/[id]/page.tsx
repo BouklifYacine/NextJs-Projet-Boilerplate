@@ -20,6 +20,8 @@ export default async function PageParametres({params}: {params: Promise<{ id: st
     redirect(`/parametres/${session.user.id}`);
   }
 
+  // console.log(session)
+
   return (
     <>
       <Header />

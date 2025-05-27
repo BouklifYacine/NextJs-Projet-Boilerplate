@@ -1,3 +1,4 @@
+// lib/argon2.ts
 import { hash, verify, type Options } from "@node-rs/argon2";
 
 const opts: Options = {
@@ -12,13 +13,17 @@ export async function hashElement(element: string) {
   return await hash(element, opts);
 }
 
-// Alias pour la clarté
-export const HashPassword = hashElement;
-
-// Vérification générique
-export async function VerifierElement(element: string, hashed: string) {
-  return await verify(hashed, element, opts);
+// ✅ Fonction pour better-auth - signature corrigée
+export async function HashPassword( password: string ) {
+  return await hash(password, opts);
 }
 
-// Alias pour la clarté
-export const verifyPassword = VerifierElement;
+// Vérification générique
+export async function VerifierElement(code: string, hash: string) {
+  return await verify(hash, code, opts);
+}
+
+// ✅ Fonction pour better-auth - signature corrigée
+export async function verifyPassword(data: { password: string; hash: string }) {
+  return await verify(data.hash, data.password, opts);
+}

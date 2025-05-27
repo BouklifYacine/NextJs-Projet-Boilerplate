@@ -17,14 +17,15 @@ interface BarreLateraleProps {
   userId: string;
 }
 
-interface Api{
-  providerId: string;
+interface PropsQuery {
+  message: string;
+  providerId: string[];
 }
 
 export function BarreLaterale({ userId }: BarreLateraleProps) {
   const [sectionActive, setSectionActive] = useState<Section>('profil')
 
-  const { data: userAccounts } = useQuery<Api[]>({
+  const { data: userAccounts } = useQuery<PropsQuery>({
     queryKey: ['userAccounts', userId],
     queryFn: async () => {
       const response = await fetch(`/api/user/accounts?userId=${userId}`)
@@ -33,11 +34,8 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
     }
   })
 
-  const hasProvider = userAccounts && userAccounts.length > 0 
-  ? userAccounts[0].providerId !== "credential"
-  : false
-
-
+  const isCredentialAccount = userAccounts?.providerId?.[0] === "credential"
+  const showCredentialFeatures = isCredentialAccount
 
   const sections = [
     {
@@ -50,19 +48,19 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
       id: 'email' as Section,
       label: 'Email',
       icon: Mail,
-      show: !hasProvider
+      show: showCredentialFeatures
     },
     {
       id: 'motdepasse' as Section,
       label: 'Mot de passe',
       icon: Key,
-      show: !hasProvider
+      show: showCredentialFeatures
     },
     {
       id: 'pseudo' as Section,
       label: 'Pseudo',
       icon: User,
-      show: !hasProvider
+      show: showCredentialFeatures 
     },
     {
       id: 'suppression' as Section,
@@ -83,7 +81,9 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
             <Button
               key={section.id}
               variant={sectionActive === section.id ? 'default' : 'ghost'}
-              className={`justify-start ${section.danger ? 'text-red-500 hover:text-red-500' : ''}`}
+              className={`justify-start ${
+                section.danger ? 'text-red-500 hover:text-red-500' : ''
+              }`}
               onClick={() => setSectionActive(section.id)}
             >
               <section.icon className="mr-2 h-4 w-4" />
@@ -95,10 +95,18 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
 
       <div className="space-y-8">
         {sectionActive === 'profil' && <SectionProfil userId={userId} />}
-        {!hasProvider && sectionActive === 'email' && <SectionEmail  />}
-        {!hasProvider && sectionActive === 'motdepasse' && <SectionMotDePasse  />}
-        {!hasProvider && sectionActive === 'pseudo' && <SectionPseudo userId={userId} />}
-        {sectionActive === 'suppression' && <SectionSuppression userId={userId} />}
+        {showCredentialFeatures && sectionActive === 'email' && (
+          <SectionEmail />
+        )}
+        {showCredentialFeatures && sectionActive === 'motdepasse' && (
+          <SectionMotDePasse />
+        )}
+        {showCredentialFeatures && sectionActive === 'pseudo' && (
+          <SectionPseudo userId={userId} />
+        )}
+        {sectionActive === 'suppression' && (
+          <SectionSuppression userId={userId} />
+        )}
       </div>
     </>
   )

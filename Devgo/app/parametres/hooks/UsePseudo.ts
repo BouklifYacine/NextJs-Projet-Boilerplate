@@ -1,59 +1,138 @@
-'use client'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { schemaVerificationMotDePasse, schemaPseudo } from '../schema'
-import { verifierMotDePasse } from '../actions'
-import toast from 'react-hot-toast'
-import { TypePseudo } from '../schema'
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { changerPseudo, verifierMotDePasse } from "../actions";
+import { schemaPseudo, schemaVerificationMotDePasse } from "../schema";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-export function usePseudo() {
-  const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
+interface PropsRequeteUtilisateur {
+  message: string;
+  providerId: string[];
+}
 
-  const formVerification = useForm({
+type EtapeModification = "verification" | "changement";
+
+export function useSectionPseudo(id: string) {
+  const router = useRouter();
+  const queryClient = useQueryClient(); 
+
+  const [estEnEdition, setEstEnEdition] = useState(false);
+  const [etapeActuelle, setEtapeActuelle] =
+    useState<EtapeModification>("verification");
+
+  const { data: donneesCompteUtilisateur } = useQuery<PropsRequeteUtilisateur>({
+    queryKey: ["profil", id],
+    queryFn: async () => {
+      const reponse = await fetch(`/api/user/accounts?userId=${id}`);
+      if (!reponse.ok) throw new Error("Échec de la récupération des comptes");
+      return reponse.json();
+    },
+  });
+
+  const estCompteCredential =
+    donneesCompteUtilisateur?.providerId?.[0] === "credential";
+  const necessiteVerificationMotDePasse = estCompteCredential;
+
+  const formulaireVerification = useForm({
     resolver: zodResolver(schemaVerificationMotDePasse),
     defaultValues: {
-      motdepasse: ''
-    }
-  })
+      motdepasse: "",
+    },
+  });
 
-  const formChangement = useForm<TypePseudo>({
+  const formulaireChangement = useForm({
     resolver: zodResolver(schemaPseudo),
     defaultValues: {
-      pseudo: '',
-      codeverification: ''
-    }
-  })
+      pseudo: "",
+      codeverification: "",
+    },
+  });
 
-  const verifierMotDePasseMutation = useMutation({
-    mutationFn: async (motdepasse: string) => {
-      const resultat = await verifierMotDePasse(motdepasse)
-      if (resultat.error) throw new Error(resultat.error)
-      return resultat
+  const mutationVerifierMotDePasse = useMutation({
+    mutationFn: async (motDePasse: string) => {
+      const resultat = await verifierMotDePasse(motDePasse);
+      if (resultat.error) throw new Error(resultat.error);
+      return resultat;
     },
     onSuccess: () => {
-      toast.success("Code de vérification envoyé")
-      setEtape('changement')
-      formVerification.reset()
+      toast.success("Code de vérification envoyé par email");
+      setEtapeActuelle("changement");
+      formulaireVerification.reset();
     },
-    onError: (error: Error) => {
-      toast.error(error.message)
-      formVerification.setError('motdepasse', { message: error.message })
-    }
-  })
+    onError: (erreur: Error) => {
+      toast.error(erreur.message);
+      formulaireVerification.setError("motdepasse", {
+        message: erreur.message,
+      });
+    },
+  });
 
-  const reinitialiser = () => {
-    setEtape('verification')
-    formVerification.reset()
-    formChangement.reset()
-  }
+  const mutationChangerPseudo = useMutation({
+    mutationFn: async (donnees: {
+      pseudo: string;
+      codeverification: string;
+    }) => {
+      const resultat = await changerPseudo(donnees);
+      if (resultat.error) throw new Error(resultat.error);
+      return resultat;
+    },
+    onSuccess: () => {
+      toast.success("Pseudo modifié avec succès");
+      queryClient.invalidateQueries({
+        queryKey: ['profil', id] // Invalide le profil utilisateur
+      });
+      annulerModification();
+      router.refresh();
+      router.push("/");
+    },
+    onError: (erreur: Error) => {
+      if (erreur.message.includes("Code")) {
+        formulaireChangement.setError("codeverification", {
+          message: erreur.message,
+        });
+      } else {
+        formulaireChangement.setError("pseudo", { message: erreur.message });
+      }
+      toast.error(erreur.message);
+    },
+  });
+
+  const commencerEdition = () => setEstEnEdition(true);
+
+  const annulerModification = () => {
+    setEstEnEdition(false);
+    setEtapeActuelle("verification");
+    formulaireVerification.reset();
+    formulaireChangement.reset();
+  };
+
+  const soumettreVerification = (donnees: { motdepasse: string }) => {
+    mutationVerifierMotDePasse.mutate(donnees.motdepasse);
+  };
+
+  const soumettreChangement = (donnees: {
+    pseudo: string;
+    codeverification: string;
+  }) => {
+    mutationChangerPseudo.mutate(donnees);
+  };
 
   return {
-    etape,
-    formVerification,
-    formChangement,
-    verifierMotDePasseMutation,
-    reinitialiser
-  }
+    estEnEdition,
+    etapeActuelle,
+    necessiteVerificationMotDePasse,
+
+    formulaireVerification,
+    formulaireChangement,
+
+    mutationVerifierMotDePasse,
+    mutationChangerPseudo,
+
+    commencerEdition,
+    annulerModification,
+    soumettreVerification,
+    soumettreChangement,
+  };
 }
