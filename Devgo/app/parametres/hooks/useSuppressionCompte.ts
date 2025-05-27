@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { schemaVerificationMotDePasse } from "../schema";
 import { supprimerCompte, verifierMotDePasse } from "../actions";
 import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient";
+import { useProfil } from "./useProfil";
 
 export type DeleteAccountSteps = "verification" | "confirmation";
 
@@ -24,16 +25,10 @@ export function useSuppressionCompte(userId: string) {
 
   const formConfirmation = useForm({});
 
-  const { data: userAccounts, isLoading } = useQuery({
-    queryKey: ["userAccounts", userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/user/accounts?userId=${userId}`);
-      if (!response.ok) throw new Error("Échec de la récupération des comptes");
-      return response.json();
-    },
-  });
+  const {data : utilisateur , isLoading} = useProfil(userId)
 
-  const hasProvider = userAccounts?.length > 0;
+  const hasProvider =  utilisateur?.providerId[0] !== "credential";
+  
 
   const verifierMotDePasseMutation = useMutation({
     mutationFn: async (motdepasse: string) => {
