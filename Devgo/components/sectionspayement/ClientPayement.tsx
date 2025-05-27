@@ -12,7 +12,6 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 
 type Abonnement = {
@@ -26,8 +25,10 @@ type Abonnement = {
   lienStripe: string;
 };
 
+
+
 interface ClientSidePaymentProps {
-  session: Session | null;
+  session: string | null;
   abonnements: Abonnement[];
 }
 

@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { schemaVerificationMotDePasse } from "../schema";
 import { supprimerCompte, verifierMotDePasse } from "../actions";
@@ -14,7 +13,7 @@ import { useProfil } from "./useProfil";
 export type DeleteAccountSteps = "verification" | "confirmation";
 
 export function useSuppressionCompte(userId: string) {
-  const router = useRouter();
+
   const [confirmation, setConfirmation] = useState(false);
   const [etape, setEtape] = useState<DeleteAccountSteps>("verification");
 

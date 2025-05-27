@@ -10,7 +10,6 @@ import { SectionSuppression } from './SectionSuppressionCompte'
 import { SectionProfil } from './SectionProfil'
 import { Mail, Key, User, Trash2, UserCircle } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { useProfil } from '../hooks/useProfil'
 
 type Section = 'profil' | 'email' | 'motdepasse' | 'pseudo' | 'suppression'
 
@@ -35,7 +34,6 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
     }
   })
 
-  // const {} = useProfil(userId)
 
   const isCredentialAccount = userAccounts?.providerId?.[0] === "credential"
   const showCredentialFeatures = isCredentialAccount

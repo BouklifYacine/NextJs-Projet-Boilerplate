@@ -51,6 +51,7 @@ const Typewriter = ({
   const [isDeleting, setIsDeleting] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const texts = Array.isArray(text) ? text : [text]
 
   useEffect(() => {
@@ -95,17 +96,7 @@ const Typewriter = ({
     }
 
     return () => clearTimeout(timeout)
-  }, [
-    currentIndex,
-    displayText,
-    isDeleting,
-    speed,
-    deleteSpeed,
-    waitTime,
-    texts,
-    currentTextIndex,
-    loop,
-  ])
+  }, [currentIndex, displayText, isDeleting, speed, deleteSpeed, waitTime, texts, currentTextIndex, loop, initialDelay])
 
   return (
     <div className={`inline whitespace-pre-wrap tracking-tight ${className}`}>

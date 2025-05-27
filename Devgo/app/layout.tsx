@@ -13,8 +13,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "FootDataGo",
-  description: "Récupérez et comparez la data des joueurs des 5 grands championnats",
+  title: "FootyGogo",
+  description: "FootyGogo la boilerplate NextJS idéale pour vos projets full stack",
 };
 
 export default function RootLayout({

@@ -42,6 +42,7 @@ const session = await auth.api.getSession({
     headers: await headers() 
 });
 
+
   return (
     <div className="min-h-screen  py-20">
       <div className="max-w-7xl mx-auto px-4">
@@ -50,7 +51,7 @@ const session = await auth.api.getSession({
         </h2>
         <div className="flex justify-center w-full">
           <div className="w-full max-w-6xl">
-            <ClientSidePayment session={session} abonnements={abonnements} />
+            <ClientSidePayment session={session?.user.id || ""} abonnements={abonnements} />
           </div>
         </div>
       </div>
