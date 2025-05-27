@@ -11,7 +11,6 @@ CREATE TYPE "PlanAbonnement" AS ENUM ('mois', 'année');
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "password" TEXT,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL,
     "image" TEXT,
