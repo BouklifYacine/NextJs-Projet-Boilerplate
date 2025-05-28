@@ -1,8 +1,7 @@
 
-
 services:
   db:
-    image: postgres:14-alpine
+    image: postgres:16-alpine
     restart: always
     env_file:
       - .env
@@ -12,21 +11,14 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-      secrets:
-        - env
-    depends_on:
-      - db
+      dockerfile: dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     env_file:
       - .env
-    environment:
-      - NODE_ENV=production
-
-secrets:
-  env:
-    file: .env
 
 volumes:
   db_data:

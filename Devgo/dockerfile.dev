@@ -1,0 +1,19 @@
+# Dockerfile.dev
+FROM node:23-alpine
+
+WORKDIR /app
+
+# 1) Copier les fichiers qui servent à installer + générer Prisma
+COPY package*.json ./
+COPY prisma ./prisma
+
+# 2) Installer (et générer le client Prisma via postinstall)
+RUN npm ci
+
+# 3) Copier le reste du code
+COPY . .
+
+EXPOSE 3000
+
+# 4) Lancer le mode dev (hot-reload)
+CMD ["npm", "run", "dev"]
