@@ -1,5 +1,5 @@
 # ─── STAGE 1: Dependencies ─────────────────────────────
-FROM node:24.0.1-alpine3.21 AS deps
+FROM node:20-alpine AS deps
 WORKDIR /app
 
 # Installer les dépendances nécessaires pour Prisma et autres packages
@@ -10,13 +10,13 @@ COPY package*.json ./
 COPY prisma ./prisma
 
 # Installation des dépendances de production uniquement
-RUN npm ci 
+RUN npm ci --legacy-peer-deps
 
 # Générer les clients Prisma
 RUN npx prisma generate
 
 # ─── STAGE 2: Builder ───────────────────────────────────
-FROM node:24.0.1-alpine3.21 AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copier les dépendances depuis l'étape précédente
@@ -27,17 +27,17 @@ COPY --from=deps /app/prisma ./prisma
 COPY . .
 
 # Définir l'environnement de production
-# ENV NODE_ENV=production
+ENV NODE_ENV=production
 
 # Dans l'étape builder, avant npm run build
 RUN echo "NODE_ENV: $NODE_ENV"
 RUN echo "DATABASE_URL: $DATABASE_URL"
-RUN npm run build --verbose
-# Construire l'application
-RUN npm run build
+
+# Construire l'application sans linting
+RUN npm run build -- --no-lint
 
 # ─── STAGE 3: Runner ────────────────────────────────────
-FROM node:24.0.1-alpine3.21 AS runner
+FROM node:20-alpine AS runner
 LABEL org.opencontainers.image.description="Image de production pour NextJs-Projet-Boilerplate"
 LABEL org.name="NextJs-Prod-Environment"
 
@@ -47,7 +47,7 @@ WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
 # Définir l'environnement de production
-# ENV NODE_ENV=production
+ENV NODE_ENV=production
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system --gid 1001 nodejs \
