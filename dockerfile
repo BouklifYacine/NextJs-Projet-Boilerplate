@@ -27,7 +27,7 @@ COPY --from=deps /app/prisma ./prisma
 COPY . .
 
 # Définir l'environnement de production
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Construire l'application
 RUN npm run build
@@ -43,7 +43,7 @@ WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
 # Définir l'environnement de production
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system --gid 1001 nodejs \
