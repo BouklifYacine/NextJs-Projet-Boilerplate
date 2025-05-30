@@ -6,11 +6,9 @@ import React from "react";
 import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-
 export async function POST(request: NextRequest) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const body = await request.json();
 
     const validation = ResetPasswordSchema.safeParse(body);
@@ -23,9 +21,21 @@ export async function POST(request: NextRequest) {
 
     const { code, email, newPassword } = body;
 
-    const user = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
       where: { email },
-      include: { accounts: true },
+      select: {
+        email: true,
+        resetToken: true,
+        resetTokenExpiry : true, 
+        name : true,
+        id : true, // Ajouté
+        accounts: {
+          select: {
+            providerId: true,
+            id : true
+          }
+        }
+      }
     });
     if (!user) {
       return NextResponse.json(

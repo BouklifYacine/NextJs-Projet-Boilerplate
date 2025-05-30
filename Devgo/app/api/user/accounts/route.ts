@@ -6,15 +6,18 @@ export async function GET(request: NextRequest) {
   const userId = searchParams.get("userId");
 
   if (!userId) {
-    return NextResponse.json({ error: "UserId is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "UserId est requis" }, 
+      { status: 400 }
+    );
   }
 
   try {
     const utilisateur = await prisma.user.findUnique({
       where: { id: userId },
       select: {
-        name : true, 
-        email : true,
+        name: true,
+        email: true,
         plan: true,
         abonnement: {
           select: {
@@ -32,22 +35,31 @@ export async function GET(request: NextRequest) {
     });
 
     if (!utilisateur) {
-      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Utilisateur non trouvé" },
+        { status: 404 }
+      );
     }
 
-    const providerId = utilisateur.accounts.map((acc) => acc.providerId);
+    // Vérifications supplémentaires
+    const providerIds = utilisateur.accounts?.map(acc => acc.providerId) || [];
+    const safeAbonnement = utilisateur.abonnement ? {
+      periode: utilisateur.abonnement.periode,
+      datedebut: utilisateur.abonnement.datedebut,
+      datefin: utilisateur.abonnement.datefin,
+    } : null;
 
     return NextResponse.json({
-      message: `Données utilisateur récupérées avec succès`,
-      email : utilisateur.email,
-      pseudo : utilisateur.name,
+      message: "Données utilisateur récupérées avec succès",
+      email: utilisateur.email,
+      pseudo: utilisateur.name,
       plan: utilisateur.plan,
-      abonnement: utilisateur.abonnement,
-      providerId,
+      abonnement: safeAbonnement,
+      providerIds, // Renommé pour plus de clarté
     });
 
   } catch (error) {
-    console.error("Erreur lors de la récupération des données:", error);
+    console.error("Erreur API:", error);
     return NextResponse.json(
       { error: "Erreur interne du serveur" },
       { status: 500 }

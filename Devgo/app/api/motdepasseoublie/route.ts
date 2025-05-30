@@ -4,15 +4,22 @@ import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
 import React from "react";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const { email } = await request.json();
 
-    const user = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
       where: { email },
-      include : {accounts : true},
+      select: {
+        email: true, // Ajouté
+        accounts: {
+          select: {
+            providerId: true
+          }
+        }
+      }
     });
 
     if (!user) {

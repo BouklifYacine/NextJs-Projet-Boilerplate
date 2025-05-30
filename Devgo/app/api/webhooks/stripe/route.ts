@@ -5,15 +5,14 @@ import { prisma } from "@/prisma";
 import { Plan, PlanAbonnement } from "@prisma/client";
 import { createElement } from "react";
 import { sendEmail } from "@/lib/email";
-import { 
-  EmailNouvelAbonnement, 
-  EmailChangementAbonnement, 
-  EmailSuppressionAbonnement 
+import {
+  EmailNouvelAbonnement,
+  EmailChangementAbonnement,
+  EmailSuppressionAbonnement,
 } from "@/app/(emails)/AbonnementEmail";
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
-
 export async function POST(request: NextRequest) {
+  const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
   try {
     const body = await request.text();
     const signature = request.headers.get("stripe-signature")!;
@@ -22,7 +21,7 @@ export async function POST(request: NextRequest) {
     try {
       event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
     } catch (error) {
-      console.error('Erreur API:', error);
+      console.error("Erreur API:", error);
       return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
     }
 
@@ -55,7 +54,7 @@ async function handleSubscriptionCanceled(event: Stripe.Event) {
   const customerId = subscription.customer as string;
 
   const user = await prisma.user.findUnique({
-    where: { clientId: customerId }
+    where: { clientId: customerId },
   });
 
   if (!user) {
@@ -63,28 +62,27 @@ async function handleSubscriptionCanceled(event: Stripe.Event) {
   }
 
   await prisma.abonnement.delete({
-    where: { userId: user.id }
+    where: { userId: user.id },
   });
 
   await prisma.user.update({
     where: { id: user.id },
     data: {
       plan: Plan.free,
-      clientId: null
-    }
+      clientId: null,
+    },
   });
-
 
   if (user.email) {
     const emailElement = createElement(EmailSuppressionAbonnement, {
       name: user.name || user.email,
-      plan: "Pro"
+      plan: "Pro",
     });
 
     await sendEmail({
       to: user.email,
       subject: "Confirmation de résiliation de votre abonnement",
-      emailComponent: emailElement
+      emailComponent: emailElement,
     });
   }
 }
@@ -101,10 +99,11 @@ async function handleCheckoutComplete(event: Stripe.Event) {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw new Error("Pas d'utilisateur");
 
-  const clientId = typeof session.customer === "string"
-    ? session.customer
-    : session.customer?.id;
-    
+  const clientId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.customer?.id;
+
   if (!user.clientId && clientId) {
     await prisma.user.update({
       where: { id: user.id },
@@ -148,13 +147,13 @@ async function handleCheckoutComplete(event: Stripe.Event) {
 
     const emailElement = createElement(EmailNouvelAbonnement, {
       name: user.name || email,
-      plan: isYearly ? "Pro Annuel" : "Pro Mensuel"
+      plan: isYearly ? "Pro Annuel" : "Pro Mensuel",
     });
 
     await sendEmail({
       to: email,
       subject: "Confirmation de votre abonnement",
-      emailComponent: emailElement
+      emailComponent: emailElement,
     });
   }
 }
@@ -181,34 +180,36 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
       return;
     }
 
-    const isSubscriptionCanceled = subscription.cancel_at || subscription.status === "canceled";
+    const isSubscriptionCanceled =
+      subscription.cancel_at || subscription.status === "canceled";
 
     if (isSubscriptionCanceled) {
-      const endDate = new Date((subscription.cancel_at || subscription.current_period_end) * 1000);
+      const endDate = new Date(
+        (subscription.cancel_at || subscription.current_period_end) * 1000
+      );
 
       await prisma.abonnement.update({
         where: { userId: user.id },
         data: {
           datefin: endDate,
-        }
+        },
       });
 
       if (user.email) {
         const emailElement = createElement(EmailSuppressionAbonnement, {
           name: user.name || user.email,
-          plan: "Pro"
+          plan: "Pro",
         });
 
         await sendEmail({
           to: user.email,
           subject: "Confirmation de résiliation de votre abonnement",
-          emailComponent: emailElement
+          emailComponent: emailElement,
         });
       }
       return;
     }
 
-    
     const isYearly = priceId === process.env.STRIPE_YEARLY_PRICE_ID;
     const periode = isYearly ? PlanAbonnement.année : PlanAbonnement.mois;
 
@@ -222,14 +223,13 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
     const isActive = subscription.status === "active";
     const newPlan = isActive ? Plan.pro : Plan.free;
     const oldPlanData = await prisma.abonnement.findUnique({
-      where: { userId: user.id }
+      where: { userId: user.id },
     });
 
-   
-    if (oldPlanData && 
-        (oldPlanData.plan !== newPlan || 
-         oldPlanData.periode !== periode)) {
-      
+    if (
+      oldPlanData &&
+      (oldPlanData.plan !== newPlan || oldPlanData.periode !== periode)
+    ) {
       await prisma.abonnement.update({
         where: { userId: user.id },
         data: {
@@ -250,13 +250,16 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
         const emailElement = createElement(EmailChangementAbonnement, {
           name: user.name || user.email,
           plan: isYearly ? "Pro Annuel" : "Pro Mensuel",
-          oldPlan: oldPlanData.periode === PlanAbonnement.année ? "Pro Annuel" : "Pro Mensuel"
+          oldPlan:
+            oldPlanData.periode === PlanAbonnement.année
+              ? "Pro Annuel"
+              : "Pro Mensuel",
         });
 
         await sendEmail({
           to: user.email,
           subject: "Confirmation du changement de votre abonnement",
-          emailComponent: emailElement
+          emailComponent: emailElement,
         });
       }
     }

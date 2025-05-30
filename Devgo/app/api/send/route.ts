@@ -4,11 +4,8 @@ import React from 'react';
 import { EmailTemplate } from '@/components/email-template';
 import { NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Route API pour tester sur Postman que tout fonctionne avec Resend 
-
 export async function POST() {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const { data, error } = await resend.emails.send({
       from: 'yacine@footygogo.com', // Votre nom de domaine 

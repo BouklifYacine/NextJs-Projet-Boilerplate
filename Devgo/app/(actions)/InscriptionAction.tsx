@@ -9,11 +9,11 @@ import React from "react";
 import { Resend } from "resend";
 
 type Schema = z.infer<typeof SchemaInscription>;
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export async function inscriptionAction(data: Schema) {
   try {
-
+const resend = new Resend(process.env.RESEND_API_KEY);
     const validation = SchemaInscription.safeParse(data)
     if (!validation.success){
       return {

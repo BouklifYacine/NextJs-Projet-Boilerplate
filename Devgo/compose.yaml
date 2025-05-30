@@ -6,27 +6,33 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-devgo}
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-      secrets:
-        - env
+      dockerfile: dockerfile
+    restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "3000:3000"
     env_file:
       - .env
     environment:
       - NODE_ENV=production
-
-secrets:
-  env:
-    file: .env
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-devgo}
 
 volumes:
   db_data:

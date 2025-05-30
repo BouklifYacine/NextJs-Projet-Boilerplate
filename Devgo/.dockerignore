@@ -3,6 +3,7 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # Fichiers de build
 .next
@@ -34,10 +35,6 @@ README*
 CHANGELOG*
 LICENSE*
 
-# Fichiers de configuration locale
-.env*
-.local
-
 # Fichiers temporaires
 .DS_Store
 Thumbs.db
@@ -45,7 +42,6 @@ Thumbs.db
 *.temp
 
 # Docker
-Dockerfile*
 .dockerignore
 docker-compose*
 
@@ -62,3 +58,8 @@ docker-compose*
 # Fichiers de sauvegarde
 *.bak
 *.backup
+
+# Ne pas ignorer ces fichiers pour la production
+!next.config.ts
+!prisma
+!public
