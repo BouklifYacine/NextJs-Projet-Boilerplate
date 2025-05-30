@@ -67,4 +67,4 @@ USER nextjs
 EXPOSE 3000
 
 # Commande pour démarrer l'application
-CMD ["node", "server.js"]d
+CMD ["node", "server.js"]
