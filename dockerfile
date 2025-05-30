@@ -71,4 +71,4 @@ USER nextjs
 EXPOSE 3000
 
 # Exécuter les migrations Prisma puis démarrer l'application
-CMD [" npx prisma migrate deploy && node server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && exec node server.js"]
