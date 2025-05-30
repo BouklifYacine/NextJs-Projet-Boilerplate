@@ -1,5 +1,5 @@
 # ─── STAGE 1: Dependencies ─────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:24.0.1-alpine3.21 AS deps
 WORKDIR /app
 
 # Installer les dépendances nécessaires pour Prisma et autres packages
@@ -16,7 +16,7 @@ RUN npm ci --legacy-peer-deps
 RUN npx prisma generate
 
 # ─── STAGE 2: Builder ───────────────────────────────────
-FROM node:20-alpine AS builder
+FROM node:24.0.1-alpine3.21 AS builder
 WORKDIR /app
 
 # Copier les dépendances depuis l'étape précédente
@@ -37,7 +37,7 @@ RUN echo "DATABASE_URL: $DATABASE_URL"
 RUN npm run build -- --no-lint
 
 # ─── STAGE 3: Runner ────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:24.0.1-alpine3.21 AS runner
 LABEL org.opencontainers.image.description="Image de production pour NextJs-Projet-Boilerplate"
 LABEL org.name="NextJs-Prod-Environment"
 
