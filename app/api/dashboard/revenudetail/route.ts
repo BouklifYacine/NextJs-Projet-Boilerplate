@@ -45,9 +45,10 @@ export async function GET(): Promise<
   NextResponse<StatsResponse | { error: string }>
 > {
   try {
-  const session = await auth.api.getSession({
-    headers: await headers() 
-})
+    const headersList = await headers();
+    const session = await auth.api.getSession({
+      headers: headersList || new Headers()
+    });
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: "Vous devez etre connecter" },

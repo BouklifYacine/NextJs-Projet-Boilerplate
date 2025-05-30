@@ -5,9 +5,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function GET(request: NextRequest) {
+
+  
+  const headersList = await headers();
   const session = await auth.api.getSession({
-    headers: await headers() 
-})
+    headers: headersList || new Headers()
+  });
+  
   const sessionId = session?.user?.id;
   if (!sessionId)
     return NextResponse.json("Vous devez etre connecté", { status: 401 });
