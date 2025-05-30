@@ -1,5 +1,5 @@
 # ─── STAGE 1: Dependencies ─────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:24.1.0-alpine3.21 AS deps
 WORKDIR /app
 
 # Installer les dépendances nécessaires pour Prisma
@@ -17,7 +17,7 @@ RUN npm ci --omit=dev=false
 RUN npx prisma generate
 
 # ─── STAGE 2: Development Runtime ─────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:24.1.0-alpine3.21 AS runner
 LABEL org.opencontainers.image.description="Image de développement pour NextJs-Projet-Boilerplate"
 LABEL org.name="NextJs-Dev-Environment"
 
