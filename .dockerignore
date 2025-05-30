@@ -43,7 +43,6 @@ Thumbs.db
 
 # Docker
 .dockerignore
-docker-compose*
 
 # CI/CD
 .github
