@@ -1,19 +1,18 @@
-# Dockerfile.dev
 FROM node:23-alpine
 
 WORKDIR /app
 
-# 1) Copier les fichiers qui servent à installer + générer Prisma
+# Copie uniquement les fichiers nécessaires pour installer les dépendances
 COPY package*.json ./
 COPY prisma ./prisma
 
-# 2) Installer (et générer le client Prisma via postinstall)
+# Installation rapide et propre des dépendances
 RUN npm ci
 
-# 3) Copier le reste du code
+# Copie le reste du code (pour le dev, on peut tout copier)
 COPY . .
 
 EXPOSE 3000
 
-# 4) Lancer le mode dev (hot-reload)
+# Lancement du mode dev (hot reload)
 CMD ["npm", "run", "dev"]
