@@ -24,7 +24,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
 
 # Copier le reste du code source
-COPY .env.production.local .env.production.local
+COPY .env.production.local .env
 COPY . .
 
 # Définir l'environnement de production

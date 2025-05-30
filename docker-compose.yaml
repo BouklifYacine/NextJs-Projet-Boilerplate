@@ -6,7 +6,7 @@ services:
     image: postgres:16-alpine
     restart: always
     env_file:
-      - .env
+      - .env.production.local
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
@@ -32,7 +32,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env
+      - .env.production.local
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-devgo}
