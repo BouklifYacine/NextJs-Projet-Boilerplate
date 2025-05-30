@@ -70,5 +70,5 @@ USER nextjs
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
-# Commande pour démarrer l'application
-CMD ["node", "server.js"]
+# Exécuter les migrations Prisma puis démarrer l'application
+CMD ["sh", "-c", "echo 'Exécution des migrations Prisma...' && npx prisma migrate deploy && echo 'Démarrage de l\'application...' && node server.js"]
