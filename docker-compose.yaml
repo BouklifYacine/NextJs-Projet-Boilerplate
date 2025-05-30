@@ -33,8 +33,9 @@ services:
       - "3000:3000"
     env_file:
       - .env.production.local
-    environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-devgo}
+    # Utilisation de la base de données Neon en production
+    # environment:
+    #   - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-devgo}
 
 volumes:
   db_data:
