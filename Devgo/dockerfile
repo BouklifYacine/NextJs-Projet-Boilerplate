@@ -34,6 +34,9 @@ RUN npm run build
 
 # ─── STAGE 3: Runner ────────────────────────────────────
 FROM node:20-alpine AS runner
+LABEL org.opencontainers.image.description="Image de production pour NextJs-Projet-Boilerplate"
+LABEL org.name="NextJs-Prod-Environment"
+
 WORKDIR /app
 
 # Installer uniquement les dépendances nécessaires pour l'exécution

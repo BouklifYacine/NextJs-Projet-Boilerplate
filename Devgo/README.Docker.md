@@ -28,7 +28,7 @@ docker compose -f docker-compose.dev.yml up --build
 ```
 
 Cette commande va :
-1. Construire l'image Docker pour le développement
+1. Construire l'image Docker pour le développement (nommée `nextjs-projet-boilerplate-dev:latest`)
 2. Démarrer un conteneur PostgreSQL
 3. Démarrer l'application en mode développement avec hot-reload
 
@@ -39,6 +39,7 @@ L'application sera accessible à l'adresse : http://localhost:3000
 - Hot-reload activé (les modifications de code sont appliquées automatiquement)
 - Volumes montés pour synchroniser les fichiers entre votre machine et le conteneur
 - Base de données PostgreSQL accessible sur le port 5432
+- Image Docker optimisée avec une approche multi-étapes
 
 ## Production
 
@@ -49,7 +50,7 @@ docker compose up --build
 ```
 
 Cette commande va :
-1. Construire l'image Docker optimisée pour la production
+1. Construire l'image Docker optimisée pour la production (nommée `nextjs-projet-boilerplate-prod:latest`)
 2. Démarrer un conteneur PostgreSQL
 3. Démarrer l'application en mode production
 
@@ -62,18 +63,27 @@ L'application sera accessible à l'adresse : http://localhost:3000
 - Utilisation du mode standalone de Next.js
 - Exécution avec un utilisateur non-root pour plus de sécurité
 
+## Identification des conteneurs dans Docker Desktop
+
+Les images Docker ont été configurées avec des noms et des labels spécifiques pour faciliter leur identification dans Docker Desktop :
+
+- **Image de développement** : `nextjs-projet-boilerplate-dev:latest` avec le label `NextJs-Dev-Environment`
+- **Image de production** : `nextjs-projet-boilerplate-prod:latest` avec le label `NextJs-Prod-Environment`
+
+Ces noms et labels vous permettent de distinguer facilement les différentes images et conteneurs dans l'interface de Docker Desktop.
+
 ## Déploiement sur un serveur distant
 
 Pour déployer l'application sur un serveur distant :
 
 1. Construisez l'image pour la plateforme cible :
    ```bash
-   docker build --platform=linux/amd64 -t votre-registry/votre-app:tag .
+   docker build -t votre-registry/nextjs-projet-boilerplate-prod:tag -f dockerfile .
    ```
 
 2. Poussez l'image vers votre registry :
    ```bash
-   docker push votre-registry/votre-app:tag
+   docker push votre-registry/nextjs-projet-boilerplate-prod:tag
    ```
 
 3. Sur le serveur distant, créez un fichier `compose.yaml` et un fichier `.env` avec les configurations appropriées.

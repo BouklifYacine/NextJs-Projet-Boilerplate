@@ -1,6 +1,5 @@
-FROM node:20-alpine AS base
-
-# Définir le répertoire de travail
+# ─── STAGE 1: Dependencies ─────────────────────────────
+FROM node:20-alpine AS deps
 WORKDIR /app
 
 # Installer les dépendances nécessaires pour Prisma
@@ -11,12 +10,32 @@ COPY package*.json ./
 COPY prisma ./prisma
 
 # Installation des dépendances avec cache optimisé
-RUN npm ci
+# Utiliser --omit=dev=false pour s'assurer que les dépendances de développement sont installées
+RUN npm ci --omit=dev=false
 
 # Générer les clients Prisma
 RUN npx prisma generate
 
+# ─── STAGE 2: Development Runtime ─────────────────────────────
+FROM node:20-alpine AS runner
+LABEL org.opencontainers.image.description="Image de développement pour NextJs-Projet-Boilerplate"
+LABEL org.name="NextJs-Dev-Environment"
+
+WORKDIR /app
+
+# Installer les dépendances nécessaires pour l'exécution
+RUN apk add --no-cache libc6-compat
+
+# Définir l'environnement de développement
+ENV NODE_ENV=development
+
+# Copier les dépendances depuis l'étape précédente
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/prisma ./prisma
+
 # Copier le reste du code source
+# Note: En mode développement, les fichiers seront montés en volume
+# Cette copie est utile pour le cas où le conteneur est exécuté sans volumes
 COPY . .
 
 # Exposer le port utilisé par l'application

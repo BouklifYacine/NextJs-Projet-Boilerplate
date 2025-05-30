@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Vérifications supplémentaires
-    const providerIds = utilisateur.accounts?.map(acc => acc.providerId) || [];
+    const providerId = utilisateur.accounts?.map(acc => acc.providerId) || [];
     const safeAbonnement = utilisateur.abonnement ? {
       periode: utilisateur.abonnement.periode,
       datedebut: utilisateur.abonnement.datedebut,
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       pseudo: utilisateur.name,
       plan: utilisateur.plan,
       abonnement: safeAbonnement,
-      providerIds, // Renommé pour plus de clarté
+      providerId, 
     });
 
   } catch (error) {
