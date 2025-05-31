@@ -1,14 +1,7 @@
-import nodemailer from "nodemailer";
-import { render } from "@react-email/render";
+import { Resend } from "resend";
 import { ReactElement } from "react";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendEmail({
   to,
@@ -19,16 +12,20 @@ export async function sendEmail({
   subject: string;
   emailComponent: ReactElement;
 }) {
-  const html = await render(emailComponent);
-
   try {
-    const info = await transporter.sendMail({
-      from: process.env.GMAIL_USER,
+    const { data, error } = await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || 'yacine@footygogo.com',
       to,
       subject,
-      html,
+      react: emailComponent,
     });
-    return { success: true, info };
+    
+    if (error) {
+      console.error("Error sending email:", error);
+      return { success: false, error };
+    }
+    
+    return { success: true, info: data };
   } catch (error) {
     console.error("Error sending email:", error);
     return { success: false, error };

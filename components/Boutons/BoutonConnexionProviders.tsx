@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import Github from "@/app/public/Github.png";
-import Google from "@/app/public/Google.png";
+import Github from "@/public/Github.png";
+import Google from "@/public/Google.png";
 import React from "react";
 import { authClient } from "@/lib/auth-client";
 

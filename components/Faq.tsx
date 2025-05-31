@@ -69,7 +69,7 @@ const Faq = () => {
                    Quel est la stack de cette boilerplate ? 
                   </AccordionTrigger>
                   <AccordionContent className=" text-sm md:text-base px-1 md:px-2">
-               NextJS TypeScript AuthJS Nodemailer Stripe Prisma PostgreSQL en autre 
+               NextJS TypeScript AuthJS Resend Stripe Prisma PostgreSQL en autre 
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
