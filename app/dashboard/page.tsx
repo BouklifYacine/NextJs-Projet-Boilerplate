@@ -1,8 +1,7 @@
 import React from "react";
-// import ComponentPage from "./components/componentspage";
-
+import ComponentPage from "./components/componentspage";
 import { AdminMiddlewareClient } from "../(middleware)/AdminMiddlewareClient";
-import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProviders";
+
 
 const DashboardServer = async () => {
  
@@ -11,8 +10,8 @@ const DashboardServer = async () => {
 
 
   return (
-    // <> <ComponentPage></ComponentPage> </>
-     <> <BoutonConnexionProviders></BoutonConnexionProviders> </>
+    <> <ComponentPage></ComponentPage> </>
+     
   );
 };
 

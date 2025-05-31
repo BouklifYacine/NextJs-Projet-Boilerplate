@@ -83,11 +83,11 @@ const ClientConnexionFormulaire = () => {
         )}
       </div>
 
-      {/* <div className="flex justify-end text-md text-blue-600 hover:text-blue-700 underline">
+      <div className="flex justify-end text-md text-blue-600 hover:text-blue-700 underline">
         <Link href="/connexion/motdepasseoublie">
           Mot de passe oublié?
         </Link>
-      </div> */}
+      </div>
 
       <button
         type="submit"
