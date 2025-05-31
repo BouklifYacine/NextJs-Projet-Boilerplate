@@ -32,7 +32,7 @@ COPY . .
 # Dans l'étape builder, avant npm run build
 RUN echo "NODE_ENV: $NODE_ENV"
 RUN echo "DATABASE_URL: $DATABASE_URL"
-RUN npm run build --verbose
+RUN npm run build -- --no-lint
 # Construire l'application
 RUN npm run build
 
@@ -70,5 +70,5 @@ USER nextjs
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
-# Commande pour démarrer l'application
-CMD ["node", "server.js"]
+# Exécuter les migrations Prisma puis démarrer l'application
+CMD ["sh", "-c", "npx prisma migrate deploy && exec node server.js"]
