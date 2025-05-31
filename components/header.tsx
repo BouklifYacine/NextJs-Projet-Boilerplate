@@ -43,7 +43,7 @@ const Header = () => {
   const utilisateurAdmin = data?.admin.Admin;
 
   return (
-    <header className="sticky top-0 z-50 pt-4 px-4 ">
+    <header className=" top-0 z-50 pt-4 px-4 ">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <Link href="/">
@@ -57,8 +57,7 @@ const Header = () => {
             />
           </Link>
 
-          <div className="md:hidden flex items-center gap-4">
-            
+          <div className="md:hidden flex items-center gap-4 relative">
             <MenuDeroulant />
             <BoutonDarkMode2></BoutonDarkMode2>
           </div>

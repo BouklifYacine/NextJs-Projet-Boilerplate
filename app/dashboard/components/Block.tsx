@@ -19,7 +19,7 @@ export const StatsBlock: React.FC<StatsBlockProps> = ({
           <Icon className="w-6 h-6 text-blue-600" />
         </div>
         <div>
-          <p className="text-sm text-gray-500">{title}</p>
+          <p className="text-sm text-black dark:text-white">{title}</p>
           <p className="text-2xl font-bold">{value}</p>
         </div>
       </div>

@@ -50,13 +50,13 @@ import BadgeTypeAbonnement from "./BadgeTypeAbonnement";
                     onCheckedChange={gererSelectionTotale}
                   />
                 </TableHead>
-                <TableHead className="font-bold text-black">Avatar</TableHead>
-                <TableHead className="font-bold text-black">Role</TableHead>
-                <TableHead className="font-bold text-black">Pseudo</TableHead>
-                <TableHead className="font-bold text-black">Email</TableHead>
-                <TableHead className="font-bold text-black">Créé le</TableHead>
-                <TableHead className="font-bold text-black">Abonnement</TableHead>
-                <TableHead className="font-bold text-black">Periode</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Avatar</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Role</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Pseudo</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Email</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Créé le</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Abonnement</TableHead>
+                <TableHead className="font-bold text-black dark:text-white">Periode</TableHead>
 
               </TableRow>
             </TableHeader>
