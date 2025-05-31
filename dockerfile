@@ -10,7 +10,7 @@ COPY package*.json ./
 COPY prisma ./prisma
 
 # Installation des dépendances de production uniquement
-RUN npm ci --legacy-peer-deps
+RUN npm ci 
 
 # Générer les clients Prisma
 RUN npx prisma generate
@@ -27,14 +27,14 @@ COPY --from=deps /app/prisma ./prisma
 COPY . .
 
 # Définir l'environnement de production
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Dans l'étape builder, avant npm run build
 RUN echo "NODE_ENV: $NODE_ENV"
 RUN echo "DATABASE_URL: $DATABASE_URL"
-
-# Construire l'application sans linting
-RUN npm run build -- --no-lint
+RUN npm run build --verbose
+# Construire l'application
+RUN npm run build
 
 # ─── STAGE 3: Runner ────────────────────────────────────
 FROM node:24.0.1-alpine3.21 AS runner
@@ -47,7 +47,7 @@ WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
 # Définir l'environnement de production
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system --gid 1001 nodejs \
@@ -70,5 +70,5 @@ USER nextjs
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
-# Exécuter les migrations Prisma puis démarrer l'application
-CMD ["sh", "-c", "npx prisma migrate deploy && exec node server.js"]
+# Commande pour démarrer l'application
+CMD ["node", "server.js"]
