@@ -1,4 +1,4 @@
-import { CarouselLogoDefilement } from "@/components/Carousel/CarouselLogoDefilement";
+import { CarouselComposant } from "@/components/Carousel/CarouselComposant";
 import Faq from "@/components/Faq";
 import Header from "@/components/header";
 import { Pricing2 } from "@/components/pricing2";
@@ -9,8 +9,7 @@ export default function Home() {
     <>
       <Header />
       <Section />
-      <CarouselLogoDefilement></CarouselLogoDefilement>
-      
+       <CarouselComposant />
       <Pricing2></Pricing2>
       <Faq></Faq>
     </>

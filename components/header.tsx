@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
-import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
+import LogoBayern from "@/public/FC_Bayern_München_logo_(2017).svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -48,8 +48,8 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link href="/">
             <Image
-              src={LogoLiverpool}
-              alt="Logo Liverpool FC"
+              src={LogoBayern}
+              alt="LogoBayern"
               height={50}
               width={50}
               className="hover:scale-110 transition-transform"
