@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import Github from "@/public/Github.png";
+import Github from "@/public/github-icon-2.svg";
 import Google from "@/public/Google.png";
 import React from "react";
 import { authClient } from "@/lib/auth-client";
+import { Button } from "../ui/button";
 
 const BoutonConnexionProviders = () => {
   const GoogleConnexion = async () => {
@@ -25,15 +26,20 @@ const BoutonConnexionProviders = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-8">
-        <button type="button" onClick={GithubConnexion} className="cursor-pointer">
-          <Image src={Github} alt="GitHub Logo" width={40} height={40} />
-        </button>
+   
+        <Button variant="outline" type="button" onClick={GithubConnexion} className="w-full cursor-pointer">
+          <Image src={Github} alt="GitHub Logo" width={25} height={25} />
+          Connexion avec Github
+        </Button>
 
-        <button type="button" onClick={GoogleConnexion} className="cursor-pointer">
-          <Image src={Google} alt="Google Logo" width={40} height={40} />
-        </button>
-      </div>
+        <Button variant="outline" type="button" onClick={GoogleConnexion} className="w-full cursor-pointer ">
+          <Image src={Google} alt="Google Logo" width={25} height={25} />
+           Connexion avec Google 
+        </Button>
+
+
+        
+   
     </>
   );
 };
