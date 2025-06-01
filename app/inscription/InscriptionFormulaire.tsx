@@ -58,6 +58,7 @@ export default function InscriptionFormulaire({
       }
     } catch (error) {
       setErreurMessage("Une erreur est survenue");
+      console.error(error)
     }
   };
 
@@ -119,7 +120,7 @@ export default function InscriptionFormulaire({
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                   <InputPassword
                     {...register("password")}
-                    
+                    id="password"
                     placeholder="Mot de passe"
                     className="pl-10"
                   />
