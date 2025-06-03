@@ -1,5 +1,4 @@
 import { AdminMiddlewareClient } from "../(middleware)/AdminMiddlewareClient";
-
 import Componentspage from "../../features/dashboard/components/componentspage";
 
 export default async function Page() {

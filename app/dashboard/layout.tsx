@@ -1,6 +1,6 @@
 
 
-import { AppSidebar } from "@/components/Dashboard/app-sidebar";
+import { AppSidebar } from "@/features/dashboard/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
