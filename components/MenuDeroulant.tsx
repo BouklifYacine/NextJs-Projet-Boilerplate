@@ -122,7 +122,7 @@ export function MenuDeroulant() {
               </DropdownMenuItem>
              
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={async () => DeconnexionClient}>
+              <DropdownMenuItem onClick={async () => DeconnexionClient()}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Déconnexion</span>
               </DropdownMenuItem>
