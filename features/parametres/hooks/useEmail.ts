@@ -5,12 +5,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { schemaVerificationMotDePasse, schemaEmail } from '../schemas/schema'
-
 import toast from 'react-hot-toast'
 import { TypeEmail } from '../schemas/schema'
 import { DeconnexionClient } from '@/lib/FonctionDeconnexionClient'
-import { changerEmail,  } from '../actions/actions'
 import { verifierMotDePasse } from '../actions/verifiermotdepasseaction'
+import { changerEmail } from '../actions/changeremailaction'
 
 export function useEmail() {
   const [etape, setEtape] = useState<'motdepasse' | 'email'>('motdepasse')
