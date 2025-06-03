@@ -1,7 +1,8 @@
+import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/dashboard/sidebar";
+import { Separator } from "@/components/ui/separator";
 import React from "react";
-import { AppSidebar } from "@/components/app-sidebar"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
+
 
 export default function DashboardUnLayout({
   children,
@@ -20,7 +21,7 @@ export default function DashboardUnLayout({
             </div>
           </header>
           <div className="flex-1 overflow-auto p-4">
-            <div className="w-full max-w-6xl mx-auto">
+            <div className="w-full  mx-auto">
               {children}
             </div>
           </div>
