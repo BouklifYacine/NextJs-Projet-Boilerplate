@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Header from "@/components/header";
+// Header est maintenant dans le layout
 import { TableauDeBordClient } from "../TableauDeBordClient";
 import { useStats, useUtilisateurs } from "../(hooks)/UseDashboard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ComponentPage = () => {
   const [page, setPage] = useState(0);
@@ -22,19 +23,38 @@ const ComponentPage = () => {
 
   if (isLoadingStats || isLoadingUtilisateur) {
     return (
-      <>
-        <Header />
-        <div className="flex justify-center items-center min-h-screen">
-          <p>CA CHARGE !!!</p>
+      <div className="container mx-auto p-6">
+        <div className="space-y-6">
+          {/* Skeleton pour les statistiques */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+          </div>
+          
+          {/* Skeleton pour le tableau */}
+          <Skeleton className="h-10 w-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+          </div>
+          
+          {/* Skeleton pour la pagination */}
+          <div className="flex justify-center mt-4">
+            <Skeleton className="h-10 w-32" />
+          </div>
         </div>
-      </>
+      </div>
     );
   }
 
   if (statsError || utilisateurError || !dataStats || !dataUtilisateur) {
     return (
       <>
-        <Header />
         <div className="flex justify-center items-center min-h-screen text-red-500">
           Une erreur est survenue lors du chargement des données
         </div>
@@ -66,7 +86,6 @@ const ComponentPage = () => {
 
   return (
     <>
-      <Header />
       <TableauDeBordClient
         utilisateurs={utilisateurs}
         statistiques={statistiques}
