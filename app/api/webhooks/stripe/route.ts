@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import { Plan, PlanAbonnement } from "@prisma/client";
 import { createElement } from "react";
-import { sendEmail } from "@/lib/email";
+import { sendEmail } from "@/emails/email";
 import {
   EmailNouvelAbonnement,
   EmailChangementAbonnement,

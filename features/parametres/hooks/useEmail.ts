@@ -9,7 +9,8 @@ import { schemaVerificationMotDePasse, schemaEmail } from '../schemas/schema'
 import toast from 'react-hot-toast'
 import { TypeEmail } from '../schemas/schema'
 import { DeconnexionClient } from '@/lib/FonctionDeconnexionClient'
-import { changerEmail, verifierMotDePasse } from '../actions/actions'
+import { changerEmail,  } from '../actions/actions'
+import { verifierMotDePasse } from '../actions/verifiermotdepasseaction'
 
 export function useEmail() {
   const [etape, setEtape] = useState<'motdepasse' | 'email'>('motdepasse')

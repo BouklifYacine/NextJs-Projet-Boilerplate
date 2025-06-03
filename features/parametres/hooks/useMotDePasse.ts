@@ -5,10 +5,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schemas/schema'
-import { verifierMotDePasse, changerMotDePasse } from '../../../app/parametres/actions'
 import toast from 'react-hot-toast'
 import { TypeMotDePasse } from '../schemas/schema'
 import { DeconnexionClient } from '@/lib/FonctionDeconnexionClient'
+import { verifierMotDePasse } from '../actions/verifiermotdepasseaction'
+import { changerMotDePasse } from '../actions/changermotdepasse'
 
 export function useMotDePasse() {
   const [etape, setEtape] = useState<'verification' | 'changement'>('verification')
