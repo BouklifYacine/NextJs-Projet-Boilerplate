@@ -1,9 +1,9 @@
 "use server"
 
 import { z } from "zod";
-import SchemaInscription from "@/app/(schema)/SchemaInscription";
+import SchemaInscription from "@/features/inscription/schemas/SchemaInscription";
 import { prisma } from "@/prisma";
-import EmailBienvenue from "@/app/(emails)/EmailBienvenue";
+import EmailBienvenue from "@/emails/EmailBienvenue";
 import { authClient } from "@/lib/auth-client";
 import React from "react";
 import { Resend } from "resend";

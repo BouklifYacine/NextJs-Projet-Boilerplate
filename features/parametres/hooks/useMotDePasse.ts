@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schema'
-import { verifierMotDePasse, changerMotDePasse } from '../actions'
+import { schemaVerificationMotDePasse, schemaMotDePasse } from '../schemas/schema'
+import { verifierMotDePasse, changerMotDePasse } from '../../../app/parametres/actions'
 import toast from 'react-hot-toast'
-import { TypeMotDePasse } from '../schema'
+import { TypeMotDePasse } from '../schemas/schema'
 import { DeconnexionClient } from '@/lib/FonctionDeconnexionClient'
 
 export function useMotDePasse() {

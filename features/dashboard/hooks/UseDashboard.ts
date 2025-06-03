@@ -5,9 +5,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import axios from "axios";
-import { deleteUsers } from "../../(actions)/SupprimerUtilisateur.action";
+import { deleteUsers } from "../actions/SupprimerUtilisateur.action";
 import toast from "react-hot-toast";
-import { ModifierRole } from "@/app/(actions)/ModifierRoleAction";
+import { ModifierRole } from "@/features/dashboard/actions/ModifierRoleAction";
 
 export interface StatsResponse {
   data: {

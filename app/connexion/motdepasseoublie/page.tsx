@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { EmailSchema } from "@/app/(schema)/SchemaMotDepasse";
+import { EmailSchema } from "@/features/codemotdepasseoublie/schemas/SchemaMotDepasse";
 
 type Schema = z.infer<typeof EmailSchema>;
 

@@ -4,9 +4,9 @@ import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Mail, User, CreditCard, Calendar, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { InfoCard } from "../_components/InfoCard"
 import { authClient } from "@/lib/auth-client"
 import { useProfil } from "../hooks/useProfil"
+import { InfoCard } from "./InfoCard"
 
 interface SectionProfilProps {
   userId: string

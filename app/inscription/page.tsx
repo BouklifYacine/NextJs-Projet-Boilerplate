@@ -1,6 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react";
 import { MiddlewareUtilisateurConnecte } from "../(middleware)/UtilisateurConnecte";
-import InscriptionFormulaire from "./InscriptionFormulaire";
+import InscriptionFormulaire from "../../features/inscription/components/InscriptionFormulaire";
 
 export default async function InscriptionPage() {
 

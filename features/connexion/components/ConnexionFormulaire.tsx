@@ -12,13 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProviders";
-import { SchemaConnexion } from "../../../app/(schema)/SchemaConnexion";
+import { SchemaConnexion } from "../schemas/SchemaConnexion";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { connexionAction } from "../../../app/(actions)/ConnexionAction";
+import { connexionAction } from "../actions/ConnexionAction";
 import { BoutonDisabled } from "@/components/Boutons/BoutonDisabled";
 import Link from "next/link";
 

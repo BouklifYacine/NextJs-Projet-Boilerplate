@@ -9,7 +9,7 @@ import {
   EmailNouvelAbonnement,
   EmailChangementAbonnement,
   EmailSuppressionAbonnement,
-} from "@/app/(emails)/AbonnementEmail";
+} from "@/emails/AbonnementEmail";
 
 export async function POST(request: NextRequest) {
   const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;

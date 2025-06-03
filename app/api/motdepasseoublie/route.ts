@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
-import CodeConfirmation from "@/app/(emails)/CodeConfirmation";
+import CodeConfirmation from "@/emails/CodeConfirmation";
 import React from "react";
 import { Resend } from "resend";
 

@@ -1,9 +1,9 @@
 "use server";
 
 import { prisma } from "@/prisma";
-import { SessionAdmin } from "../../lib/SessionAdmin";
+import { SessionAdmin } from "../../../lib/SessionAdmin";
 import { revalidatePath } from "next/cache";
-import { ModifierRoleInputSchema } from "../(schema)/SchemaRole";
+import { ModifierRoleInputSchema } from "../schemas/SchemaRole";
 
 export async function ModifierRole(
   id: string,

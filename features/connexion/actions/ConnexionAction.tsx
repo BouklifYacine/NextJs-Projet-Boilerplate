@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { SchemaConnexion } from "@/app/(schema)/SchemaConnexion";
+import { SchemaConnexion } from "@/features/connexion/schemas/SchemaConnexion";
 import { auth } from "@/auth";
 
 type Schema = z.infer<typeof SchemaConnexion>;

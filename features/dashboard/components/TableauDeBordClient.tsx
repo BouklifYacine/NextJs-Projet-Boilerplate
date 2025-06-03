@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useDeleteUsers, useModifierRole } from "./(hooks)/UseDashboard";
+import { useDeleteUsers, useModifierRole } from "../hooks/UseDashboard";
 import toast from "react-hot-toast";
-import { TableauDeBordProps } from "./(interface-types)/Interface-Types";
-import { Filtres } from "./components/Filtres";
-import { SectionStats } from "./components/SectionStats";
-import { UsersTable } from "./components/Tableau";
-import { Role } from "./(interface-types)/Interface-Types";
+import { TableauDeBordProps } from "../interfaces/Interface-Types";
+import { Filtres } from "./Filtres";
+import { SectionStats } from "./SectionStats";
+import { UsersTable } from "./Tableau";
+import { Role } from "../interfaces/Interface-Types";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";

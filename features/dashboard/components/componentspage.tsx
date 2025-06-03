@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 // Header est maintenant dans le layout
-import { TableauDeBordClient } from "../TableauDeBordClient";
-import { useStats, useUtilisateurs } from "../(hooks)/UseDashboard";
+import { TableauDeBordClient } from "./TableauDeBordClient";
+import { useStats, useUtilisateurs } from "../hooks/UseDashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const ComponentPage = () => {

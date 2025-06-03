@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { schemaVerificationMotDePasse } from "../schema";
-import { supprimerCompte, verifierMotDePasse } from "../actions";
+import { schemaVerificationMotDePasse } from "../schemas/schema";
+import { supprimerCompte, verifierMotDePasse } from "../../../app/parametres/actions";
 import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient";
 import { useProfil } from "./useProfil";
 

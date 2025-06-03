@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ResetPasswordSchema } from "@/app/(schema)/SchemaMotDepasse";
-import { InputPassword } from "@/app/parametres/_components/InputPassword";
+import { ResetPasswordSchema } from "@/features/codemotdepasseoublie/schemas/SchemaMotDepasse";
+import { InputPassword } from "@/features/parametres/components/InputPassword";
 
 type Schema = z.infer<typeof ResetPasswordSchema>;
 

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
-import { ResetPasswordSchema } from "@/app/(schema)/SchemaMotDepasse";
+import { ResetPasswordSchema } from "@/features/codemotdepasseoublie/schemas/SchemaMotDepasse";
 import { HashPassword } from "@/lib/argon2";
 import React from "react";
-import NotifChangementMotDePasse from "@/app/(emails)/NotifChangementMotDePasse";
+import NotifChangementMotDePasse from "@/emails/NotifChangementMotDePasse";
 import { Resend } from "resend";
 
 export async function POST(request: NextRequest) {

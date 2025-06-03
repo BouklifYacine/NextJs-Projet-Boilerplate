@@ -12,7 +12,7 @@ import {
   import BadgeRole from "./BadgeRole";
   import BadgeAbonnement from "./BadgeAbonnement";
   import { RoleSelect } from "./select";
-  import { Role, Utilisateur} from "../(interface-types)/Interface-Types";
+  import { Role, Utilisateur} from "../interfaces/Interface-Types";
 import BadgeTypeAbonnement from "./BadgeTypeAbonnement";
   
   interface UsersTableProps {

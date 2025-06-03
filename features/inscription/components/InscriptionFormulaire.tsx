@@ -17,11 +17,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { inscriptionAction } from "@/app/(actions)/InscriptionAction";
+import { inscriptionAction } from "@/features/inscription/actions/InscriptionAction";
 import { BoutonDisabled } from "@/components/Boutons/BoutonDisabled";
 import Link from "next/link";
-import SchemaInscription from "@/app/(schema)/SchemaInscription";
-import { InputPassword } from "../parametres/_components/InputPassword";
+import SchemaInscription from "@/features/inscription/schemas/SchemaInscription";
+import { InputPassword } from "../../parametres/components/InputPassword";
 import { Lock } from "lucide-react";
 
 type Schema = z.infer<typeof SchemaInscription>;

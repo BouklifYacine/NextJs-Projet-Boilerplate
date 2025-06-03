@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { changerPseudo, verifierMotDePasse } from "../actions";
-import { schemaPseudo, schemaVerificationMotDePasse } from "../schema";
+import { changerPseudo, verifierMotDePasse } from "../../../app/parametres/actions";
+import { schemaPseudo, schemaVerificationMotDePasse } from "../schemas/schema";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { BarreLaterale } from "../_components/BarreLatérale";
+import { BarreLaterale } from "../../../features/parametres/components/BarreLatérale";
 
 import Header from "@/components/header";
 import { headers } from "next/headers";
