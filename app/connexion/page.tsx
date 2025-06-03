@@ -1,5 +1,5 @@
 import { MiddlewareUtilisateurConnecte } from "../(middleware)/UtilisateurConnecte";
-import { ConnexionFormulaire } from "./ConnexionFormulaire";
+import { ConnexionFormulaire } from "../../features/connexion/components/ConnexionFormulaire";
 import { GalleryVerticalEnd } from "lucide-react";
 
 export default async function ConnexionPage() {

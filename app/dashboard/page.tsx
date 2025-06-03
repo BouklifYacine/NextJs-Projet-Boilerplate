@@ -1,18 +1,13 @@
-import React from "react";
-import ComponentPage from "./components/componentspage";
 import { AdminMiddlewareClient } from "../(middleware)/AdminMiddlewareClient";
 
+import Componentspage from "../dashboard/components/componentspage";
 
-const DashboardServer = async () => {
- 
-  await AdminMiddlewareClient()
-
-
+export default async function Page() {
+  await AdminMiddlewareClient();
 
   return (
-    <> <ComponentPage></ComponentPage> </>
-     
+    <div className="flex flex-col md:flex-row justify-center gap-4">
+      <Componentspage />
+    </div>
   );
-};
-
-export default DashboardServer;
+}

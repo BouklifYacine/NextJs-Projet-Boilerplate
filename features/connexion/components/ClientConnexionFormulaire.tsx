@@ -8,9 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { SchemaConnexion } from "@/app/(schema)/SchemaConnexion";
-import { connexionAction } from "../(actions)/ConnexionAction";
+import { connexionAction } from "../../../app/(actions)/ConnexionAction";
 import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProviders";
-import { InputPassword } from "../parametres/_components/InputPassword";
+import { InputPassword } from "../../../app/parametres/_components/InputPassword";
 
 type Schema = z.infer<typeof SchemaConnexion>;
 
