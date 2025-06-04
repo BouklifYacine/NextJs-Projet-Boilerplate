@@ -11,15 +11,13 @@ import {
   Map,
   PieChart,
   Settings2,
+  Sidebar,
   SquareTerminal,
 } from "lucide-react"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "../../../components/ui/sidebar"
+import { SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
 import { TeamSwitcher } from "./team-switcher"
 import { NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
-
-
-
 
 // This is sample data.
 const data = {
