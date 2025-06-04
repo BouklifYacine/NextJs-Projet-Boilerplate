@@ -13,8 +13,8 @@ function PageUpload() {
 
       const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
   return (
-    <div className="flex flex-col gap-8 justify-center items-center">
-      <ImageUpload></ImageUpload>
+    <div className="flex flex-col gap-8 justify-center items-center" {...getRootProps} >
+      <ImageUpload {...getInputProps}></ImageUpload >
       {isDragActive ? "Envoyez les fichiers ici" : "Télécharge "}
     </div>
   );
