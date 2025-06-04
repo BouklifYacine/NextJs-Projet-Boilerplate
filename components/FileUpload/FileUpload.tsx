@@ -2,11 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ImagePlus, X, Upload, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { FileRejection, useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from 'uuid';
+
+interface ArrayFile {
+    id : string,
+    file : File,
+    uploading: boolean ,
+    progress : number, 
+    key? : string, 
+    isDeleting : boolean, 
+    error : boolean, 
+    objectUrl? : string,
+}
 
 export function ImageUpload() {
   const {
@@ -20,7 +32,37 @@ export function ImageUpload() {
     onUpload: (url: string) => console.log("Uploaded image URL:", url),
   });
 
-  const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
+  const [files, setFiles] = useState<ArrayFile[]>([])
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        // Simule un event pour handleFileChange
+        const fakeEvent = {
+          target: {
+            files: acceptedFiles,
+          },
+        } as unknown as React.ChangeEvent<HTMLInputElement>;
+        handleFileChange(fakeEvent);
+      }
+      if(acceptedFiles.length > 0){
+        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles.map((file) => ({
+                id : uuidv4(),
+                file : file,
+                uploading: false ,
+                progress : 0, 
+                isDeleting : false, 
+                error : false, 
+                objectUrl : URL.createObjectURL(file),
+            }))])
+      }
+      console.log(acceptedFiles);
+    },
+    
+    [handleFileChange]
+  );
+
+    const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
     if (fileRejections.length > 0) {
       const tropdefichiers = fileRejections.find(
         (filerejection) => filerejection.errors[0].code === "too-many-files"
@@ -37,22 +79,6 @@ export function ImageUpload() {
       }
     }
   }, []);
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        // Simule un event pour handleFileChange
-        const fakeEvent = {
-          target: {
-            files: acceptedFiles,
-          },
-        } as unknown as React.ChangeEvent<HTMLInputElement>;
-        handleFileChange(fakeEvent);
-      }
-      console.log(acceptedFiles);
-    },
-    [handleFileChange]
-  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -150,6 +176,17 @@ export function ImageUpload() {
           )}
         </div>
       )}
+
+      <div className="flex mt-6 justify-center items-center gap-6">
+
+    {files.map((file) => (
+        <div key={file.id}>
+            <Image src={file.objectUrl || ""} alt="image" width={30} height={30}></Image>
+           
+        </div>
+    ))}
+
+      </div>
     </div>
   );
 }
