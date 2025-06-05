@@ -35,6 +35,56 @@ export function ImageUpload() {
 
   const [files, setFiles] = useState<ArrayFile[]>([]);
 
+  async function Removefiles(fileId: string) {
+    try {
+      const fileToRemove = files.find((f) => f.id === fileId);
+      if (fileToRemove) {
+        if (fileToRemove.objectUrl) {
+          URL.revokeObjectURL(fileToRemove.objectUrl);
+        }
+      }
+
+      setFiles((prevFiles) =>
+        prevFiles.map((f) => (f.id === fileId ? { ...f, isDeleting: true } : f))
+      );
+
+      const deleteFileResponse = await axios.delete("/api/s3/delete", {
+        data: { key: fileToRemove!.key },
+      });
+
+      if (deleteFileResponse.status !== 200) {
+        toast.error("Erreur sur la suppression de fichier");
+
+        setFiles((prevFiles) =>
+          prevFiles.map((f) =>
+            f.id === fileId ? { ...f, isDeleting: false, error: true } : f
+          )
+        );
+
+        return;
+      }
+
+      setFiles((prevFiles) =>
+        prevFiles.map((f) =>
+          f.id === fileId ? { ...f, isDeleting: false, error: false } : f
+        )
+      );
+
+      toast.success("Suppression du fichier réussie");
+      setFiles((prevfiles) => prevfiles.filter((f) => f.id !== fileId));
+
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Erreur suppression fichie");
+      setFiles((prevFiles) =>
+        prevFiles.map((f) =>
+          f.id === fileId ? { ...f, isDeleting: false, error: true } : f
+        )
+      );
+    }
+  }
+
   async function UploadFiles(file: File) {
     console.log(file);
     setFiles((prevFiles) =>
@@ -104,18 +154,18 @@ export function ImageUpload() {
 
         xhr.open("PUT", presignedurl);
         xhr.setRequestHeader("Content-type", file.type);
-        xhr.send(file)
+        xhr.send(file);
       });
     } catch (error) {
-      toast.error('Upload échoué')
+      toast.error("Upload échoué");
       console.log(error);
       setFiles((prevfiles) =>
-              prevfiles.map((f) =>
-                f.file === file
-                  ? { ...f, uploading : false , error : true , progress : 0 }
-                  : f
-              )
-            );
+        prevfiles.map((f) =>
+          f.file === file
+            ? { ...f, uploading: false, error: true, progress: 0 }
+            : f
+        )
+      );
     }
   }
 
@@ -266,15 +316,85 @@ export function ImageUpload() {
         </div>
       )}
 
-      <div className="flex mt-6 justify-center items-center gap-6">
+      <p className="text-xs text-muted-foreground">
+        Désactivez votre bloqueur de pub si cela échoue.
+      </p>
+
+      <div className="flex flex-wrap mt-6 gap-4 justify-center">
         {files.map((file) => (
-          <div key={file.id}>
-            <Image
-              src={file.objectUrl || ""}
-              alt="image"
-              width={30}
-              height={30}
-            ></Image>
+          <div
+            key={file.id}
+            className={cn(
+              "relative group flex flex-col items-center bg-muted rounded-lg shadow p-2 transition-all",
+              file.error && "border border-destructive"
+            )}
+            style={{ width: 80 }}
+          >
+            <div className="relative w-16 h-16 rounded overflow-hidden border border-border">
+              <Image
+                src={file.objectUrl || ""}
+                alt="image"
+                fill
+                className={cn(
+                  "object-cover transition-opacity duration-300",
+                  file.uploading && "opacity-60"
+                )}
+                sizes="64px"
+              />
+              {/* Overlay pour l'upload */}
+              {file.uploading && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <span className="text-xs text-white font-semibold">
+                    {file.progress}%
+                  </span>
+                </div>
+              )}
+              {/* Overlay pour la suppression */}
+              {file.isDeleting && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                </div>
+              )}
+            </div>
+            {/* Bouton supprimer */}
+            <button
+              className={cn(
+                "mt-2 flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors",
+                "bg-destructive/10 text-destructive hover:bg-destructive/20",
+                file.isDeleting && "opacity-50 pointer-events-none"
+              )}
+              onClick={() => Removefiles(file.id)}
+              disabled={file.isDeleting}
+              title="Supprimer l'image"
+            >
+              <Trash2 className="h-4 w-4" />
+              Supprimer
+            </button>
+            {/* Message d'erreur */}
+            {file.error && (
+              <span className="mt-1 text-xs text-destructive">
+                Erreur suppression
+              </span>
+            )}
           </div>
         ))}
       </div>

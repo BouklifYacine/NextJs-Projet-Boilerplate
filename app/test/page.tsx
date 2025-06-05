@@ -11,7 +11,8 @@ function PageUpload() {
     console.log(acceptedFiles)
   }, [])
 
-      const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop,
+  // Rajouter IsDragActive si besoin pour gérer quand on drag n drop et gérer le style et la page 
+      const {getRootProps, getInputProps} = useDropzone({onDrop,
         maxFiles : 5, 
         maxSize : 1024 * 1024 * 5, // = 5MB, 
         accept : {
@@ -21,7 +22,7 @@ function PageUpload() {
   return (
     <div className="flex flex-col gap-8 justify-center items-center" {...getRootProps()} >
       <ImageUpload {...getInputProps()}></ImageUpload >
-      {isDragActive ? "Envoyez les fichiers ici" : "Télécharge "}
+     
     </div>
   );
 }
