@@ -4,6 +4,7 @@ interface UserCompleteData {
   email: string
   pseudo: string
   plan: 'free' | 'pro'
+  image: string | null
   abonnement: {
     periode: 'mois' | 'année'
     datedebut: string

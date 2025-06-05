@@ -1,78 +1,65 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { SectionEmail } from './SectionEmail'
-import { SectionMotDePasse } from './SectionMotDePasse'
-import { SectionPseudo } from './SectionPseudo'
-import { SectionSuppression } from './SectionSuppressionCompte'
-import { SectionProfil } from './SectionProfil'
-import { Mail, Key, User, Trash2, UserCircle } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { SectionEmail } from "./SectionEmail";
+import { SectionMotDePasse } from "./SectionMotDePasse";
+import { SectionPseudo } from "./SectionPseudo";
+import { SectionSuppression } from "./SectionSuppressionCompte";
+import { SectionProfil } from "./SectionProfil";
+import { Mail, Key, User, Trash2, UserCircle } from "lucide-react";
+import { useProfil } from "../hooks/useProfil";
 
-type Section = 'profil' | 'email' | 'motdepasse' | 'pseudo' | 'suppression'
+type Section = "profil" | "email" | "motdepasse" | "pseudo" | "suppression";
 
 interface BarreLateraleProps {
   userId: string;
 }
 
-interface PropsQuery {
-  message: string;
-  providerId: string[];
-}
-
 export function BarreLaterale({ userId }: BarreLateraleProps) {
-  const [sectionActive, setSectionActive] = useState<Section>('profil')
+  const [sectionActive, setSectionActive] = useState<Section>("profil");
 
-  const { data: userAccounts } = useQuery<PropsQuery>({
-    queryKey: ['userAccounts', userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/user/accounts?userId=${userId}`)
-      if (!response.ok) throw new Error('Failed to fetch user accounts')
-      return response.json()
-    }
-  })
+  const { data } = useProfil(userId);
 
-
-  const isCredentialAccount = userAccounts?.providerId?.[0] === "credential"
-  const showCredentialFeatures = isCredentialAccount
+  const isCredentialAccount = data?.providerId?.[0] === "credential";
+  const showCredentialFeatures = isCredentialAccount;
 
   const sections = [
     {
-      id: 'profil' as Section,
-      label: 'Profil',
+      id: "profil" as Section,
+      label: "Profil",
       icon: UserCircle,
-      show: true
+      show: true,
     },
     {
-      id: 'email' as Section,
-      label: 'Email',
+      id: "email" as Section,
+      label: "Email",
       icon: Mail,
-      show: showCredentialFeatures
+      show: showCredentialFeatures,
     },
     {
-      id: 'motdepasse' as Section,
-      label: 'Mot de passe',
+      id: "motdepasse" as Section,
+      label: "Mot de passe",
       icon: Key,
-      show: showCredentialFeatures
+      show: showCredentialFeatures,
     },
     {
-      id: 'pseudo' as Section,
-      label: 'Pseudo',
+      id: "pseudo" as Section,
+      label: "Pseudo",
       icon: User,
-      show: showCredentialFeatures 
+      show: showCredentialFeatures,
     },
     {
-      id: 'suppression' as Section,
-      label: 'Supprimer le compte',
+      id: "suppression" as Section,
+      label: "Supprimer le compte",
       icon: Trash2,
       danger: true,
-      show: true
-    }
-  ]
+      show: true,
+    },
+  ];
 
-  const filteredSections = sections.filter(section => section.show)
+  const filteredSections = sections.filter((section) => section.show);
 
   return (
     <>
@@ -81,9 +68,9 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
           {filteredSections.map((section) => (
             <Button
               key={section.id}
-              variant={sectionActive === section.id ? 'default' : 'ghost'}
+              variant={sectionActive === section.id ? "default" : "ghost"}
               className={`justify-start ${
-                section.danger ? 'text-red-500 hover:text-red-500' : ''
+                section.danger ? "text-red-500 hover:text-red-500" : ""
               }`}
               onClick={() => setSectionActive(section.id)}
             >
@@ -95,20 +82,22 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
       </Card>
 
       <div className="space-y-8">
-        {sectionActive === 'profil' && <SectionProfil userId={userId} />}
-        {showCredentialFeatures && sectionActive === 'email' && (
+        {sectionActive === "profil" && (
+          <SectionProfil userId={userId} />
+        )}
+        {showCredentialFeatures && sectionActive === "email" && (
           <SectionEmail />
         )}
-        {showCredentialFeatures && sectionActive === 'motdepasse' && (
+        {showCredentialFeatures && sectionActive === "motdepasse" && (
           <SectionMotDePasse />
         )}
-        {showCredentialFeatures && sectionActive === 'pseudo' && (
+        {showCredentialFeatures && sectionActive === "pseudo" && (
           <SectionPseudo userId={userId} />
         )}
-        {sectionActive === 'suppression' && (
+        {sectionActive === "suppression" && (
           <SectionSuppression userId={userId} />
         )}
       </div>
     </>
-  )
+  );
 }

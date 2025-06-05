@@ -1,7 +1,7 @@
 "use client"
 
 
-import { ImageUpload } from "@/components/FileUpload/FileUpload";
+import { ImageUpload } from "@/features/upload/components/FileUpload";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 

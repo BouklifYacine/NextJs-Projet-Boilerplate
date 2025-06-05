@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
         name: true,
         email: true,
         plan: true,
+        image: true, // Ajout du champ image
         abonnement: {
           select: {
             periode: true,
@@ -54,6 +55,7 @@ export async function GET(request: NextRequest) {
       email: utilisateur.email,
       pseudo: utilisateur.name,
       plan: utilisateur.plan,
+      image: utilisateur.image, // Ajout de l'image dans la réponse
       abonnement: safeAbonnement,
       providerId, 
     });
