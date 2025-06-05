@@ -3,11 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImagePlus, Trash2, Upload } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import { useProfilePictureMutations } from "../hooks/useProfilePicture";
-
 
 interface ProfilePictureUploadProps {
   userId: string;
@@ -30,11 +29,47 @@ export function ProfilePictureUpload({
     isDeleting,
   } = useProfilePictureMutations(userId);
 
-  // Gérer le changement de fichier via l'input file
+  // Dropzone uniquement pour drag&drop, pas pour click
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (!file) return;
+      const tempUrl = URL.createObjectURL(file);
+      setPreviewUrl(tempUrl);
+      upload(file, {
+        onSuccess: (publicUrl) => {
+          setPreviewUrl(publicUrl);
+          URL.revokeObjectURL(tempUrl);
+        },
+        onError: () => {
+          setPreviewUrl(currentImage);
+          URL.revokeObjectURL(tempUrl);
+        },
+      });
+    },
+    [upload, currentImage]
+  );
+
+  const { getRootProps, getInputProps, open } = useDropzone({
+    onDrop,
+    noClick: true, // <--- important : on gère le click nous-même
+    accept: { "image/*": [] },
+    maxFiles: 1,
+    maxSize: 5 * 1024 * 1024,
+    onDragEnter: () => setIsDragActive(true),
+    onDragLeave: () => setIsDragActive(false),
+    onDropAccepted: () => setIsDragActive(false),
+    onDropRejected: () => {
+      setIsDragActive(false);
+      toast.error(
+        "Fichier non valide. Veuillez sélectionner une image de moins de 5MB."
+      );
+    },
+  });
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     if (!file.type.startsWith("image/")) {
       toast.error("Veuillez sélectionner une image");
       return;
@@ -57,47 +92,6 @@ export function ProfilePictureUpload({
     });
   };
 
-  // Gérer le glisser-déposer
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
-      if (!file) return;
-      const tempUrl = URL.createObjectURL(file);
-      setPreviewUrl(tempUrl);
-      upload(file, {
-        onSuccess: (publicUrl) => {
-          setPreviewUrl(publicUrl);
-          URL.revokeObjectURL(tempUrl);
-        },
-        onError: () => {
-          setPreviewUrl(currentImage);
-          URL.revokeObjectURL(tempUrl);
-        },
-      });
-    },
-    [upload, currentImage]
-  );
-
-  // Configuration de react-dropzone
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: { "image/*": [] },
-    maxFiles: 1,
-    maxSize: 5 * 1024 * 1024,
-    onDragEnter: () => setIsDragActive(true),
-    onDragLeave: () => setIsDragActive(false),
-    onDropAccepted: () => setIsDragActive(false),
-    onDropRejected: () => {
-      setIsDragActive(false);
-      toast.error(
-        "Fichier non valide. Veuillez sélectionner une image de moins de 5MB."
-      );
-    },
-  });
-
-
-
-  // Gérer la suppression de la photo de profil
   const handleRemove = () => {
     setPreviewUrl(null);
     deleteProfilePicture(undefined, {
@@ -109,16 +103,15 @@ export function ProfilePictureUpload({
     <div className="flex flex-col items-center gap-4">
       <div
         {...getRootProps()}
-        className={`relative cursor-pointer transition-all duration-300 ${
-          isDragActive ? "scale-105 ring-2 ring-purple-500" : ""
-        }`}
+        className={`
+          relative group w-32 h-32 cursor-pointer transition-all duration-300
+          ${isDragActive ? "scale-105 ring-2 ring-purple-500" : ""}
+        `}
+        tabIndex={0}
+        aria-label="Changer la photo de profil"
       >
-        <input
-          {...getInputProps()}
-          onChange={handleFileChange}
-          accept="image/*"
-        />
-        <Avatar className="w-32 h-32 border-4 border-white dark:border-gray-800 shadow-lg hover:opacity-90 transition-opacity">
+        {/* Avatar */}
+        <Avatar className="w-32 h-32 border-4 border-white dark:border-gray-800 shadow-lg transition-opacity">
           <AvatarImage
             src={previewUrl ?? ""}
             alt={userName}
@@ -127,43 +120,76 @@ export function ProfilePictureUpload({
           <AvatarFallback className="text-3xl bg-gradient-to-br from-purple-500 to-blue-500 text-white">
             {userName?.[0]?.toUpperCase() ?? "U"}
           </AvatarFallback>
-          <div
-            className={`absolute inset-0 flex items-center justify-center rounded-full bg-black/50 transition-opacity ${
-              isDragActive ? "opacity-100" : "opacity-0 hover:opacity-70"
-            }`}
-          >
-            <ImagePlus className="w-8 h-8 text-white" />
-          </div>
         </Avatar>
-      </div>
 
-      <div className="flex gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-1"
-          {...getRootProps()}
-          disabled={isUploading}
+        {/* Overlay drag & drop + aide */}
+        <div
+          className={`
+            absolute inset-0 flex flex-col items-center justify-center rounded-full
+            bg-black/50 transition-opacity z-20
+            ${isDragActive ? "opacity-100" : "opacity-0 group-hover:opacity-80"}
+          `}
         >
-          <Upload className="w-4 h-4" />
-          Changer
-        </Button>
+          <ImagePlus className="w-6 h-6 text-white mb-1" />
+          <span className="text-white text-xs font-medium text-center">
+            Glissez-déposez<br />ou cliquez pour changer
+          </span>
+        </div>
 
-        {previewUrl && (
-          <Button
+        {/* Boutons "changer" et "supprimer" côte à côte en bas à droite */}
+        <div
+          className={`
+            absolute flex gap-1 items-center
+            bottom-2 right-2 z-30
+          `}
+        >
+          {/* Bouton "changer" */}
+          <button
             type="button"
-            variant="destructive"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={handleRemove}
-            disabled={isUploading || isDeleting}
+            className={`
+              bg-white dark:bg-gray-900 border border-purple-500 rounded-full shadow
+              p-1 flex items-center justify-center cursor-pointer
+              transition-transform hover:scale-110
+            `}
+            title="Changer la photo"
+            onClick={(e) => {
+              e.stopPropagation();
+              open(); // Ouvre l'explorateur de fichiers
+            }}
+            disabled={isUploading}
           >
-            <Trash2 className="w-4 h-4" />
-            Supprimer
-          </Button>
-        )}
+            <Upload className="w-3.5 h-3.5 text-purple-600" />
+          </button>
+          {/* Input file invisible pour accessibilité */}
+          <input
+            {...getInputProps()}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+
+          {/* Bouton "supprimer" */}
+          {previewUrl && (
+            <button
+              type="button"
+              className={`
+                bg-white dark:bg-gray-900 border border-destructive rounded-full shadow
+                p-1 flex items-center justify-center cursor-pointer
+                transition-transform hover:scale-110
+                ${isUploading || isDeleting ? "opacity-50 pointer-events-none" : ""}
+              `}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove();
+              }}
+              disabled={isUploading || isDeleting}
+              title="Supprimer la photo"
+            >
+              <Trash2 className="w-3.5 h-3.5 text-destructive" />
+            </button>
+          )}
+        </div>
       </div>
+     
     </div>
   );
 }
