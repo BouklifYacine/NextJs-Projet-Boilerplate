@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   BadgeCheck,
@@ -7,13 +7,13 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
-} from "lucide-react"
+} from "lucide-react";
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/components/ui/avatar"
+} from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,31 +22,34 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { authClient } from "@/lib/auth-client"
-import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient"
+} from "@/components/ui/sidebar";
+import { authClient } from "@/lib/auth-client";
+import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient";
+import { useProfil } from "@/features/parametres/hooks/useProfil";
+import { Loader } from "@/components/ui/loader";
 
-export function NavUser({
- 
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
-  const { isMobile } = useSidebar()
-  const { data: session } = authClient.useSession()
-  const SessionUser = session?.user
+export function NavUser() {
+  const { isMobile } = useSidebar();
+  const { data: session } = authClient.useSession();
+  const SessionUser = session?.user;
+  const { data: Profil, isLoading } = useProfil(SessionUser?.id || "");
+
+  const imageUrl = Profil?.image ?? "";
+  const userName = SessionUser?.name ?? "";
+  const userEmail = SessionUser?.email ?? "";
+
   const Deconnexion = async () => {
-  await DeconnexionClient()
-  }
+    await DeconnexionClient();
+  };
+
+  // Première lettre du nom, ou vide si pas de nom
+  const firstLetter = userName ? userName[0].toUpperCase() : "";
 
   return (
     <SidebarMenu>
@@ -57,13 +60,21 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-2"
             >
-              <Avatar className="h-8 w-8 rounded-lg shrink-0">
-                <AvatarImage src={SessionUser?.image || ""} alt={"Logo profil"} />
-                <AvatarFallback className="rounded-lg">{SessionUser?.image || ""}</AvatarFallback>
-              </Avatar>
+              {isLoading ? (
+                <div className="h-8 w-8 flex items-center justify-center">
+                  <Loader variant="circular" />
+                </div>
+              ) : (
+                <Avatar className="h-8 w-8 rounded-lg shrink-0">
+                  <AvatarImage src={imageUrl} alt={"Logo profil"} />
+                  <AvatarFallback className="rounded-lg">
+                    {firstLetter}
+                  </AvatarFallback>
+                </Avatar>
+              )}
               <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                <span className="truncate font-medium">{SessionUser?.name}</span>
-                <span className="truncate text-xs">{SessionUser?.email}</span>
+                <span className="truncate font-medium">{userName}</span>
+                <span className="truncate text-xs">{userEmail}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
             </SidebarMenuButton>
@@ -76,13 +87,21 @@ export function NavUser({
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={SessionUser?.image || ""} alt={"Logo profil"} />
-                  <AvatarFallback className="rounded-lg">{SessionUser?.image || ""}</AvatarFallback>
-                </Avatar>
+                {isLoading ? (
+                  <div className="h-8 w-8 flex items-center justify-center">
+                    <Loader variant="circular" />
+                  </div>
+                ) : (
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={imageUrl} alt={"Logo profil"} />
+                    <AvatarFallback className="rounded-lg">
+                      {firstLetter}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{SessionUser?.name}</span>
-                <span className="truncate text-xs">{SessionUser?.email}</span>
+                  <span className="truncate font-medium">{userName}</span>
+                  <span className="truncate text-xs">{userEmail}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -110,12 +129,12 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={Deconnexion}>
-              <LogOut  />
+              <LogOut />
               Deconnexion
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }
