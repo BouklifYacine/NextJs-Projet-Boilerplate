@@ -7,17 +7,18 @@ import { cn } from "@/lib/utils";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { FileRejection, useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 interface ArrayFile {
-    id : string,
-    file : File,
-    uploading: boolean ,
-    progress : number, 
-    key? : string, 
-    isDeleting : boolean, 
-    error : boolean, 
-    objectUrl? : string,
+  id: string;
+  file: File;
+  uploading: boolean;
+  progress: number;
+  key?: string;
+  isDeleting: boolean;
+  error: boolean;
+  objectUrl?: string;
 }
 
 export function ImageUpload() {
@@ -32,7 +33,91 @@ export function ImageUpload() {
     onUpload: (url: string) => console.log("Uploaded image URL:", url),
   });
 
-  const [files, setFiles] = useState<ArrayFile[]>([])
+  const [files, setFiles] = useState<ArrayFile[]>([]);
+
+  async function UploadFiles(file: File) {
+    console.log(file);
+    setFiles((prevFiles) =>
+      prevFiles.map((f) => (f.file === file ? { ...f, uploading: true } : f))
+    );
+
+    const payload = {
+      contentType: file.type,
+      size: file.size,
+      fileName: file.name,
+    };
+
+    try {
+      const presignedUrlresponse = await axios.post("/api/s3/upload", payload);
+
+      if (presignedUrlresponse.status !== 200) {
+        toast.error("Echec de l'url");
+        setFiles((prevfiles) =>
+          prevfiles.map((f) =>
+            f.file === file
+              ? { ...f, uploading: false, progress: 0, error: true }
+              : f
+          )
+        );
+        return;
+      }
+
+      const { presignedurl, key } = presignedUrlresponse.data;
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const pourcentage = (event.loaded / event.total) * 100;
+
+            setFiles((prevfiles) =>
+              prevfiles.map((f) =>
+                f.file === file
+                  ? { ...f, progress: Math.round(pourcentage), key: key }
+                  : f
+              )
+            );
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200 || xhr.status === 204) {
+            setFiles((prevfiles) =>
+              prevfiles.map((f) =>
+                f.file === file
+                  ? { ...f, progress: 100, uploading: false, error: false }
+                  : f
+              )
+            );
+
+            toast.success("Fichier télécharger");
+            resolve();
+          } else {
+            reject(new Error(`Upload échoué erreur ${xhr.status}`));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error("Upload echoué"));
+        };
+
+        xhr.open("PUT", presignedurl);
+        xhr.setRequestHeader("Content-type", file.type);
+        xhr.send(file)
+      });
+    } catch (error) {
+      toast.error('Upload échoué')
+      console.log(error);
+      setFiles((prevfiles) =>
+              prevfiles.map((f) =>
+                f.file === file
+                  ? { ...f, uploading : false , error : true , progress : 0 }
+                  : f
+              )
+            );
+    }
+  }
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -45,24 +130,28 @@ export function ImageUpload() {
         } as unknown as React.ChangeEvent<HTMLInputElement>;
         handleFileChange(fakeEvent);
       }
-      if(acceptedFiles.length > 0){
-        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles.map((file) => ({
-                id : uuidv4(),
-                file : file,
-                uploading: false ,
-                progress : 0, 
-                isDeleting : false, 
-                error : false, 
-                objectUrl : URL.createObjectURL(file),
-            }))])
+      if (acceptedFiles.length > 0) {
+        setFiles((prevFiles) => [
+          ...prevFiles,
+          ...acceptedFiles.map((file) => ({
+            id: uuidv4(),
+            file: file,
+            uploading: false,
+            progress: 0,
+            isDeleting: false,
+            error: false,
+            objectUrl: URL.createObjectURL(file),
+          })),
+        ]);
       }
       console.log(acceptedFiles);
+      acceptedFiles.forEach(UploadFiles);
     },
-    
+
     [handleFileChange]
   );
 
-    const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
+  const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
     if (fileRejections.length > 0) {
       const tropdefichiers = fileRejections.find(
         (filerejection) => filerejection.errors[0].code === "too-many-files"
@@ -178,14 +267,16 @@ export function ImageUpload() {
       )}
 
       <div className="flex mt-6 justify-center items-center gap-6">
-
-    {files.map((file) => (
-        <div key={file.id}>
-            <Image src={file.objectUrl || ""} alt="image" width={30} height={30}></Image>
-           
-        </div>
-    ))}
-
+        {files.map((file) => (
+          <div key={file.id}>
+            <Image
+              src={file.objectUrl || ""}
+              alt="image"
+              width={30}
+              height={30}
+            ></Image>
+          </div>
+        ))}
       </div>
     </div>
   );

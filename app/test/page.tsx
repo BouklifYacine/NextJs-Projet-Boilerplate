@@ -11,10 +11,16 @@ function PageUpload() {
     console.log(acceptedFiles)
   }, [])
 
-      const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+      const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop,
+        maxFiles : 5, 
+        maxSize : 1024 * 1024 * 5, // = 5MB, 
+        accept : {
+            "image/*" : [],
+        }
+      })
   return (
-    <div className="flex flex-col gap-8 justify-center items-center" {...getRootProps} >
-      <ImageUpload {...getInputProps}></ImageUpload >
+    <div className="flex flex-col gap-8 justify-center items-center" {...getRootProps()} >
+      <ImageUpload {...getInputProps()}></ImageUpload >
       {isDragActive ? "Envoyez les fichiers ici" : "Télécharge "}
     </div>
   );
