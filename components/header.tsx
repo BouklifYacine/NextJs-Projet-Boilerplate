@@ -8,7 +8,7 @@ import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BoutonDeconnexion } from "./Boutons/BoutonDéconnexion";
 import { BoutonConnexion } from "./Boutons/BoutonConnexion";
-import { MenuDeroulant } from "@/components/MenuDeroulant";
+import MenuDeroulant from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
 import {
@@ -22,11 +22,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import { authClient } from "@/lib/auth-client";
-
 import { BoutonDarkMode2 } from "./BoutonDarkMode/BoutonDarkMode2";
+import { useProfil } from "@/features/parametres/hooks/useProfil";
+import { Loader } from "@/components/ui/loader";
 
 const Header = () => {
   const { data: session } = authClient.useSession();
+
+  const SessionID = session?.user.id || "";
 
   const { data } = useQuery({
     queryKey: ["userStatus"],
@@ -39,6 +42,9 @@ const Header = () => {
     },
   });
 
+  const { data: Profil, isLoading } = useProfil(SessionID);
+
+  const urlimage = Profil?.image;
   const utilisateurabonner = data?.abonnement.abonner;
   const utilisateurAdmin = data?.admin.Admin;
 
@@ -58,8 +64,15 @@ const Header = () => {
           </Link>
 
           <div className="md:hidden flex items-center gap-4 relative">
-            <MenuDeroulant />
-            <BoutonDarkMode2></BoutonDarkMode2>
+            <MenuDeroulant
+              imageUrl={urlimage ?? ""}
+              userName={session?.user?.name ?? ""}
+              isLoading={isLoading}
+              abonnement={utilisateurabonner}
+              admin={utilisateurAdmin}
+              isLogged={!!session}
+            />
+            <BoutonDarkMode2 />
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
@@ -124,27 +137,39 @@ const Header = () => {
                 <BoutonDeconnexion />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
-                      <AvatarImage
-                        src={session.user?.image ?? ""}
-                        alt={session.user?.name ?? "User avatar"}
-                      />
-                      <AvatarFallback>
-                        {session.user?.name?.[0]?.toUpperCase() ?? ""}
-                      </AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <div className="flex items-center gap-2 px-2 py-1.5">
-                      <Avatar className="h-6 w-6">
+                    {isLoading ? (
+                      <div className="flex items-center justify-center w-10 h-10">
+                        <Loader variant="circular" />
+                      </div>
+                    ) : (
+                      <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
                         <AvatarImage
-                          src={session.user?.image ?? ""}
+                          src={urlimage ?? ""}
                           alt={session.user?.name ?? "User avatar"}
                         />
                         <AvatarFallback>
                           {session.user?.name?.[0]?.toUpperCase() ?? ""}
                         </AvatarFallback>
                       </Avatar>
+                    )}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <div className="flex items-center gap-2 px-2 py-1.5">
+                      {isLoading ? (
+                        <div className="flex items-center justify-center w-6 h-6">
+                          <Loader variant="circular" />
+                        </div>
+                      ) : (
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage
+                            src={urlimage ?? ""}
+                            alt={session.user?.name ?? "User avatar"}
+                          />
+                          <AvatarFallback>
+                            {session.user?.name?.[0]?.toUpperCase() ?? ""}
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
                       <DropdownMenuLabel className="px-0">
                         Mon compte
                       </DropdownMenuLabel>
@@ -188,7 +213,7 @@ const Header = () => {
                 </DropdownMenu>
               </div>
             )}
-            <BoutonDarkMode2></BoutonDarkMode2>
+            <BoutonDarkMode2 />
           </nav>
         </div>
       </div>
