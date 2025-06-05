@@ -72,23 +72,23 @@ import BadgeTypeAbonnement from "./BadgeTypeAbonnement";
                       }
                     />
                   </TableCell>
-                  <TableCell className="font-medium">
-                    <div className="relative h-10 w-10">
-                      {utilisateur.image ? (
-                        <Image
-                          src={utilisateur.image}
-                          alt={utilisateur.name || "Avatar"}
-                          width={40}
-                          height={40}
-                          className="rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-black">
-                          {utilisateur?.name?.[0]?.toUpperCase() || "?"}
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
+                 <TableCell className="font-medium">
+  <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+    {utilisateur.image ? (
+      <Image
+        src={utilisateur.image}
+        alt={utilisateur.name || "Avatar"}
+        fill
+        className="object-cover w-full h-full"
+        sizes="40px"
+      />
+    ) : (
+      <span className="text-black text-lg font-bold">
+        {utilisateur?.name?.[0]?.toUpperCase() || "?"}
+      </span>
+    )}
+  </div>
+</TableCell>
                   <TableCell>
                     <BadgeRole utilisateur={utilisateur} />
                   </TableCell>
