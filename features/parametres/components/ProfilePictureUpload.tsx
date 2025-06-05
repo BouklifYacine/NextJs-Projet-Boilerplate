@@ -95,10 +95,7 @@ export function ProfilePictureUpload({
     },
   });
 
-  // Mettre à jour previewUrl lorsque currentImage change
-  useEffect(() => {
-    setPreviewUrl(currentImage);
-  }, [currentImage]);
+
 
   // Gérer la suppression de la photo de profil
   const handleRemove = () => {

@@ -1,7 +1,9 @@
 // @/hooks/useProfilePicture.ts
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
+import { serverDeleteProfilePicture, serverUploadProfilePicture } from "../actions/changerphotodeprofil";
 
 export function useProfilePictureMutations(userId: string) {
   const queryClient = useQueryClient();
@@ -9,35 +11,36 @@ export function useProfilePictureMutations(userId: string) {
   // Upload (POST)
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
-      // 1. Demande presigned URL à l'API
-      const { data } = await axios.post("/api/user/profile-picture", {
+      // 1. Demande presigned URL via server action
+      const { presignedurl } = await serverUploadProfilePicture({
         contentType: file.type,
         size: file.size,
         fileName: file.name,
       });
-      const { presignedurl, publicUrl } = data;
 
       // 2. Upload direct sur S3
-      await axios.put(presignedurl, file, {
+      await fetch(presignedurl, {
+        method: "PUT",
         headers: { "Content-Type": file.type },
+        body: file,
       });
 
-      return publicUrl as string;
+      // On retourne la presignedurl (comme dans ton API)
+      return presignedurl as string;
     },
-    onSuccess: (publicUrl) => {
-      // Met à jour le cache de la photo de profil si tu utilises un useQuery ailleurs
-      queryClient.setQueryData(["profile-picture", userId], publicUrl);
+    onSuccess: (presignedurl) => {
+      queryClient.setQueryData(["profile-picture", userId], presignedurl);
       toast.success("Photo de profil mise à jour !");
     },
     onError: () => {
-      toast.error("Erreur lors de l'upload de la photo de profil.");
+      toast.error( "Erreur lors de l'upload de la photo de profil.");
     },
   });
 
   // Suppression (DELETE)
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      await axios.delete("/api/user/profile-picture");
+      await serverDeleteProfilePicture();
       return null;
     },
     onSuccess: () => {
@@ -45,7 +48,7 @@ export function useProfilePictureMutations(userId: string) {
       toast.success("Photo de profil supprimée !");
     },
     onError: () => {
-      toast.error("Erreur lors de la suppression de la photo de profil.");
+      toast.error( "Erreur lors de la suppression de la photo de profil.");
     },
   });
 

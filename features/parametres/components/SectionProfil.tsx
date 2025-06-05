@@ -11,10 +11,10 @@ import { ProfilePictureUpload } from "./ProfilePictureUpload"
 
 interface SectionProfilProps {
   userId: string
-  image: string | null
+  
 }
 
-export function SectionProfil({ userId, image }: SectionProfilProps) {
+export function SectionProfil({ userId }: SectionProfilProps) {
   const { data: session } = authClient.useSession()
   const { data: userCompleteData, isLoading } = useProfil(userId)
 
@@ -48,7 +48,7 @@ export function SectionProfil({ userId, image }: SectionProfilProps) {
               {/* Remplacer l'Avatar par le composant ProfilePictureUpload */}
               <ProfilePictureUpload 
                 userId={userId} 
-                currentImage={image} 
+                currentImage={userCompleteData.image || null} 
                 userName={userCompleteData.pseudo ?? ""}
               />
 
