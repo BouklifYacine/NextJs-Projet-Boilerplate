@@ -116,7 +116,7 @@ export function useProfilePicture() {
 
       // Construire l'URL de l'image
       // Utiliser l'URL du bucket S3 avec la clé
-      const imageUrl = `${process.env.NEXT_PUBLIC_S3_URL || "https://t3.storage.dev"}/${key}`;
+      const imageUrl = `${process.env.NEXT_PUBLIC_S3_URL || "https://fly.storage.tigris.dev"}/${key}`;
 
       setIsUploading(false);
       setUploadProgress(100);

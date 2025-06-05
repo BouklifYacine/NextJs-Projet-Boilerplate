@@ -83,7 +83,7 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
 
       <div className="space-y-8">
         {sectionActive === "profil" && (
-          <SectionProfil userId={userId} />
+          <SectionProfil userId={userId} image={data?.image || null} />
         )}
         {showCredentialFeatures && sectionActive === "email" && (
           <SectionEmail />

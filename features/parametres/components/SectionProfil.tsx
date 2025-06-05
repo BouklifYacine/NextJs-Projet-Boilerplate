@@ -1,18 +1,20 @@
 'use client'
 
 import { Card } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 import { Mail, User, CreditCard, Calendar, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { authClient } from "@/lib/auth-client"
 import { useProfil } from "../hooks/useProfil"
 import { InfoCard } from "./InfoCard"
+import { ProfilePictureUpload } from "./ProfilePictureUpload"
 
 interface SectionProfilProps {
   userId: string
+  image: string | null
 }
 
-export function SectionProfil({ userId }: SectionProfilProps) {
+export function SectionProfil({ userId, image }: SectionProfilProps) {
   const { data: session } = authClient.useSession()
   const { data: userCompleteData, isLoading } = useProfil(userId)
 
@@ -43,16 +45,12 @@ export function SectionProfil({ userId }: SectionProfilProps) {
           
           <div className="relative pt-16 px-6 pb-6">
             <div className="flex flex-col items-center text-center gap-6">
-              <Avatar className="w-24 h-24 border-4 border-white dark:border-gray-800 shadow-lg ring-4 ring-purple-600/20">
-                <AvatarImage 
-                  src={session.user.image ?? ""} 
-                  alt={userCompleteData.pseudo ?? "Avatar"}
-                  className="object-cover"
-                />
-                <AvatarFallback className="text-2xl bg-gradient-to-br from-purple-500 to-blue-500 text-white">
-                  {userCompleteData.pseudo?.[0]?.toUpperCase() ?? "U"}
-                </AvatarFallback>
-              </Avatar>
+              {/* Remplacer l'Avatar par le composant ProfilePictureUpload */}
+              <ProfilePictureUpload 
+                userId={userId} 
+                currentImage={image} 
+                userName={userCompleteData.pseudo ?? ""}
+              />
 
               <div className="space-y-3">
                 <h2 className="text-2xl font-bold">{userCompleteData.pseudo}</h2>
