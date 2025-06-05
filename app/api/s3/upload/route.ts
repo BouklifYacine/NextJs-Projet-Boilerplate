@@ -1,10 +1,10 @@
-// app/api/upload/route.ts
 import { uploadRequestSchema } from "@/features/upload/schemas/SchemaUpload";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3 } from "@/lib/s3Client";
+import { prisma } from "@/prisma";
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,6 +34,13 @@ export async function POST(request: NextRequest) {
     const presignedurl = await getSignedUrl(S3, command, {
       expiresIn: 360, // 6 minutes
     });
+
+    await prisma.user.update({
+      where : {id : "vaEjdbYEfjiX03OPvnpESKJuc24uQbxl"}, 
+      data : {
+        image : presignedurl
+      }
+    })
 
     const response = {
       presignedurl,
