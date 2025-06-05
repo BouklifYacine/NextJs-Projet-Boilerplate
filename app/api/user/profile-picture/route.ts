@@ -1,11 +1,14 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { S3 } from "@/lib/s3Client";
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid";
+import { uploadRequestSchema } from "@/features/upload/schemas/SchemaUpload";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-// Fonction utilitaire pour extraire la clé S3 d'une URL
+// Utilitaire pour extraire la clé S3 depuis une URL
 const getS3Key = (url: string) => {
   try {
     return new URL(url).pathname.split('/').pop() || null;
@@ -14,71 +17,77 @@ const getS3Key = (url: string) => {
   }
 };
 
-// Route POST pour ajouter/mettre à jour une photo de profil
 export async function POST(request: NextRequest) {
   try {
-    // Vérifier l'authentification
+    // Authentification
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Connectez-vous" }, { status: 401 });
     }
 
-    // Récupérer les données de la requête
+    // Validation du body
     const body = await request.json();
-    const { imageUrl, key } = body;
-
-    // Validation basique
-    if (!imageUrl || !key) {
+    const validation = uploadRequestSchema.safeParse(body);
+    if (!validation.success) {
       return NextResponse.json(
-        { error: "URL de l'image et clé requises" },
+        { message: validation.error.errors[0].message },
         { status: 400 }
       );
     }
 
-    // Récupérer l'utilisateur
+    const { contentType, size, fileName } = validation.data;
+    const uniqueKey = `${uuidv4()}-${fileName}`;
+   
+
+    // Récupérer l'ancienne image pour suppression éventuelle
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { image: true }
     });
 
-    if (!user) {
-      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
-    }
+    // Générer la presigned URL
+    const command = new PutObjectCommand({
+      Bucket: process.env.S3_BUCKET_NAME!,
+      Key: uniqueKey,
+      ContentType: contentType,
+      ContentLength: size,
+    });
+    const presignedurl = await getSignedUrl(S3, command, { expiresIn: 360 });
 
-    // Si l'utilisateur a déjà une image, supprimer l'ancienne de S3
-    if (user.image) {
+    // Mettre à jour la BDD avec la nouvelle image
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { image: presignedurl }
+    });
+
+    // Supprimer l'ancienne image si elle existe
+    if (user?.image) {
       const oldKey = getS3Key(user.image);
       if (oldKey) {
-        try {
-          const deleteCommand = new DeleteObjectCommand({
+        await S3.send(
+          new DeleteObjectCommand({
             Bucket: process.env.S3_BUCKET_NAME!,
-            Key: oldKey
-          });
-          await S3.send(deleteCommand);
-        } catch (error) {
-          console.error("Erreur lors de la suppression de l'ancienne image:", error);
-          // On continue même si la suppression échoue
-        }
+            Key: oldKey,
+          })
+        );
       }
     }
 
-    // Mettre à jour l'utilisateur avec la nouvelle image
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { image: imageUrl }
+    return NextResponse.json({
+      presignedurl,
+      key: uniqueKey,
+      uniqueKey,
+      message: "URL de l'image enregistrée dans la base de données",
     });
-
-    return NextResponse.json({ success: true, imageUrl });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour de la photo de profil:", error);
+    console.error("Erreur API upload:", error);
     return NextResponse.json(
-      { error: "Erreur serveur interne" },
+      { message: "Erreur serveur interne" },
       { status: 500 }
     );
   }
 }
 
-// Route DELETE pour supprimer une photo de profil
 export async function DELETE() {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
@@ -99,34 +108,24 @@ export async function DELETE() {
       return NextResponse.json({ error: "Aucune image à supprimer" }, { status: 400 });
     }
 
-    // Extraire la clé S3 de l'URL de l'image
     const key = getS3Key(user.image);
     if (key) {
-      try {
-        // Supprimer l'image de S3
-        const deleteCommand = new DeleteObjectCommand({
+      await S3.send(
+        new DeleteObjectCommand({
           Bucket: process.env.S3_BUCKET_NAME!,
-          Key: key
-        });
-        await S3.send(deleteCommand);
-      } catch (error) {
-        console.error("Erreur lors de la suppression de l'image S3:", error);
-        // On continue même si la suppression échoue
-      }
+          Key: key,
+        })
+      );
     }
 
-    // Mettre à jour l'utilisateur pour supprimer la référence à l'image
     await prisma.user.update({
       where: { id: session.user.id },
-      data: { image: null }
+      data: { image: null },
     });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Erreur lors de la suppression de la photo de profil:", error);
-    return NextResponse.json(
-      { error: "Erreur serveur interne" },
-      { status: 500 }
-    );
+    console.error("Erreur suppression profil:", error);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
