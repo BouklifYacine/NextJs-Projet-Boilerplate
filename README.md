@@ -198,6 +198,45 @@ npx prisma db push
 **Option Gmail:**
 - Activer 2FA
 - Générer un mot de passe d'application
+
+#### 3. Stockage Tigris (S3)
+**Configuration requise pour l'upload de fichiers :**
+
+1. **Créer un compte Tigris**
+   - Aller sur [fly.io/docs/reference/tigris/](https://fly.io/docs/reference/tigris/)
+   - Créer un compte et un bucket
+
+2. **Récupérer les clés API**
+   - Dans le dashboard Tigris, aller dans "Access Keys"
+   - Créer une nouvelle clé d'accès
+   - Noter l'`Access Key ID` et la `Secret Access Key`
+
+3. **⚠️ Configuration CORS OBLIGATOIRE**
+   ```json
+   {
+     "CORSRules": [
+       {
+         "AllowedOrigins": [
+           "http://localhost:3000",
+           "https://votre-domaine.com"
+         ],
+         "AllowedMethods": ["GET", "PUT", "POST", "DELETE"],
+         "AllowedHeaders": ["*"],
+         "MaxAgeSeconds": 3000
+       }
+     ]
+   }
+   ```
+   **Sans cette configuration CORS, les uploads ne fonctionneront pas !**
+
+4. **Variables d'environnement Tigris**
+   ```env
+   AWS_ACCESS_KEY_ID="votre-access-key-id"
+   AWS_SECRET_ACCESS_KEY="votre-secret-access-key"
+   AWS_REGION="auto"
+   AWS_ENDPOINT_URL_S3="https://fly.storage.tigris.dev"
+   S3_BUCKET_NAME="votre-nom-de-bucket"
+   ```
 - le rentrer ensuite dans le .env : SMTP_PASSWORD="mot-de-passe-app"
 
 
