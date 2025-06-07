@@ -76,6 +76,7 @@ export const Footer = ({
     title: "Shadcnblocks.com",
   },
   sections = defaultSections,
+  description = ".",
   socialLinks = defaultSocialLinks,
   copyright = "© 2025 Footygogo. All rights reserved.",
   legalLinks = defaultLegalLinks,
@@ -99,7 +100,9 @@ export const Footer = ({
               </a>
               <h2 className="text-xl font-semibold">{logo.title}</h2>
             </div>
-           
+            <p className="max-w-[70%] text-sm text-muted-foreground">
+              {description}
+            </p>
             <ul className="flex items-center space-x-6 text-muted-foreground">
               {socialLinks.map((social, idx) => (
                 <li key={idx} className="font-medium hover:text-primary">

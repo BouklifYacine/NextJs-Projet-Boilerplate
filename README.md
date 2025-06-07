@@ -1,86 +1,130 @@
-#  Next.js Full-Stack DevGo Boilerplate v0.6
+# 🚀 NextJS Projet Boilerplate
 
-Une boilerplate moderne et complet pour construire des applications web full-stack avec Next.js 15, conçu pour une expérience de développement optimale et pouvoir se concentrer sur les fonctionnalité métier 
+Une boilerplate moderne et complète pour construire des applications web full-stack avec Next.js 15, conçue pour une expérience de développement optimale et permettre de se concentrer sur les fonctionnalités métier.
 
 ## ✨ Fonctionnalités Principales
 
-### 🔐 Authentification  & Autorisation & Profil
-- Authentification complète avec email/mot de passe
-- Modification email d'inscription 
-- Changement de mot de passe + notification par mail
-- Mise à jour du pseudo + notification par mail
-- Suppression de compte + notification par mail
-- Connexion providers (Google, GitHub)
-- Routes protégées et gestion des sessions
-- Système de réinitialisation de mot de passe avec code unique par email (expiration 1h)
-- Mot de passe oublié avec email 
-- Gestion des profils utilisateurs par les admins
-- Protection CSRF et validation des données
+### 🔐 Authentification & Autorisation & Profil
+- **Authentification complète** avec email/mot de passe (Better Auth)
+- **Connexion via providers** (Google, GitHub) avec OAuth
+- **Gestion complète du profil utilisateur** :
+  - Modification de l'email avec notification
+  - Changement de mot de passe sécurisé + notification par email
+  - Mise à jour du pseudo + notification par email
+  - Upload et gestion de photo de profil (S3/Tigris)
+  - Suppression de compte + notification par email
+- **Système de réinitialisation** de mot de passe avec code unique par email (expiration 1h)
+- **Routes protégées** et gestion des sessions sécurisées
+- **Gestion des rôles** (Admin/Utilisateur) avec middleware
+- **Protection CSRF** et validation des données
+- **Rate limiting** intégré
 
 ### 📧 Système d'Emails Transactionnels
-- Emails de bienvenue automatiques
-- Notifications de changement de mot de passe
-- Codes de vérification pour les actions sensibles
-- Templates d'emails personnalisables avec React Email
-- Support pour Gmail 
+- **Templates d'emails** personnalisables avec React Email
+- **Emails automatiques** :
+  - Bienvenue à l'inscription
+  - Confirmation de changement de mot de passe
+  - Notification de changement d'email
+  - Notification de changement de pseudo
+  - Confirmation de suppression de compte
+  - Codes de vérification pour actions sensibles
+- **Support Gmail SMTP** avec mots de passe d'application
 
 ### 💳 Système de Paiement et Abonnements
-- Intégration complète de Stripe
-- Gestion des abonnements (mensuel/annuel)
-- Webhooks pour la synchronisation des paiements
-- Historique des transactions
-- Mise à niveau/rétrogradation des abonnements en mode dev uniquement 
+- **Intégration complète Stripe** :
+  - Abonnements mensuels et annuels
+  - Webhooks pour synchronisation des paiements
+  - Portail client pour gestion des abonnements
+  - Historique des transactions
+- **Gestion des plans** (Free/Pro) avec restrictions
+- **Mise à niveau/rétrogradation** des abonnements
+- **Calculs automatiques** des revenus et MRR
 
-📊 Dashboard Admin
+### 📊 Dashboard Admin Complet
+- **Sidebar responsive** avec navigation intuitive
+- **Statistiques en temps réel** :
+  - Nombre total d'utilisateurs
+  - Nombre d'abonnés Pro
+  - Revenus totaux et MRR (Monthly Recurring Revenue)
+  - Revenus moyens par utilisateur
+  - Répartition abonnements mensuels/annuels
+- **Gestion des utilisateurs** :
+  - Tableau avec pagination dynamique
+  - Filtres avancés (Admin, Abonnement, Type d'abonnement)
+  - Recherche par pseudo en temps réel
+  - Modification des rôles utilisateurs
+  - Suppression en masse d'utilisateurs
+- **Interface moderne** avec états de chargement et animations
 
-- Gestion complète des utilisateurs
-- Statistiques des revenus en temps réel
-- Statistiques des revenus moyens par utilisateur en temps réel 
-- Statistiques des revenus totaux de l'application en temps réel
-- Statistiques des revenus mensuels en temps réel
-- Pagination dynamique
-- Filtres avancés (admin, abonnement , abo mensuel / abo annuler)
-- Recherche par pseudo
-- Gestion des rôles utilisateurs
+### 📁 Système de Stockage et Upload
+- **Intégration S3/Tigris** pour le stockage de fichiers
+- **Upload de photos de profil** avec :
+  - Drag & drop intuitif
+  - Prévisualisation en temps réel
+  - Compression et optimisation automatique
+  - Suppression sécurisée des anciens fichiers
+- **URLs pré-signées** pour uploads sécurisés
+- **Gestion des erreurs** et validation des types de fichiers
 
-### 🎨 Interface Utilisateur
-- Design moderne et responsive
-- Composants réutilisables avec shadcn/ui
-- Gestion des états de chargement
-- Formulaires avec validation (React Hook Form + Zod)
-- Notifications Toast
-- Animations fluides avec Framer Motion sur la landing page 
+### 🎨 Interface Utilisateur Moderne
+- **Design responsive** avec Tailwind CSS
+- **Composants réutilisables** avec shadcn/ui :
+  - Formulaires avec validation (React Hook Form + Zod)
+  - Notifications Toast élégantes
+  - Modales et dialogues
+  - Badges et indicateurs de statut
+  - Avatars avec états en ligne/hors ligne
+- **Thème sombre/clair** avec next-themes
+- **Animations fluides** avec Framer Motion
+- **États de chargement** et skeletons
+- **Gestion d'erreurs** utilisateur-friendly
 
 ### 🛡️ Sécurité et Performance
-- Protection XSS intégrée
-- Rate limiting
-- Validation serveur et client
-- En-têtes de sécurité optimisés
-- Sessions sécurisées
-- Gestion des erreurs
-- Route sécurisé avec session et roles
+- **Protection XSS** intégrée
+- **Rate limiting** sur les API
+- **Validation serveur et client** avec Zod
+- **En-têtes de sécurité** optimisés
+- **Sessions sécurisées** avec Better Auth
+- **Middleware de protection** des routes
+- **Hachage sécurisé** des mots de passe (Argon2)
+- **Gestion des erreurs** centralisée
 
 ## 🛠️ Stack Technique
 
 ### Frontend
-- Next.js 15+
-- Typescript 
-- React
-- Tailwind CSS
-- Shadcn UI
-- React Hook Form
-- TanStack Query
-- Lucide React
-- Framer Motion
+- **Next.js 15+** avec App Router et Turbopack
+- **TypeScript** pour la sécurité des types
+- **React 19** avec les dernières fonctionnalités
+- **Tailwind CSS 4** pour le styling
+- **shadcn/ui** pour les composants UI
+- **React Hook Form** + **Zod** pour la validation
+- **TanStack Query** pour la gestion d'état serveur
+- **Framer Motion** pour les animations
+- **next-themes** pour le thème sombre/clair
+- **Lucide React** pour les icônes
+- **React Dropzone** pour les uploads
+- **React Hot Toast** pour les notifications
 
-### Backend
-- Next.js API Routes
-- Typescript 
-- Prisma ORM
-- PostgreSQL
-- AuthJS
-- Stripe
-- Nodemailer ( Resend dans la prochaine version )
+### Backend & Base de Données
+- **Next.js API Routes** pour l'API REST
+- **Prisma ORM** avec adaptateur Neon
+- **PostgreSQL** comme base de données principale
+- **Better Auth** pour l'authentification moderne
+- **Argon2** pour le hachage des mots de passe
+- **Rate limiting** intégré
+
+### Services Externes
+- **Stripe** pour les paiements et abonnements
+- **AWS S3/Tigris** pour le stockage de fichiers
+- **Gmail SMTP** pour l'envoi d'emails
+- **React Email** pour les templates d'emails
+- **OAuth** (Google, GitHub) pour l'authentification sociale
+
+### Outils de Développement
+- **ESLint** pour la qualité du code
+- **Vitest** pour les tests
+- **Docker** pour la containerisation
+- **Prisma Studio** pour la gestion de la base de données
 
 ## 📦 Installation
 
