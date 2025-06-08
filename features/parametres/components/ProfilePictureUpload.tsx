@@ -157,7 +157,7 @@ export function ProfilePictureUpload({
             }}
             disabled={isUploading}
           >
-            <Upload className="w-3.5 h-3.5 text-purple-600" />
+            <Upload className="w-4.5 h-4.5 text-purple-500" />
           </button>
           {/* Input file invisible pour accessibilité */}
           <input
@@ -183,7 +183,7 @@ export function ProfilePictureUpload({
               disabled={isUploading || isDeleting}
               title="Supprimer la photo"
             >
-              <Trash2 className="w-3.5 h-3.5 text-destructive" />
+              <Trash2 className="w-4.5 h-4.5 text-red-500" />
             </button>
           )}
         </div>
