@@ -2,11 +2,11 @@
   "name": "footdatago",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "db:push:prod": " npx prisma db push",
-    "build": "next build",
-    "start": "next start",
+   "scripts": {
+    "dev": "bun --bun next dev --turbopack",
+    "db:push:prod": "bunx prisma db push",
+    "build": "bun --bun next build",
+    "start": "bun --bun next start",
     "lint": "next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",
