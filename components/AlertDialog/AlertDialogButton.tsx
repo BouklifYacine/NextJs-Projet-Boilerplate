@@ -14,16 +14,19 @@ import {
 import { Button } from "@/components/ui/button"
 
 interface Props {
-  TexteBouton : string,
-  Titre : string, 
+  textbutton : string,
+  titre : string, 
   description : string
+  textconfirmbutton : string
+  textcancelbutton : string
+  icon?: React.ReactNode
 }
 
-export default function AlerteDIalogueIcone({TexteBouton, Titre, description} :Props) {
+export default function AlertDialogButton({textbutton, icon, titre, description, textconfirmbutton, textcancelbutton } :Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">{TexteBouton}</Button>
+        <Button className="bg-red-500 text-white">{textbutton} {icon}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
@@ -34,15 +37,15 @@ export default function AlerteDIalogueIcone({TexteBouton, Titre, description} :P
             <CircleAlertIcon className="opacity-80 text-red-500" size={16} />
           </div>
           <AlertDialogHeader>
-            <AlertDialogTitle>{Titre}</AlertDialogTitle>
+            <AlertDialogTitle>{titre}</AlertDialogTitle>
             <AlertDialogDescription>
              {description}
             </AlertDialogDescription>
           </AlertDialogHeader>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction>Confirmer</AlertDialogAction>
+          <AlertDialogCancel>{textcancelbutton}</AlertDialogCancel>
+          <AlertDialogAction>{textconfirmbutton}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

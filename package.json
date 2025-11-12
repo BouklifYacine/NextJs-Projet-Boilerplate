@@ -2,7 +2,7 @@
   "name": "footdatago",
   "version": "0.1.0",
   "private": true,
-   "scripts": {
+  "scripts": {
     "dev": "bun --bun next dev --turbopack",
     "db:push:prod": "bunx prisma db push",
     "build": "bun --bun next build",
@@ -86,7 +86,7 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
-    "@types/node": "^20.17.56",
+    "@types/node": "^24.10.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/ws": "^8.18.1",
