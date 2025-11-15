@@ -26,6 +26,7 @@ import { BoutonDarkMode2 } from "./BoutonDarkMode/BoutonDarkMode2";
 import { useProfil } from "@/features/parametres/hooks/useProfil";
 import { Loader } from "@/components/ui/loader";
 
+
 const Header = () => {
   const { data: session } = authClient.useSession();
 
@@ -71,7 +72,7 @@ const Header = () => {
               abonnement={utilisateurabonner}
               admin={utilisateurAdmin}
               isLogged={!!session}
-            />
+            />      
             <BoutonDarkMode2 />
           </div>
 
@@ -211,6 +212,7 @@ const Header = () => {
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
+                
               </div>
             )}
             <BoutonDarkMode2 />
