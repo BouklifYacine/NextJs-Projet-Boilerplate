@@ -13,10 +13,10 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 6,
     autoSignIn: false,
-    password : {
-      hash : HashPassword,
-      verify : verifyPassword
-    }
+    password: {
+      hash: HashPassword,
+      verify: verifyPassword,
+    },
   },
   socialProviders: {
     github: {
@@ -31,9 +31,9 @@ export const auth = betterAuth({
     },
   },
   rateLimit: {
-    enabled : true,
-    window : 10, 
+    enabled: true,
+    window: 10,
     max: 100,
-  }, 
-  plugins:[nextCookies(), ]
+  },
+  plugins: [nextCookies()],
 });

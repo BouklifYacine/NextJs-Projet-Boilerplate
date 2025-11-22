@@ -1,3 +1,10 @@
+/*
+  Warnings:
+
+  - You are about to drop the `Post` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
+
+*/
 -- CreateEnum
 CREATE TYPE "Roles" AS ENUM ('Admin', 'utilisateur');
 
@@ -6,6 +13,24 @@ CREATE TYPE "Plan" AS ENUM ('free', 'pro');
 
 -- CreateEnum
 CREATE TYPE "PlanAbonnement" AS ENUM ('mois', 'année');
+
+-- DropForeignKey
+ALTER TABLE "Post" DROP CONSTRAINT "Post_authorId_fkey";
+
+-- DropTable
+DROP TABLE "Post";
+
+-- DropTable
+DROP TABLE "User";
+
+-- CreateTable
+CREATE TABLE "Test" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Test_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "user" (

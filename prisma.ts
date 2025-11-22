@@ -13,13 +13,13 @@ const dbUrl = getDatabaseUrl();
 // évite de multiple instanciations en dev
 const globalForPrisma = global as unknown as { prisma?: PrismaClient };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient();
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
 
 // Log simplifié
-console.log(`🔗 Base de données: ${dbUrl.includes('summer-king') ? 'DEV (summer-king)' : 'PROD (lingering-darkness)'}`);
+console.log(
+  `🔗 Base de données: ${dbUrl.includes("summer-king") ? "DEV (summer-king)" : "PROD (lingering-darkness)"}`
+);
