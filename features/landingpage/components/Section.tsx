@@ -1,8 +1,8 @@
 import React from "react";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { IoStarSharp } from "react-icons/io5";
-import { HandWrittenTitle } from "./ui/hand-writing-text";
-import { GlowEffectButton } from "./Boutons/BoutonGlowCTA";
+import { HandWrittenTitle } from "../../../components/ui/hand-writing-text";
+import { GlowEffectButton } from "../../../components/Boutons/BoutonGlowCTA";
 import Link from "next/link";
 
 const avatars = [
@@ -50,9 +50,7 @@ const Section = () => {
       <div className="mx-auto pt-20 h-full">
         <HandWrittenTitle title="DevGogogo" subtitle="" />
         <div className="flex flex-col justify-center items-center gap-6 py-2">
-          <div className="flex justify-center items-center pb-2">
-        
-          </div>
+          <div className="flex justify-center items-center pb-2"></div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-bold tracking-tighter  text-center px-4 max-w-8xl">
             Créer votre{" "}
@@ -73,7 +71,6 @@ const Section = () => {
 
           <div className="flex justify-center items-center pb-2 pt-3">
             <Link href={"/connexion"}>
-           
               <GlowEffectButton texte="Rejoindre"></GlowEffectButton>
             </Link>
           </div>

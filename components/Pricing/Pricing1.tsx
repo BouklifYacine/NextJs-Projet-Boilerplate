@@ -1,5 +1,4 @@
-import { Pricing2 } from "../pricing2";
-
+import { Pricing2 } from "../../features/landingpage/components/pricing2";
 
 const demoData = {
   heading: "Pricing",

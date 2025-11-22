@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -9,30 +9,27 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-interface BoutonTooltipProps extends ButtonProps {
+type BoutonTooltipProps = {
   text: string;
   tooltipText: string;
   onClick?: () => void;
   className?: string;
-}
+};
 
-export function BoutonTooltip({
+export function TooltipButton({
   text,
   tooltipText,
   onClick,
   className,
-  variant = "default",
   ...props
 }: BoutonTooltipProps) {
   return (
     <TooltipProvider>
-      <Tooltip delayDuration={300}>
+      <Tooltip delayDuration={200}>
         <TooltipTrigger asChild>
           <Button
-            variant={variant}
             onClick={onClick}
-            className={cn("", className)}
-            {...props}
+            className={`cursor-pointer ${className || ""}`}
           >
             {text}
           </Button>

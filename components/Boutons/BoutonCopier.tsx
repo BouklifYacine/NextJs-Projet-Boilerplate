@@ -24,7 +24,7 @@ function BoutonCopier() {
   };
 
   return (
-    <TooltipProvider delayDuration={0}>
+    <TooltipProvider delayDuration={200}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -38,22 +38,29 @@ function BoutonCopier() {
             <div
               className={cn(
                 "transition-all",
-                copied ? "scale-100 opacity-100" : "scale-0 opacity-0",
+                copied ? "scale-100 opacity-100" : "scale-0 opacity-0"
               )}
             >
-              <Check className="stroke-emerald-500" size={16} strokeWidth={2} aria-hidden="true" />
+              <Check
+                className="stroke-emerald-500"
+                size={16}
+                strokeWidth={2}
+                aria-hidden="true"
+              />
             </div>
             <div
               className={cn(
                 "absolute transition-all",
-                copied ? "scale-0 opacity-0" : "scale-100 opacity-100",
+                copied ? "scale-0 opacity-0" : "scale-100 opacity-100"
               )}
             >
               <Copy size={16} strokeWidth={2} aria-hidden="true" />
             </div>
           </Button>
         </TooltipTrigger>
-        <TooltipContent className="px-2 py-1 text-xs">Cliquez pour copier</TooltipContent>
+        <TooltipContent className="px-2 py-1 text-xs">
+          Cliquez pour copier
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

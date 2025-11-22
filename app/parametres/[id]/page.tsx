@@ -1,15 +1,18 @@
 import { redirect } from "next/navigation";
 import { BarreLaterale } from "../../../features/parametres/components/BarreLatérale";
 
-import Header from "@/components/header";
+import Header from "@/features/landingpage/components/header";
 import { headers } from "next/headers";
 import { auth } from "@/auth";
 
-
-export default async function PageParametres({params}: {params: Promise<{ id: string }>}) {
-   const session = await auth.api.getSession({
-         headers: await headers()
-     })
+export default async function PageParametres({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const { id } = await params;
 
   if (!session?.user) {

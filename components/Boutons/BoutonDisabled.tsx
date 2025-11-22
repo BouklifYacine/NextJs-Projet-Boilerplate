@@ -1,27 +1,24 @@
-
-'use client' 
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 
 interface Props {
-    texte : string
-    classnameButton? : string
-    classnameLoader?:string
+  text: string;
+  className?: string;
+  classnameLoader?: string;
 }
 
-function BoutonDisabled({texte,classnameButton,classnameLoader} : Props) {
+function BoutonDisabled({ text, className, classnameLoader }: Props) {
   return (
-  
-    <Button disabled className={classnameButton}>
+    <Button disabled className={` ${className || ""}`}>
       <LoaderCircle
-        className={`${classnameLoader} animate-spin`} 
+        className={`${classnameLoader} animate-spin disabled:cursor-not-allowed`}
         aria-hidden="true"
       />
-      {texte}
+      {text}
     </Button>
   );
 }
 
 export { BoutonDisabled };
-

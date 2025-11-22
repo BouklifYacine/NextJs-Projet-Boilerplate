@@ -1,15 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Props {
-    Fallback : string, 
-    texte : string
+  Fallback: string;
+  texte: string;
+  alt: string;
+  avatarImage: string;
 }
 
-function AvatarEnLigne({Fallback , texte} : Props) {
+function AvatarEnLigne({ Fallback, texte, alt, avatarImage }: Props) {
   return (
     <div className="relative">
       <Avatar>
-        <AvatarImage src="https://originui.com/avatar-80-07.jpg" alt="Kelly King" />
+        <AvatarImage src={avatarImage} alt={alt} />
         <AvatarFallback>{Fallback}</AvatarFallback>
       </Avatar>
       <span className="absolute bottom-0 end-0 size-3 rounded-full border-2 border-background bg-emerald-500">
@@ -20,5 +22,3 @@ function AvatarEnLigne({Fallback , texte} : Props) {
 }
 
 export { AvatarEnLigne };
-
-

@@ -8,7 +8,7 @@ interface Props {
   classname?: string;
 }
 
-const BadgeAnnoucement = ({ texte, icon, classname }: Props) => (
+const BetterBadge = ({ texte, icon, classname }: Props) => (
   <>
     <Announcement>
       <AnnouncementTitle className={classname}>
@@ -19,4 +19,4 @@ const BadgeAnnoucement = ({ texte, icon, classname }: Props) => (
   </>
 );
 
-export { BadgeAnnoucement };
+export { BetterBadge };

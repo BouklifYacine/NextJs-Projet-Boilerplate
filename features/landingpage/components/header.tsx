@@ -6,9 +6,9 @@ import LogoBayern from "@/public/FC_Bayern_München_logo_(2017).svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BoutonDeconnexion } from "./Boutons/BoutonDéconnexion";
-import { BoutonConnexion } from "./Boutons/BoutonConnexion";
-import MenuDeroulant from "@/components/MenuDeroulant";
+import { BoutonDeconnexion } from "../../../components/Boutons/BoutonDéconnexion";
+import { BoutonConnexion } from "../../../components/Boutons/BoutonConnexion";
+import MenuDeroulant from "@/features/landingpage/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
 import {
@@ -22,10 +22,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import { authClient } from "@/lib/auth-client";
-import { BoutonDarkMode2 } from "./BoutonDarkMode/BoutonDarkMode2";
+import { BoutonDarkMode2 } from "../../../components/BoutonDarkMode/BoutonDarkMode2";
 import { useProfil } from "@/features/parametres/hooks/useProfil";
 import { Loader } from "@/components/ui/loader";
-
 
 const Header = () => {
   const { data: session } = authClient.useSession();
@@ -72,7 +71,7 @@ const Header = () => {
               abonnement={utilisateurabonner}
               admin={utilisateurAdmin}
               isLogged={!!session}
-            />      
+            />
             <BoutonDarkMode2 />
           </div>
 
@@ -212,7 +211,6 @@ const Header = () => {
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                
               </div>
             )}
             <BoutonDarkMode2 />
