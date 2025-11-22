@@ -1,11 +1,10 @@
 "use client";
 
-import DropdownMenuCheckboxGroup from "@/components/Dropdown/DropdownMenuCheckboxGroup";
-import { ChevronDownIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import PopoverNotifications from "@/components/PopoverNotifications";
 
 function Testcomponents() {
-  return <div className="flex  justify-center gap-6 mt-10"></div>;
+  return <div className="flex justify-center gap-6 mt-10"></div>;
 }
 
 export default Testcomponents;
