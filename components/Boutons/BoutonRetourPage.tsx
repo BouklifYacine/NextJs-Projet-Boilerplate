@@ -3,6 +3,7 @@ import { ChevronLeft } from "lucide-react";
 
 interface Props {
     texte : string
+    classname? : string
 }
 
 function BoutonRetourPage({texte} : Props) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Loader from '../kokonutui/loader'
+import Loader from '../ui/loaderkokonutui'
 
 function Loaderdesign() {
   return (

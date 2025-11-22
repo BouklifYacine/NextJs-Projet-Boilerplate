@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-export function NombreAnime({
+export function AnimatedNumber({
   value,
   startValue,
   decimalPlaces,
