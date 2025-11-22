@@ -11,14 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProviders";
+import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { inscriptionAction } from "@/features/inscription/actions/InscriptionAction";
-import { BoutonDisabled } from "@/components/Boutons/BoutonDisabled";
+import { BoutonDisabled } from "@/components/Buttons/BoutonDisabled";
 import Link from "next/link";
 import SchemaInscription from "@/features/inscription/schemas/SchemaInscription";
 import { InputPassword } from "../../parametres/components/InputPassword";
@@ -58,7 +58,7 @@ export default function InscriptionFormulaire({
       }
     } catch (error) {
       setErreurMessage("Une erreur est survenue");
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -93,9 +93,7 @@ export default function InscriptionFormulaire({
                   placeholder="Votre nom"
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-sm">
-                    {errors.name.message}
-                  </p>
+                  <p className="text-red-500 text-sm">{errors.name.message}</p>
                 )}
               </div>
               {/* Email */}
@@ -108,16 +106,17 @@ export default function InscriptionFormulaire({
                   placeholder="votre@email.com"
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">
-                    {errors.email.message}
-                  </p>
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
                 )}
               </div>
               {/* Mot de passe */}
               <div className="grid gap-3">
                 <Label htmlFor="password">Mot de passe</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                  <Lock
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    size={20}
+                  />
                   <InputPassword
                     {...register("password")}
                     id="password"
@@ -152,10 +151,7 @@ export default function InscriptionFormulaire({
             </div>
             <div className="text-center text-sm mt-4">
               Déjà inscrit ?{" "}
-              <Link
-                href="/connexion"
-                className="underline underline-offset-4"
-              >
+              <Link href="/connexion" className="underline underline-offset-4">
                 Se connecter
               </Link>
             </div>

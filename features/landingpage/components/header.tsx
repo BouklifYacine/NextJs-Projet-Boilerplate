@@ -6,8 +6,8 @@ import LogoBayern from "@/public/FC_Bayern_München_logo_(2017).svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BoutonDeconnexion } from "../../../components/Boutons/BoutonDéconnexion";
-import { BoutonConnexion } from "../../../components/Boutons/BoutonConnexion";
+import { BoutonDeconnexion } from "../../../components/Buttons/BoutonDéconnexion";
+import { BoutonConnexion } from "../../../components/Buttons/BoutonConnexion";
 import MenuDeroulant from "@/features/landingpage/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import { authClient } from "@/lib/auth-client";
-import { BoutonDarkMode2 } from "../../../components/BoutonDarkMode/BoutonDarkMode2";
+import { BoutonDarkMode2 } from "../../../components/DarkModeButton/BoutonDarkMode2";
 import { useProfil } from "@/features/parametres/hooks/useProfil";
 import { Loader } from "@/components/ui/loader";
 

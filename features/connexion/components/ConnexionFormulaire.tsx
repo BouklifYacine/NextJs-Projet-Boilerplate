@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import BoutonConnexionProviders from "@/components/Boutons/BoutonConnexionProviders";
+import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
 import { SchemaConnexion } from "../schemas/SchemaConnexion";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { connexionAction } from "../actions/ConnexionAction";
-import { BoutonDisabled } from "@/components/Boutons/BoutonDisabled";
+import { BoutonDisabled } from "@/components/Buttons/BoutonDisabled";
 import Link from "next/link";
 
 type Schema = z.infer<typeof SchemaConnexion>;
@@ -93,10 +93,12 @@ export function ConnexionFormulaire({
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">Mot de passe</Label>
-                    <Link href={"connexion/motdepasseoublie"}  className="ml-auto text-sm underline-offset-4 hover:underline">
-                     Mot de passe oublié?
+                    <Link
+                      href={"connexion/motdepasseoublie"}
+                      className="ml-auto text-sm underline-offset-4 hover:underline"
+                    >
+                      Mot de passe oublié?
                     </Link>
-                  
                   </div>
                   <Input
                     {...register("password")}
@@ -131,8 +133,10 @@ export function ConnexionFormulaire({
               </div>
               <div className="text-center text-sm">
                 Vous n&apos;avez pas de compte?{" "}
-               
-                <Link href={"/inscription"} className="underline underline-offset-4">
+                <Link
+                  href={"/inscription"}
+                  className="underline underline-offset-4"
+                >
                   Inscrivez vous
                 </Link>
               </div>
@@ -140,7 +144,7 @@ export function ConnexionFormulaire({
           </form>
         </CardContent>
       </Card>
-     <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
         En cliquant sur connexion, vous acceptez nos{" "}
         <a href="#">Conditions d&apos;utilisation</a> et notre{" "}
         <a href="#">Politique de confidentialité</a>.

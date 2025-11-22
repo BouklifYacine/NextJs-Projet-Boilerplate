@@ -1,15 +1,15 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import BoutonConnexionProviders from "./Boutons/BoutonConnexionProviders"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import BoutonConnexionProviders from "./Buttons/BoutonConnexionProviders";
 
 export function LoginForm({
   className,
@@ -28,7 +28,7 @@ export function LoginForm({
           <form>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
-               <BoutonConnexionProviders></BoutonConnexionProviders>
+                <BoutonConnexionProviders></BoutonConnexionProviders>
               </div>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -42,7 +42,6 @@ export function LoginForm({
                     id="email"
                     type="email"
                     placeholder="footy@example.com"
-                    
                   />
                 </div>
                 <div className="grid gap-3">
@@ -55,10 +54,14 @@ export function LoginForm({
                       Mot de passe oublié?
                     </a>
                   </div>
-                  <Input id="password" type="password"  placeholder="Mot de passe" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Mot de passe"
+                  />
                 </div>
                 <Button type="submit" className="w-full">
-                  Connexion 
+                  Connexion
                 </Button>
               </div>
               <div className="text-center text-sm">
@@ -72,9 +75,9 @@ export function LoginForm({
         </CardContent>
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-       En cliquant sur continuer, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        En cliquant sur continuer, you agree to our{" "}
+        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
       </div>
     </div>
-  )
+  );
 }

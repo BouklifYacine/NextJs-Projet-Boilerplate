@@ -2,7 +2,7 @@ import React from "react";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { IoStarSharp } from "react-icons/io5";
 import { HandWrittenTitle } from "../../../components/ui/hand-writing-text";
-import { GlowEffectButton } from "../../../components/Boutons/BoutonGlowCTA";
+import { GlowEffectButton } from "../../../components/Buttons/BoutonGlowCTA";
 import Link from "next/link";
 
 const avatars = [

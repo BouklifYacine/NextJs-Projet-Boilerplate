@@ -13,9 +13,9 @@ import Instagram from "@/public/instagram-2-1-logo-svgrepo-com.svg";
 import Whatsapp from "@/public/whatsapp-icon-logo-svgrepo-com.svg";
 import Youtube from "@/public/youtube-icon-logo-svgrepo-com.svg";
 import ManCity from "@/public/Logo_Manchester_City_2016.svg";
-import Snapchat from "@/public/snapchat-logo-svgrepo-com.svg"
-import Paypal from "@/public/paypal-icon-logo-svgrepo-com.svg"
-import BMW from "@/public/bmw-logo-svgrepo-com.svg"
+import Snapchat from "@/public/snapchat-logo-svgrepo-com.svg";
+import Paypal from "@/public/paypal-icon-logo-svgrepo-com.svg";
+import BMW from "@/public/bmw-logo-svgrepo-com.svg";
 
 interface Logo {
   id: string;
@@ -96,11 +96,11 @@ const CarouselComposant = ({
             opts={{ loop: true }}
             plugins={[AutoScroll({ playOnInit: true })]}
           >
-            <CarouselContent className="!ml-0">
+            <CarouselContent className="ml-0!">
               {logos.map((logo) => (
                 <CarouselItem
                   key={logo.id}
-                  className="flex basis-1/3 justify-center !pl-0 sm:basis-1/4 md:basis-1/5 lg:basis-1/6"
+                  className="flex basis-1/3 justify-center pl-0! sm:basis-1/4 md:basis-1/5 lg:basis-1/6"
                 >
                   <div className="mx-10 flex shrink-0 items-center justify-center">
                     <div>
@@ -117,8 +117,8 @@ const CarouselComposant = ({
               ))}
             </CarouselContent>
           </Carousel>
-          <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background to-transparent"></div>
-          <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background to-transparent"></div>
+          <div className="absolute inset-y-0 left-0 w-12 bg-linear-to-r from-background to-transparent"></div>
+          <div className="absolute inset-y-0 right-0 w-12 bg-linear-to-l from-background to-transparent"></div>
         </div>
       </div>
     </section>

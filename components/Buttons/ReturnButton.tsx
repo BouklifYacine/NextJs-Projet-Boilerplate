@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 
 interface Props {
-  texte: string;
-  classname?: string;
+  text: string;
+  className?: string;
 }
 
-function ReturnButton({ texte }: Props) {
+function ReturnButton({ text, className }: Props) {
   return (
-    <Button className="relative ps-12 cursor-pointer">
-      {texte}
+    <Button className={`relative ps-12 cursor-pointer ${className || ""}`}>
+      {text}
       <span className="pointer-events-none absolute inset-y-0 start-0 flex w-9 items-center justify-center bg-primary-foreground/15">
         <ChevronLeft
           className="opacity-60"
