@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import { Lock, Mail, MessageSquareLock } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
-import axios from "axios";
+import { HTTPError } from "ky";
 import { useRouter } from "next/navigation";
 import { ResetPasswordSchema } from "@/features/codemotdepasseoublie/schemas/SchemaMotDepasse";
 import { InputPassword } from "@/features/parametres/components/InputPassword";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordResetService } from "../services/PasswordResetService";
 
 type Schema = z.infer<typeof ResetPasswordSchema>;
 
@@ -26,20 +27,19 @@ const FormulaireChangementMotDePasse = () => {
     } as Schema,
     onSubmit: async ({ value }) => {
       try {
-        const response = await axios.post(
-          "/api/motdepasseoublie/confirmation",
-          value
-        );
+        const response = await PasswordResetService.confirmPasswordReset(value);
 
         form.reset();
-        setCode(response.data.message);
+        setCode(response.message);
         setErrorMessage("");
         router.push("/connexion");
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.error("Axios error:", error.response?.data || error.message);
+        if (error instanceof HTTPError) {
+          const errorData = await error.response.json().catch(() => ({}));
+          console.error("HTTP error:", errorData || error.message);
           setErrorMessage(
-            error.response?.data?.message || "Une erreur est survenue"
+            (errorData as { message?: string })?.message ||
+              "Une erreur est survenue"
           );
         } else {
           console.error("Erreur inconnue:", error);
@@ -184,8 +184,9 @@ const FormulaireChangementMotDePasse = () => {
             {(isSubmitting) => (
               <button
                 type="submit"
-                className={`w-full bg-blue-600 text-white cursor-pointer py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? "opacity-50" : ""
-                  }`}
+                className={`w-full bg-blue-600 text-white cursor-pointer py-2 rounded-md hover:bg-blue-700 transition-colors ${
+                  isSubmitting ? "opacity-50" : ""
+                }`}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "En cours" : "Valider "}

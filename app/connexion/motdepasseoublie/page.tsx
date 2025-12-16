@@ -5,9 +5,10 @@ import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axios from "axios";
+import { HTTPError } from "ky";
 import { useRouter } from "next/navigation";
 import { EmailSchema } from "@/features/codemotdepasseoublie/schemas/SchemaMotDepasse";
+import { PasswordResetService } from "@/features/codemotdepasseoublie/services/PasswordResetService";
 
 type Schema = z.infer<typeof EmailSchema>;
 
@@ -26,28 +27,31 @@ const AuthForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data: Schema) => {
-  try {
-    console.log("Données envoyées:", data);
-    const response = await axios.post("/api/motdepasseoublie", data);
-    console.log("Réponse API:", response);
-
-    reset();
-    setCode(response.data.message);
-    setErrorMessage("");
-    router.push("/connexion/motdepasseoublie/code");
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.response?.data || error.message);
-      setErrorMessage(
-        error.response?.data?.message || "Une erreur est survenue"
+    try {
+      console.log("Données envoyées:", data);
+      const response = await PasswordResetService.requestPasswordReset(
+        data.email
       );
-    } else {
-      console.error("Erreur inconnue:", error);
-      setErrorMessage("Une erreur est survenue");
-    }
-  }
-};
+      console.log("Réponse API:", response);
 
+      reset();
+      setCode(response.message);
+      setErrorMessage("");
+      router.push("/connexion/motdepasseoublie/code");
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const errorData = await error.response.json().catch(() => ({}));
+        console.error("HTTP error:", errorData || error.message);
+        setErrorMessage(
+          (errorData as { message?: string })?.message ||
+            "Une erreur est survenue"
+        );
+      } else {
+        console.error("Erreur inconnue:", error);
+        setErrorMessage("Une erreur est survenue");
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen  flex items-center justify-center">
@@ -88,7 +92,7 @@ const AuthForm = () => {
 
           <button
             type="submit"
-            className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? 'opacity-50' : ''}`}
+            className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? "opacity-50" : ""}`}
             disabled={isSubmitting}
           >
             {isSubmitting ? "En cours" : "Valider "}

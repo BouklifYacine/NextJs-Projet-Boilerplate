@@ -8,7 +8,7 @@ import { useImageUpload } from "@/hooks/use-image-upload";
 import { FileRejection, useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
+import { UploadService } from "../services/UploadService";
 
 interface ArrayFile {
   id: string;
@@ -48,11 +48,11 @@ export function ImageUpload() {
         prevFiles.map((f) => (f.id === fileId ? { ...f, isDeleting: true } : f))
       );
 
-      const deleteFileResponse = await axios.delete("/api/s3/delete", {
-        data: { key: fileToRemove!.key },
-      });
+      const deleteFileResponse = await UploadService.deleteFile(
+        fileToRemove!.key!
+      );
 
-      if (deleteFileResponse.status !== 200) {
+      if (!deleteFileResponse.ok) {
         toast.error("Erreur sur la suppression de fichier");
 
         setFiles((prevFiles) =>
@@ -72,8 +72,6 @@ export function ImageUpload() {
 
       toast.success("Suppression du fichier réussie");
       setFiles((prevfiles) => prevfiles.filter((f) => f.id !== fileId));
-
-
     } catch (error) {
       console.log(error);
       toast.error("Erreur suppression fichie");
@@ -98,21 +96,8 @@ export function ImageUpload() {
     };
 
     try {
-      const presignedUrlresponse = await axios.post("/api/s3/upload", payload);
-
-      if (presignedUrlresponse.status !== 200) {
-        toast.error("Echec de l'url");
-        setFiles((prevfiles) =>
-          prevfiles.map((f) =>
-            f.file === file
-              ? { ...f, uploading: false, progress: 0, error: true }
-              : f
-          )
-        );
-        return;
-      }
-
-      const { presignedurl, key } = presignedUrlresponse.data;
+      const { presignedurl, key } =
+        await UploadService.getPresignedUrl(payload);
 
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
