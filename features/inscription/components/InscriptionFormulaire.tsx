@@ -10,11 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { inscriptionAction } from "@/features/inscription/actions/InscriptionAction";
@@ -30,37 +29,35 @@ export default function InscriptionFormulaire({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<Schema>({
-    resolver: zodResolver(SchemaInscription),
-  });
-
   const router = useRouter();
   const [erreurMessage, setErreurMessage] = useState("");
 
-  const onSubmit = async (data: Schema) => {
-    try {
-      const result = await inscriptionAction(data);
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    } as Schema,
+    onSubmit: async ({ value }) => {
+      try {
+        const result = await inscriptionAction(value);
 
-      if (result.success) {
-        router.push("/connexion");
-        reset();
-        setErreurMessage("");
-      } else {
-        const messageErreur = String(
-          result?.error || "Une erreur inconnue est survenue"
-        );
-        setErreurMessage(messageErreur);
+        if (result.success) {
+          router.push("/connexion");
+          form.reset();
+          setErreurMessage("");
+        } else {
+          const messageErreur = String(
+            result?.error || "Une erreur inconnue est survenue"
+          );
+          setErreurMessage(messageErreur);
+        }
+      } catch (error) {
+        setErreurMessage("Une erreur est survenue");
+        console.error(error);
       }
-    } catch (error) {
-      setErreurMessage("Une erreur est survenue");
-      console.error(error);
-    }
-  };
+    },
+  });
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -81,73 +78,139 @@ export default function InscriptionFormulaire({
               Ou continuer avec
             </span>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+          >
             <div className="grid gap-6">
               {/* Nom */}
-              <div className="grid gap-3">
-                <Label htmlFor="name">Pseudo</Label>
-                <Input
-                  {...register("name")}
-                  id="name"
-                  type="text"
-                  placeholder="Votre nom"
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm">{errors.name.message}</p>
+              <form.Field
+                name="name"
+                validators={{
+                  onChange: ({ value }) => {
+                    const result = SchemaInscription.shape.name.safeParse(value);
+                    if (!result.success) return result.error.issues[0].message;
+                    return undefined;
+                  },
+                }}
+              >
+                {(field) => (
+                  <Field>
+                    <FieldLabel htmlFor="name">Pseudo</FieldLabel>
+                    <Input
+                      id="name"
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      type="text"
+                      placeholder="Votre nom"
+                    />
+                    <FieldError
+                      errors={field.state.meta.errors?.map((err) => ({
+                        message: typeof err === "string" ? err : String(err),
+                      }))}
+                    />
+                  </Field>
                 )}
-              </div>
+              </form.Field>
+
               {/* Email */}
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  {...register("email")}
-                  id="email"
-                  type="email"
-                  placeholder="votre@email.com"
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+              <form.Field
+                name="email"
+                validators={{
+                  onChange: ({ value }) => {
+                    const result = SchemaInscription.shape.email.safeParse(value);
+                    if (!result.success) return result.error.issues[0].message;
+                    return undefined;
+                  },
+                }}
+              >
+                {(field) => (
+                  <Field>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      id="email"
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      type="email"
+                      placeholder="votre@email.com"
+                    />
+                    <FieldError
+                      errors={field.state.meta.errors?.map((err) => ({
+                        message: typeof err === "string" ? err : String(err),
+                      }))}
+                    />
+                  </Field>
                 )}
-              </div>
+              </form.Field>
+
               {/* Mot de passe */}
-              <div className="grid gap-3">
-                <Label htmlFor="password">Mot de passe</Label>
-                <div className="relative">
-                  <Lock
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    size={20}
-                  />
-                  <InputPassword
-                    {...register("password")}
-                    id="password"
-                    placeholder="Mot de passe"
-                    className="pl-10"
-                  />
-                </div>
-                {errors.password && (
-                  <p className="text-red-500 text-sm">
-                    {errors.password.message}
-                  </p>
+              <form.Field
+                name="password"
+                validators={{
+                  onChange: ({ value }) => {
+                    const result = SchemaInscription.shape.password.safeParse(value);
+                    if (!result.success) return result.error.issues[0].message;
+                    return undefined;
+                  },
+                }}
+              >
+                {(field) => (
+                  <Field>
+                    <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+                    <div className="relative">
+                      <Lock
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        size={20}
+                      />
+                      <InputPassword
+                        id="password"
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Mot de passe"
+                        className="pl-10"
+                      />
+                    </div>
+                    <FieldError
+                      errors={field.state.meta.errors?.map((err) => ({
+                        message: typeof err === "string" ? err : String(err),
+                      }))}
+                    />
+                  </Field>
                 )}
-              </div>
+              </form.Field>
+
               {/* Erreur */}
               {erreurMessage && (
                 <span className="text-red-500 md:text-sm block text-center">
                   {erreurMessage}
                 </span>
               )}
+
               {/* Bouton */}
-              {isSubmitting ? (
-                <BoutonDisabled
-                  texte="Inscription en cours..."
-                  classnameButton="w-full"
-                  classnameLoader="mr-2 h-4 w-4"
-                />
-              ) : (
-                <Button type="submit" className="w-full cursor-pointer">
-                  Inscription
-                </Button>
-              )}
+              <form.Subscribe selector={(state) => state.isSubmitting}>
+                {(isSubmitting) =>
+                  isSubmitting ? (
+                    <BoutonDisabled
+                      text="Inscription en cours..."
+                      className="w-full"
+                      classnameLoader="mr-2 h-4 w-4"
+                    />
+                  ) : (
+                    <Button type="submit" className="w-full cursor-pointer">
+                      Inscription
+                    </Button>
+                  )
+                }
+              </form.Subscribe>
             </div>
             <div className="text-center text-sm mt-4">
               Déjà inscrit ?{" "}

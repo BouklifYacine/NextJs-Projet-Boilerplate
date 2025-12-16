@@ -10,12 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
 import { SchemaConnexion } from "../schemas/SchemaConnexion";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { connexionAction } from "../actions/ConnexionAction";
@@ -28,33 +27,32 @@ export function ConnexionFormulaire({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<Schema>({
-    resolver: zodResolver(SchemaConnexion),
-  });
-
   const router = useRouter();
   const [erreurIdentifiant, setErreurIdentifiant] = useState("");
 
-  const onSubmit = async (data: Schema) => {
-    try {
-      const result = await connexionAction(data);
-      console.log(data);
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    } as Schema,
+    onSubmit: async ({ value }) => {
+      try {
+        const result = await connexionAction(value);
+        console.log(value);
 
-      if (result.success) {
-        router.push("/");
-        router.refresh();
-      } else {
-        setErreurIdentifiant(result.error || "Une erreur est survenue");
+        if (result.success) {
+          router.push("/");
+          router.refresh();
+        } else {
+          setErreurIdentifiant(result.error || "Une erreur est survenue");
+        }
+      } catch (error) {
+        console.error(error);
+        setErreurIdentifiant("Une erreur est survenue lors de la connexion");
       }
-    } catch (error) {
-      console.error(error);
-      setErreurIdentifiant("Une erreur est survenue lors de la connexion");
-    }
-  };
+    },
+  });
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -65,7 +63,13 @@ export function ConnexionFormulaire({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+          >
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <BoutonConnexionProviders></BoutonConnexionProviders>
@@ -76,69 +80,106 @@ export function ConnexionFormulaire({
                 </span>
               </div>
               <div className="grid gap-6">
-                <div className="grid gap-3">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    {...register("email")}
-                    id="email"
-                    type="email"
-                    placeholder="footy@example.com"
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">
-                      {errors.email.message}
-                    </p>
+                <form.Field
+                  name="email"
+                  validators={{
+                    onChange: ({ value }) => {
+                      const result = SchemaConnexion.shape.email.safeParse(value);
+                      if (!result.success) return result.error.issues[0].message;
+                      return undefined;
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <Field>
+                      <FieldLabel htmlFor="email">Email</FieldLabel>
+                      <Input
+                        id="email"
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        type="email"
+                        placeholder="footy@example.com"
+                      />
+                      <FieldError
+                        errors={field.state.meta.errors?.map((err) => ({
+                          message: typeof err === "string" ? err : String(err),
+                        }))}
+                      />
+                    </Field>
                   )}
-                </div>
-                <div className="grid gap-3">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Mot de passe</Label>
-                    <Link
-                      href={"connexion/motdepasseoublie"}
-                      className="ml-auto text-sm underline-offset-4 hover:underline"
-                    >
-                      Mot de passe oublié?
-                    </Link>
-                  </div>
-                  <Input
-                    {...register("password")}
-                    id="password"
-                    type="password"
-                    placeholder="Mot de passe"
-                  />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm">
-                      {errors.password.message}
-                    </p>
-                  )}
-                </div>
+                </form.Field>
 
-                {isSubmitting ? (
-                  <BoutonDisabled
-                    texte="Connexion en cours..."
-                    classnameButton="w-full"
-                    classnameLoader="mr-2 h-4 w-4"
-                  ></BoutonDisabled>
-                ) : (
-                  <Button type="submit" className="w-full cursor-pointer">
-                    Connexion
-                  </Button>
-                )}
+                <form.Field
+                  name="password"
+                  validators={{
+                    onChange: ({ value }) => {
+                      const result = SchemaConnexion.shape.password.safeParse(value);
+                      if (!result.success) return result.error.issues[0].message;
+                      return undefined;
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <Field>
+                      <div className="flex items-center justify-between">
+                        <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
+                        <Link
+                          href={"connexion/motdepasseoublie"}
+                          className="text-sm underline-offset-4 hover:underline"
+                        >
+                          Mot de passe oublié?
+                        </Link>
+                      </div>
+                      <Input
+                        id="password"
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        type="password"
+                        placeholder="Mot de passe"
+                      />
+                      <FieldError
+                        errors={field.state.meta.errors?.map((err) => ({
+                          message: typeof err === "string" ? err : String(err),
+                        }))}
+                      />
+                    </Field>
+                  )}
+                </form.Field>
+
+                <form.Subscribe selector={(state) => state.isSubmitting}>
+                  {(isSubmitting) =>
+                    isSubmitting ? (
+                      <BoutonDisabled
+                        text="Connexion en cours..."
+                        className="w-full"
+                        classnameLoader="mr-2 h-4 w-4"
+                      ></BoutonDisabled>
+                    ) : (
+                      <Button type="submit" className="w-full cursor-pointer">
+                        Connexion
+                      </Button>
+                    )
+                  }
+                </form.Subscribe>
 
                 {erreurIdentifiant && (
                   <span className="text-red-500 md:text-sm block text-center">
                     {erreurIdentifiant}
                   </span>
                 )}
-              </div>
-              <div className="text-center text-sm">
-                Vous n&apos;avez pas de compte?{" "}
-                <Link
-                  href={"/inscription"}
-                  className="underline underline-offset-4"
-                >
-                  Inscrivez vous
-                </Link>
+                <div className="text-center text-sm">
+                  Vous n&apos;avez pas de compte?{" "}
+                  <Link
+                    href={"/inscription"}
+                    className="underline underline-offset-4"
+                  >
+                    Inscrivez vous
+                  </Link>
+                </div>
               </div>
             </div>
           </form>

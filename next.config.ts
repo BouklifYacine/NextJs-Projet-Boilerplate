@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
-console.log("BUILD – DATABASE_URL:", process.env.DATABASE_URL);
+
+
 
 
 const nextConfig: NextConfig = {

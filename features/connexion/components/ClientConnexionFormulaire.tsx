@@ -3,95 +3,142 @@
 import React, { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { SchemaConnexion } from "@/features/connexion/schemas/SchemaConnexion";
 import { connexionAction } from "../actions/ConnexionAction";
 import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
 import { InputPassword } from "../../parametres/components/InputPassword";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 type Schema = z.infer<typeof SchemaConnexion>;
 
 const ClientConnexionFormulaire = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<Schema>({
-    resolver: zodResolver(SchemaConnexion),
-  });
-
   const router = useRouter();
   const [erreurIdentifiant, setErreurIdentifiant] = useState("");
 
-  const onSubmit = async (data: Schema) => {
-    try {
-      const result = await connexionAction(data);
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    } as Schema,
+    onSubmit: async ({ value }) => {
+      try {
+        const result = await connexionAction(value);
 
-      if (result.success) {
-        router.push("/");
-        router.refresh();
-      } else {
-        setErreurIdentifiant(result.error || "Une erreur est survenue");
+        if (result.success) {
+          router.push("/");
+          router.refresh();
+        } else {
+          setErreurIdentifiant(result.error || "Une erreur est survenue");
+        }
+      } catch (error) {
+        console.error(error);
+        setErreurIdentifiant("Une erreur est survenue lors de la connexion");
       }
-    } catch (error) {
-      console.error(error);
-      setErreurIdentifiant("Une erreur est survenue lors de la connexion");
-    }
-  };
+    },
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <div className="relative">
-          <Mail
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            size={20}
-          />
-          <input
-            {...register("email")}
-            type="email"
-            placeholder="votre@email.com"
-            className="w-full pl-10 pr-3 py-2 rounded-md border text-black border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-        {errors.email && (
-          <p className="text-red-500 text-md">{errors.email.message}</p>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="space-y-4"
+    >
+      <form.Field
+        name="email"
+        validators={{
+          onChange: ({ value }) => {
+            const result = SchemaConnexion.shape.email.safeParse(value);
+            if (!result.success) return result.error.issues[0].message;
+            return undefined;
+          },
+        }}
+      >
+        {(field) => (
+          <Field>
+            <FieldLabel>Email</FieldLabel>
+            <div className="relative">
+              <Mail
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <Input
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                type="email"
+                placeholder="votre@email.com"
+                className="pl-10 text-black"
+              />
+            </div>
+            <FieldError
+              errors={field.state.meta.errors?.map((err) => ({
+                message: typeof err === "string" ? err : String(err),
+              }))}
+            />
+          </Field>
         )}
-      </div>
+      </form.Field>
 
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">
-          Mot de passe
-        </label>
-        <div className="relative">
-          <Lock
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
-          />
-          <InputPassword {...register("password")} />
-        </div>
-        {errors.password && (
-          <p className="text-red-500 text-md">{errors.password.message}</p>
+      <form.Field
+        name="password"
+        validators={{
+          onChange: ({ value }) => {
+            const result = SchemaConnexion.shape.password.safeParse(value);
+            if (!result.success) return result.error.issues[0].message;
+            return undefined;
+          },
+        }}
+      >
+        {(field) => (
+          <Field>
+            <FieldLabel>Mot de passe</FieldLabel>
+            <div className="relative">
+              <Lock
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <InputPassword
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <FieldError
+              errors={field.state.meta.errors?.map((err) => ({
+                message: typeof err === "string" ? err : String(err),
+              }))}
+            />
+          </Field>
         )}
-      </div>
+      </form.Field>
 
       <div className="flex justify-end text-md text-blue-600 hover:text-blue-700 underline">
         <Link href="/connexion/motdepasseoublie">Mot de passe oublié?</Link>
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={`w-full bg-blue-600 cursor-pointer text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${
-          isSubmitting ? "opacity-50" : ""
-        }`}
-      >
-        {isSubmitting ? "Connexion..." : "Se connecter"}
-      </button>
+      <form.Subscribe selector={(state) => state.isSubmitting}>
+        {(isSubmitting) => (
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full bg-blue-600 cursor-pointer text-white py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? "opacity-50" : ""
+              }`}
+          >
+            {isSubmitting ? "Connexion..." : "Se connecter"}
+          </button>
+        )}
+      </form.Subscribe>
+
       {erreurIdentifiant && (
         <span className="text-red-500 md:text-md block text-center">
           {erreurIdentifiant}
