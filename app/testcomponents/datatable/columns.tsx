@@ -1,99 +1,82 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { DataTableColumnHeader, DataTableRowActions } from "@/components/DataTable"
-import { Checkbox } from "@/components/ui/checkbox"
+import {
+    createColumns,
+    selectColumn,
+    textColumn,
+    badgeColumn,
+    dateColumn,
+    actionsColumn,
+    customColumn,
+} from "@/components/DataTable"
 import { Badge } from "@/components/ui/badge"
 import { User } from "./data"
 
-// Définition des colonnes
-export const columns: ColumnDef<User>[] = [
+// Définition simplifiée des colonnes avec syntaxe objet
+export const columns = createColumns<User>([
     // Colonne de sélection
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Sélectionner tout"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Sélectionner la ligne"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    // Colonne Nom (triable)
-    {
-        accessorKey: "name",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Nom" />
-        ),
-        cell: ({ row }) => <div className="font-medium">{row.getValue("name")}</div>,
-    },
-    // Colonne Email (triable)
-    {
+    selectColumn(),
+
+    // Colonnes de texte simple
+    textColumn({
+        accessorKey: "name",   // Clé dans les données (user.name)
+        title: "Nom"           // Titre affiché dans l'en-tête
+    }),
+
+    textColumn({
         accessorKey: "email",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Email" />
-        ),
-    },
-    // Colonne Role avec Badge
-    {
+        title: "Email",
+        className: ""  // Option: classes CSS personnalisées
+    }),
+
+    // Colonnes avec Badge
+    badgeColumn({
         accessorKey: "role",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Rôle" />
-        ),
-        cell: ({ row }) => {
-            const role = row.getValue("role") as string
-            const variant = role === "Admin" ? "destructive" : role === "Modérateur" ? "secondary" : "outline"
-            return <Badge variant={variant}>{role}</Badge>
-        },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        },
-    },
-    // Colonne Status avec Badge
-    {
+        title: "Rôle",
+        variants: {
+            "Admin": "destructive",
+            "Modérateur": "secondary",
+            "Utilisateur": "outline",
+        }
+    }),
+
+    // Custom column - Exemple avec accès au contexte TanStack complet
+    customColumn({
         accessorKey: "status",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Statut" />
-        ),
-        cell: ({ row }) => {
-            const status = row.getValue("status") as string
-            const variant = status === "Actif" ? "default" : status === "En attente" ? "secondary" : "outline"
-            return <Badge variant={variant}>{status}</Badge>
-        },
-    },
-    // Colonne Date (triable)
-    {
+        title: "Statut",
+        render: ({ row, getValue }) => {
+            // Accès complet au contexte TanStack !
+            const status = getValue() as string
+            const user = row.original  // Données complètes de la ligne
+            const variant = status === "Actif"
+                ? "default"
+                : status === "En attente"
+                    ? "secondary"
+                    : "outline"
+
+            return (
+                <div className="flex items-center gap-2">
+                    <Badge variant={variant}>{status}</Badge>
+                    {user.role === "Admin" && (
+                        <span className="text-xs text-muted-foreground">
+                            (Admin)
+                        </span>
+                    )}
+                </div>
+            )
+        }
+    }),
+
+    // Colonne de date
+    dateColumn({
         accessorKey: "createdAt",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Créé le" />
-        ),
-        cell: ({ row }) => {
-            const date = new Date(row.getValue("createdAt"))
-            return date.toLocaleDateString("fr-FR")
-        },
-    },
-    // Colonne Actions
-    {
-        id: "actions",
-        cell: ({ row }) => (
-            <DataTableRowActions
-                row={row}
-                onView={(user) => alert(`Voir: ${user.name}`)}
-                onEdit={(user) => alert(`Modifier: ${user.name}`)}
-                onDelete={(user) => alert(`Supprimer: ${user.name}`)}
-            />
-        ),
-    },
-]
+        title: "Créé le"
+    }),
+
+    // Colonne d'actions
+    actionsColumn({
+        onView: (user) => alert(`Voir: ${user.name}`),
+        onEdit: (user) => alert(`Modifier: ${user.name}`),
+        onDelete: (user) => alert(`Supprimer: ${user.name}`),
+    }),
+])

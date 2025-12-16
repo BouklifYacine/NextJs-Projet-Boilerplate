@@ -34,42 +34,17 @@ import {
 } from "@/components/ui/pagination"
 
 import { DataTableToolbar } from "./DataTableToolbar"
-
-
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-
-    // Search
-    searchKey?: string
-    searchPlaceholder?: string
-
-    // Pagination
-    pagination?: boolean
-    pageSize?: number
-
-    // Features
-    enableRowSelection?: boolean
-    enableSorting?: boolean
-    enableFiltering?: boolean
-
-    // Callbacks
-    onRowSelectionChange?: (rows: TData[]) => void
-
-    // Styling
-    className?: string
-}
+import { DataTableProps } from "./DataTable.types"
 
 export function DataTable<TData, TValue>({
     columns,
     data,
     searchKey,
     searchPlaceholder = "Rechercher...",
-    pagination = true,
+    pagination = false,
     pageSize = 10,
     enableRowSelection = false,
-    enableSorting = true,
-    enableFiltering = true,
+    enableFiltering = false,
     onRowSelectionChange,
     className,
 }: DataTableProps<TData, TValue>) {
@@ -79,21 +54,25 @@ export function DataTable<TData, TValue>({
     const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
     const [globalFilter, setGlobalFilter] = React.useState("")
 
+    // Détermine si la toolbar doit être affichée
+    const showToolbar = enableFiltering || searchKey
+
+    // Détermine si la pagination doit être affichée
+    const showPagination = pagination
+
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
 
-        // Pagination
-        ...(pagination && { getPaginationRowModel: getPaginationRowModel() }),
+        // Pagination - seulement si activée
+        ...(showPagination && { getPaginationRowModel: getPaginationRowModel() }),
 
-        // Sorting
-        ...(enableSorting && {
-            onSortingChange: setSorting,
-            getSortedRowModel: getSortedRowModel(),
-        }),
+        // Sorting - toujours activé, chaque colonne contrôle son propre tri via enableSorting
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
 
-        // Filtering
+        // Filtering - seulement si activé (pour la toolbar)
         ...(enableFiltering && {
             onColumnFiltersChange: setColumnFilters,
             getFilteredRowModel: getFilteredRowModel(),
@@ -101,7 +80,7 @@ export function DataTable<TData, TValue>({
             globalFilterFn: "includesString",
         }),
 
-        // Selection
+        // Selection - seulement si activée
         ...(enableRowSelection && {
             onRowSelectionChange: setRowSelection,
             enableRowSelection: true,
@@ -127,16 +106,16 @@ export function DataTable<TData, TValue>({
 
     // Callback when selection changes
     React.useEffect(() => {
-        if (onRowSelectionChange) {
+        if (onRowSelectionChange && enableRowSelection) {
             const selectedRows = table.getFilteredSelectedRowModel().rows.map(row => row.original)
             onRowSelectionChange(selectedRows)
         }
-    }, [rowSelection, onRowSelectionChange, table])
+    }, [rowSelection, onRowSelectionChange, table, enableRowSelection])
 
     return (
         <div className={className}>
-            {/* Toolbar avec recherche */}
-            {(enableFiltering || searchKey) && (
+            {/* Toolbar avec recherche - seulement si nécessaire */}
+            {showToolbar && (
                 <DataTableToolbar
                     table={table}
                     searchKey={searchKey}
@@ -196,15 +175,16 @@ export function DataTable<TData, TValue>({
                 </Table>
             </div>
 
-            {/* Pagination */}
-            {pagination && table.getPageCount() > 0 && (
+            {/* Pagination - seulement si activée */}
+            {showPagination && table.getPageCount() > 1 && (
                 <Pagination className="mt-4">
                     <PaginationContent>
                         <PaginationItem>
                             <PaginationPrevious
                                 onClick={() => table.previousPage()}
                                 aria-disabled={!table.getCanPreviousPage()}
-                                className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : "cursor-pointer"} size={undefined} />
+                                className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
                         </PaginationItem>
 
                         {Array.from({ length: table.getPageCount() }, (_, i) => (
@@ -212,7 +192,8 @@ export function DataTable<TData, TValue>({
                                 <PaginationLink
                                     onClick={() => table.setPageIndex(i)}
                                     isActive={table.getState().pagination.pageIndex === i}
-                                    className="cursor-pointer" size={undefined}                                >
+                                    className="cursor-pointer"
+                                >
                                     {i + 1}
                                 </PaginationLink>
                             </PaginationItem>
@@ -222,7 +203,8 @@ export function DataTable<TData, TValue>({
                             <PaginationNext
                                 onClick={() => table.nextPage()}
                                 aria-disabled={!table.getCanNextPage()}
-                                className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : "cursor-pointer"} size={undefined} />
+                                className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>
