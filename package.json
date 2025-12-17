@@ -14,7 +14,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@auth/core": "^0.37.4",
+    "@auth/core": "^0.34.3",
     "@auth/prisma-adapter": "^2.7.4",
     "@aws-sdk/client-s3": "^3.824.0",
     "@aws-sdk/s3-request-presigner": "^3.824.0",
@@ -75,6 +75,7 @@
     "react-email": "^5.0.5",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.1",
+    "react-icons": "^5.5.0",
     "react-use-measure": "^2.1.7",
     "resend": "^6.5.2",
     "stripe": "^20.0.0",
@@ -91,7 +92,7 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/ws": "^8.18.1",

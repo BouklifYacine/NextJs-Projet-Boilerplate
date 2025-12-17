@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon } from "lucide-react";
 import {
   Button,
   DatePicker,
@@ -8,12 +8,12 @@ import {
   Group,
   Label,
   Popover,
-} from "react-aria-components"
+} from "react-aria-components";
 
-import { Calendar } from "@/components/ui/calendar-rac"
-import { DateInput } from "@/components/ui/datefield-rac"
+import { Calendar } from "@/components/ui/calendar-rac";
+import { DateInput } from "@/components/ui/datefield-rac";
 
-export default function Component() {
+export default function Component41() {
   return (
     <DatePicker className="*:not-first:mt-2">
       <Label className="text-sm font-medium text-foreground">Date picker</Label>
@@ -49,5 +49,5 @@ export default function Component() {
         </a>
       </p>
     </DatePicker>
-  )
+  );
 }
