@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Design System - Spacing
+   
+   📖 COMMENT AJOUTER TES TOKENS:
+   
+   1. Ajoute une nouvelle ligne avec ce format:
+      --[type]-[nom]: valeur;
+   
+   2. Utilise ensuite dans tes composants:
+      [type]-[nom]
+   
+   Exemple: --radius-xl: 1rem;  →  rounded-xl
+   
+   ========================================================================== */
+
+@theme extend {
+  /* ----- SHADOWS ----- */
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.03);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px rgb(0 0 0 / 0.15);
+
+  /* ----- RADIUS ----- */
+  --radius-xs: 0.125rem;   /* 2px */
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-full: 9999px;
+
+  /* ----- CONTAINER WIDTHS ----- */
+  --width-narrow: 640px;
+  --width-normal: 1024px;
+  --width-wide: 1280px;
+}

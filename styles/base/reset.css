@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Design System - Base Styles
+   Styles par défaut des éléments HTML
+   ========================================================================== */
+
+/* Compatibilité Tailwind v4 */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/* ==========================================================================
+   TYPOGRAPHY - Styles par défaut des titres et textes
+   ========================================================================== */
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+
+  h4 {
+    @apply text-xl font-medium;
+  }
+
+  h5 {
+    @apply text-lg font-medium;
+  }
+
+  h6 {
+    @apply text-base font-medium;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* a {
+    @apply text-brand hover:underline;
+  } */
+
+  /* Code inline */
+  code:not(pre code) {
+    @apply bg-surface-alt px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  /* Listes */
+  /* ul, ol {
+    @apply pl-6;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  li {
+    @apply my-1;
+  } */
+}
+
+/* ==========================================================================
+   GLOBAL - Body et reset général
+   ========================================================================== */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}

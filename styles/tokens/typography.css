@@ -1,0 +1,10 @@
+/* ==========================================================================
+   Design System - Typography (Simplifié)
+   ========================================================================== */
+
+@theme extend {
+  /* ----- FONTS ----- */
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-code: "JetBrains Mono", monospace;
+}

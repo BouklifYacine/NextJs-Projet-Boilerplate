@@ -1,0 +1,23 @@
+/* ==========================================================================
+   Design System - Entry Point
+   Point d'entrée principal du design system
+   ========================================================================== */
+
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+/* --------------------------------------------------------------------------
+   Design System Tokens
+   -------------------------------------------------------------------------- */
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/animations.css';
+
+/* --------------------------------------------------------------------------
+   Base Styles
+   -------------------------------------------------------------------------- */
+@import './base/reset.css';

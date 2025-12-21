@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import clsx from "clsx";
 import QueryProvider from "./(providers)/QueryProvider";
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 
 const dmSans = DM_Sans({
-  subsets: ["latin"], 
-  weight: ["400", "500", "700"], 
-
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
   title: "FootyGogo",
-  description: "FootyGogo la boilerplate NextJS idéale pour vos projets full stack",
+  description:
+    "FootyGogo la boilerplate NextJS idéale pour vos projets full stack",
 };
 
 export default function RootLayout({
@@ -23,14 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="relative" suppressHydrationWarning> 
-      <body className={clsx(
-        dmSans.className, 
-        "antialiased " 
-      )}>
+    <html lang="fr" className="relative" suppressHydrationWarning>
+      <body className={clsx(dmSans.className, "antialiased ")}>
         <QueryProvider>
-
-        <ThemeProvider
+          <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
@@ -38,7 +34,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
-        <Toaster position="top-center" />
+          <Toaster position="top-center" />
         </QueryProvider>
       </body>
     </html>
