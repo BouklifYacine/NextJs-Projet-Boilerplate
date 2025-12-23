@@ -91,6 +91,7 @@ const Pricing2 = ({
             <Switch
               checked={isYearly}
               onCheckedChange={() => setIsYearly(!isYearly)}
+              aria-label="Basculer entre facturation mensuelle et annuelle"
             />
             Yearly
           </div>

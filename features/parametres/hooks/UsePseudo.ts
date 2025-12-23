@@ -17,7 +17,7 @@ type EtapeModification = "verification" | "changement";
 
 export function useSectionPseudo(id: string) {
   const router = useRouter();
-  const queryClient = useQueryClient(); 
+  const queryClient = useQueryClient();
 
   const [estEnEdition, setEstEnEdition] = useState(false);
   const [etapeActuelle, setEtapeActuelle] =
@@ -30,6 +30,7 @@ export function useSectionPseudo(id: string) {
       if (!reponse.ok) throw new Error("Échec de la récupération des comptes");
       return reponse.json();
     },
+    enabled: !!id,
   });
 
   const estCompteCredential =
@@ -82,7 +83,7 @@ export function useSectionPseudo(id: string) {
     onSuccess: () => {
       toast.success("Pseudo modifié avec succès");
       queryClient.invalidateQueries({
-        queryKey: ['profil', id] // Invalide le profil utilisateur
+        queryKey: ["profil", id], // Invalide le profil utilisateur
       });
       annulerModification();
       router.refresh();
