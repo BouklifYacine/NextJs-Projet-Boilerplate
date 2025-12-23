@@ -1,0 +1,30 @@
+model User {
+  id               String      @id
+  name             String      @unique
+  email            String
+  emailVerified    Boolean
+  image            String?
+  role             Roles       @default(utilisateur)
+  abonnement       Abonnement?
+  plan             Plan        @default(free)
+  clientId         String?     @unique
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  createdAt        DateTime
+  updatedAt        DateTime
+  sessions         Session[]
+  accounts         Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+enum Roles {
+  Admin
+  utilisateur
+}
+
+enum Plan {
+  free
+  pro
+}

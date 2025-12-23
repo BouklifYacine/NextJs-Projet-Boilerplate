@@ -1,0 +1,14 @@
+model Abonnement {
+  id        String         @id @default(cuid())
+  userId    String         @unique
+  plan      Plan
+  periode   PlanAbonnement
+  datedebut DateTime       @default(now())
+  datefin   DateTime       @updatedAt
+  user      User           @relation(fields: [userId], references: [id])
+}
+
+enum PlanAbonnement {
+  mois
+  annee
+}
