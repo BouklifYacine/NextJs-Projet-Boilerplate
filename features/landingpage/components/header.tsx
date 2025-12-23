@@ -21,13 +21,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import { BoutonDarkMode2 } from "../../../components/DarkModeButton/BoutonDarkMode2";
 import { useProfil } from "@/features/parametres/hooks/useProfil";
 import { Loader } from "@/components/ui/loader";
 
 const Header = () => {
-  const { data: session } = authClient.useSession();
+  const { data: session } = useSession();
 
   const SessionID = session?.user.id || "";
 

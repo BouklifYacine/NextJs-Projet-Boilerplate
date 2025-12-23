@@ -129,6 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Prisma generated files
 /generated/prisma
+src/generated/
 
-/generated/prisma
+# Prisma migrations
+prisma/migrations/

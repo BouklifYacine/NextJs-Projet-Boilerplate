@@ -1,16 +1,11 @@
+
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
-}
-
-model Test {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 model User {
@@ -56,7 +51,7 @@ enum Plan {
 
 enum PlanAbonnement {
   mois
-  année
+  annee
 }
 
 model Session {
@@ -72,6 +67,7 @@ model Session {
 
   @@unique([token])
   @@map("session")
+  @@index([userId])
 }
 
 model Account {
@@ -91,6 +87,7 @@ model Account {
   updatedAt             DateTime
 
   @@map("account")
+  @@index([userId])
 }
 
 model Verification {
@@ -102,4 +99,5 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+  @@index([identifier])
 }

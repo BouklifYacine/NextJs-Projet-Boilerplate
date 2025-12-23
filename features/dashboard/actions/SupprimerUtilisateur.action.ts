@@ -2,7 +2,7 @@
 
 import { prisma } from "@/prisma";
 import { SessionAdmin } from "../../../lib/SessionAdmin";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/client";
 
 interface DeleteResponse {
   success: boolean;
@@ -12,7 +12,7 @@ export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
   try {
     await SessionAdmin();
 
-    await prisma.$transaction(async (tx :  Prisma.TransactionClient) => {
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       await tx.session.deleteMany({
         where: { userId: { in: ids } },
       });

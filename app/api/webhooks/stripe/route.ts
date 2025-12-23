@@ -2,7 +2,7 @@ import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
-import { Plan, PlanAbonnement } from "@prisma/client";
+import { Plan, PlanAbonnement } from "@/generated/client";
 import { createElement } from "react";
 import { sendEmail } from "@/emails/email";
 import {
@@ -184,8 +184,11 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
       subscription.cancel_at || subscription.status === "canceled";
 
     if (isSubscriptionCanceled) {
+      const currentPeriodEnd = (
+        subscription as Stripe.Subscription & { current_period_end: number }
+      ).current_period_end;
       const endDate = new Date(
-        (subscription.cancel_at || subscription.current_period_end) * 1000
+        (subscription.cancel_at || currentPeriodEnd) * 1000
       );
 
       await prisma.abonnement.update({
