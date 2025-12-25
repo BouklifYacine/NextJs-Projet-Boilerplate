@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TestIndexRouteImport } from './routes/test/index'
+import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
+import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
+import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +25,75 @@ const TestIndexRoute = TestIndexRouteImport.update({
   path: '/test/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
+  id: '/inscription/',
+  path: '/inscription/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionIndexRoute = ConnexionIndexRouteImport.update({
+  id: '/connexion/',
+  path: '/connexion/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionMotdepasseoublieIndexRoute =
+  ConnexionMotdepasseoublieIndexRouteImport.update({
+    id: '/connexion/motdepasseoublie/',
+    path: '/connexion/motdepasseoublie/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionIndexRoute
+  '/inscription': typeof InscriptionIndexRoute
   '/test': typeof TestIndexRoute
+  '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionIndexRoute
+  '/inscription': typeof InscriptionIndexRoute
   '/test': typeof TestIndexRoute
+  '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/connexion/': typeof ConnexionIndexRoute
+  '/inscription/': typeof InscriptionIndexRoute
   '/test/': typeof TestIndexRoute
+  '/connexion/motdepasseoublie/': typeof ConnexionMotdepasseoublieIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/test'
+  fullPaths:
+    | '/'
+    | '/connexion'
+    | '/inscription'
+    | '/test'
+    | '/connexion/motdepasseoublie'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/test'
-  id: '__root__' | '/' | '/test/'
+  to:
+    | '/'
+    | '/connexion'
+    | '/inscription'
+    | '/test'
+    | '/connexion/motdepasseoublie'
+  id:
+    | '__root__'
+    | '/'
+    | '/connexion/'
+    | '/inscription/'
+    | '/test/'
+    | '/connexion/motdepasseoublie/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConnexionIndexRoute: typeof ConnexionIndexRoute
+  InscriptionIndexRoute: typeof InscriptionIndexRoute
   TestIndexRoute: typeof TestIndexRoute
+  ConnexionMotdepasseoublieIndexRoute: typeof ConnexionMotdepasseoublieIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +112,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inscription/': {
+      id: '/inscription/'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion/': {
+      id: '/connexion/'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion/motdepasseoublie/': {
+      id: '/connexion/motdepasseoublie/'
+      path: '/connexion/motdepasseoublie'
+      fullPath: '/connexion/motdepasseoublie'
+      preLoaderRoute: typeof ConnexionMotdepasseoublieIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConnexionIndexRoute: ConnexionIndexRoute,
+  InscriptionIndexRoute: InscriptionIndexRoute,
   TestIndexRoute: TestIndexRoute,
+  ConnexionMotdepasseoublieIndexRoute: ConnexionMotdepasseoublieIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

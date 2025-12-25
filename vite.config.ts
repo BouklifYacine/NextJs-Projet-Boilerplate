@@ -9,6 +9,12 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  ssr: {
+    noExternal: ["@node-rs/argon2"],
+  },
+  optimizeDeps: {
+    exclude: ["@node-rs/argon2"],
+  },
   plugins: [
     tailwindcss(),
     // Enables Vite to resolve imports using path aliases.

@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,11 +13,10 @@ import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProvid
 import { SchemaConnexion } from "../schemas/SchemaConnexion";
 import { z } from "zod";
 import { useForm } from "@tanstack/react-form";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { connexionAction } from "../actions/ConnexionAction";
 import { BoutonDisabled } from "@/components/Buttons/BoutonDisabled";
-import Link from "next/link";
 
 type Schema = z.infer<typeof SchemaConnexion>;
 
@@ -27,7 +24,7 @@ export function ConnexionFormulaire({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [erreurIdentifiant, setErreurIdentifiant] = useState("");
 
   const form = useForm({
@@ -37,12 +34,11 @@ export function ConnexionFormulaire({
     } as Schema,
     onSubmit: async ({ value }) => {
       try {
-        const result = await connexionAction(value);
+        const result = await connexionAction({ data: value });
         console.log(value);
 
         if (result.success) {
-          router.push("/");
-          router.refresh();
+          navigate({ to: "/" });
         } else {
           setErreurIdentifiant(result.error || "Une erreur est survenue");
         }
@@ -84,8 +80,10 @@ export function ConnexionFormulaire({
                   name="email"
                   validators={{
                     onChange: ({ value }) => {
-                      const result = SchemaConnexion.shape.email.safeParse(value);
-                      if (!result.success) return result.error.issues[0].message;
+                      const result =
+                        SchemaConnexion.shape.email.safeParse(value);
+                      if (!result.success)
+                        return result.error.issues[0].message;
                       return undefined;
                     },
                   }}
@@ -115,8 +113,10 @@ export function ConnexionFormulaire({
                   name="password"
                   validators={{
                     onChange: ({ value }) => {
-                      const result = SchemaConnexion.shape.password.safeParse(value);
-                      if (!result.success) return result.error.issues[0].message;
+                      const result =
+                        SchemaConnexion.shape.password.safeParse(value);
+                      if (!result.success)
+                        return result.error.issues[0].message;
                       return undefined;
                     },
                   }}
@@ -126,7 +126,7 @@ export function ConnexionFormulaire({
                       <div className="flex items-center justify-between">
                         <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
                         <Link
-                          href={"connexion/motdepasseoublie"}
+                          to="/connexion/motdepasseoublie"
                           className="text-sm underline-offset-4 hover:underline"
                         >
                           Mot de passe oublié?
@@ -174,7 +174,7 @@ export function ConnexionFormulaire({
                 <div className="text-center text-sm">
                   Vous n&apos;avez pas de compte?{" "}
                   <Link
-                    href={"/inscription"}
+                    to="/inscription"
                     className="underline underline-offset-4"
                   >
                     Inscrivez vous
@@ -185,7 +185,7 @@ export function ConnexionFormulaire({
           </form>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4 px-4 pb-4">
         En cliquant sur connexion, vous acceptez nos{" "}
         <a href="#">Conditions d&apos;utilisation</a> et notre{" "}
         <a href="#">Politique de confidentialité</a>.
