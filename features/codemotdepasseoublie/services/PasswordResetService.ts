@@ -1,17 +1,17 @@
-import ky from "ky";
 import type {
   PasswordResetResponse,
   PasswordResetConfirmData,
 } from "../types/passwordreset.types";
+import { forgotPasswordAction } from "../actions/forgotPasswordAction";
+import { confirmPasswordResetAction } from "../actions/confirmPasswordResetAction";
 
 export const PasswordResetService = {
   /**
    * Request a password reset code to be sent to email
    */
   async requestPasswordReset(email: string): Promise<PasswordResetResponse> {
-    return ky
-      .post("/api/motdepasseoublie", { json: { email } })
-      .json<PasswordResetResponse>();
+    const response = await forgotPasswordAction({ data: { email } });
+    return response as PasswordResetResponse;
   },
 
   /**
@@ -20,8 +20,7 @@ export const PasswordResetService = {
   async confirmPasswordReset(
     data: PasswordResetConfirmData
   ): Promise<PasswordResetResponse> {
-    return ky
-      .post("/api/motdepasseoublie/confirmation", { json: data })
-      .json<PasswordResetResponse>();
+    const response = await confirmPasswordResetAction({ data });
+    return response as PasswordResetResponse;
   },
 };

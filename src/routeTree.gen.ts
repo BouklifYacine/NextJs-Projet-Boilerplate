@@ -18,6 +18,7 @@ import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as TestcomponentsDatatableRouteImport } from './routes/testcomponents/datatable'
 import { Route as ParametresUserIdRouteImport } from './routes/parametres/$userId'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
+import { Route as ApiWebhooksStripeRouteImport } from './routes/api/webhooks/stripe'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ConnexionMotdepasseoublieCodeIndexRouteImport } from './routes/connexion/motdepasseoublie/code/index'
 
@@ -67,6 +68,11 @@ const ConnexionMotdepasseoublieIndexRoute =
     path: '/connexion/motdepasseoublie/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiWebhooksStripeRoute = ApiWebhooksStripeRouteImport.update({
+  id: '/api/webhooks/stripe',
+  path: '/api/webhooks/stripe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/inscription': typeof InscriptionIndexRoute
   '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
   '/connexion/motdepasseoublie/code': typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/inscription': typeof InscriptionIndexRoute
   '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
   '/connexion/motdepasseoublie/code': typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/inscription/': typeof InscriptionIndexRoute
   '/signin/': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
   '/connexion/motdepasseoublie/': typeof ConnexionMotdepasseoublieIndexRoute
   '/connexion/motdepasseoublie/code/': typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/inscription'
     | '/signin'
     | '/api/auth/$'
+    | '/api/webhooks/stripe'
     | '/connexion/motdepasseoublie'
     | '/connexion/motdepasseoublie/code'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/inscription'
     | '/signin'
     | '/api/auth/$'
+    | '/api/webhooks/stripe'
     | '/connexion/motdepasseoublie'
     | '/connexion/motdepasseoublie/code'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/inscription/'
     | '/signin/'
     | '/api/auth/$'
+    | '/api/webhooks/stripe'
     | '/connexion/motdepasseoublie/'
     | '/connexion/motdepasseoublie/code/'
   fileRoutesById: FileRoutesById
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   InscriptionIndexRoute: typeof InscriptionIndexRoute
   SigninIndexRoute: typeof SigninIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiWebhooksStripeRoute: typeof ApiWebhooksStripeRoute
   ConnexionMotdepasseoublieIndexRoute: typeof ConnexionMotdepasseoublieIndexRoute
   ConnexionMotdepasseoublieCodeIndexRoute: typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConnexionMotdepasseoublieIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/webhooks/stripe': {
+      id: '/api/webhooks/stripe'
+      path: '/api/webhooks/stripe'
+      fullPath: '/api/webhooks/stripe'
+      preLoaderRoute: typeof ApiWebhooksStripeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -275,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   InscriptionIndexRoute: InscriptionIndexRoute,
   SigninIndexRoute: SigninIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiWebhooksStripeRoute: ApiWebhooksStripeRoute,
   ConnexionMotdepasseoublieIndexRoute: ConnexionMotdepasseoublieIndexRoute,
   ConnexionMotdepasseoublieCodeIndexRoute:
     ConnexionMotdepasseoublieCodeIndexRoute,
