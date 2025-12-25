@@ -15,6 +15,22 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["@node-rs/argon2"],
   },
+  build: {
+    rollupOptions: {
+      onwarn(warning, warn) {
+        // Suppress unused external import warnings from third-party packages
+        if (
+          warning.code === "UNUSED_EXTERNAL_IMPORT" &&
+          warning.exporter &&
+          (warning.exporter.includes("@tanstack/router-core") ||
+            warning.exporter.includes("@better-auth"))
+        ) {
+          return;
+        }
+        warn(warning);
+      },
+    },
+  },
   plugins: [
     tailwindcss(),
     // Enables Vite to resolve imports using path aliases.

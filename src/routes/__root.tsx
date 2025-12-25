@@ -8,7 +8,7 @@ import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import appCss from "../../styles/globals.css?url";
-import QueryProvider from "../../app/(providers)/QueryProvider";
+import QueryProvider from "../QueryProvider";
 
 export const Route = createRootRoute({
   head: () => ({

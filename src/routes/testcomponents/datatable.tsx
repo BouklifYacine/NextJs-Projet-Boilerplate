@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DataTable } from "@/components/DataTable";
-import { columns } from "@/app/testcomponents/datatable/columns";
-import { demoData } from "@/app/testcomponents/datatable/data";
+import { columns } from "@/src/testcomponents/datatable/columns";
+import { demoData } from "@/src/testcomponents/datatable/data";
 
 export const Route = createFileRoute("/testcomponents/datatable")({
   component: DataTableDemoPage,
