@@ -4,7 +4,20 @@
 
 @theme extend {
   /* ----- FONTS ----- */
-  --font-body: "DM Sans", system-ui, sans-serif;
-  --font-heading: "Inter", system-ui, sans-serif;
-  --font-code: "JetBrains Mono", monospace;
+  --font-body: var(--font-geist-sans), system-ui, sans-serif;
+  --font-heading: var(--font-geist-sans), system-ui, sans-serif;
+  --font-code: var(--font-geist-mono), monospace;
+
+  /* ----- FONT SIZES ----- */
+  --text-tiny: 12px;      
+  --text-small: 14px;    
+  --text-base: 16px;         
+  --text-large: 18px;    
+  --text-extra: 20px;     
+  --text-huge: 24px;       
+  --text-giant: 30px;    
+  --text-mega: 36px;      
+  --text-ultra: 48px;        
+  --text-colossal: 60px;  
+  --text-legend: 72px;     
 }

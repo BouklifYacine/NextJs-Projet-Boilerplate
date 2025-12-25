@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import clsx from "clsx";
 import QueryProvider from "./(providers)/QueryProvider";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 
-const dmSans = DM_Sans({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -24,7 +29,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className="relative" suppressHydrationWarning>
-      <body className={clsx(dmSans.className, "antialiased ")}>
+      <body
+        className={clsx(
+          geistSans.variable,
+          geistMono.variable,
+          "antialiased font-sans"
+        )}
+      >
         <QueryProvider>
           <ThemeProvider
             attribute="class"
