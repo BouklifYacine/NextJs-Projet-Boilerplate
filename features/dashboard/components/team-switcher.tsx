@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 import {
@@ -10,13 +8,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  
 } from "@/components/ui/sidebar";
 import { Fan } from "lucide-react";
 
-export function TeamSwitcher({
-
-}: {
+export function TeamSwitcher({}: {
   teams: {
     name: string;
     logo: React.ElementType;
@@ -24,7 +19,6 @@ export function TeamSwitcher({
   }[];
 }) {
   // const { isMobile } = useSidebar();
- 
 
   return (
     <SidebarMenu>
@@ -42,10 +36,8 @@ export function TeamSwitcher({
                 <span className="truncate font-medium">{"Devgogo"}</span>
                 <span className="truncate text-xs">{"Free"}</span>
               </div>
-           
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-       
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>

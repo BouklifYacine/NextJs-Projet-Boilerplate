@@ -1,33 +1,27 @@
-"use server";
-
 import { prisma } from "@/prisma";
 import { SessionAdmin } from "../../../lib/SessionAdmin";
-import { revalidatePath } from "next/cache";
 import { ModifierRoleInputSchema } from "../schemas/SchemaRole";
+import { createServerFn } from "@tanstack/react-start";
 
-export async function ModifierRole(
-  id: string,
-  newRole: "Admin" | "utilisateur"
-) {
+export const ModifierRole = createServerFn({ method: "POST" })
+  .inputValidator(ModifierRoleInputSchema)
+  .handler(async ({ data: { id, newRole } }) => {
+    try {
+      await SessionAdmin();
 
-  const validationinput = ModifierRoleInputSchema.safeParse({id , newRole})
-  if(!validationinput.success){
-    return {
-      success : false, 
+      await prisma.user.update({
+        where: { id: id },
+        data: { role: newRole },
+      });
+
+      return {
+        success: true,
+        message: "Role changé avec succès",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Erreur lors du changement de rôle",
+      };
     }
-  }
-  await SessionAdmin();
-
-  await prisma.user.update({
-    where: { id: id },
-    data: { role: newRole },
   });
-
-  revalidatePath("/dashboard");
-  revalidatePath(`/parametres/${id}`);
-
-  return {
-    success: true,
-    message: "Role changé avec succès",
-  };
-}

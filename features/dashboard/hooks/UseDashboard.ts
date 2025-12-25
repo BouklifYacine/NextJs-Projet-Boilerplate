@@ -40,7 +40,7 @@ export function useDeleteUsers() {
 
   return useMutation({
     mutationFn: async (ids: string[]) => {
-      const response = await deleteUsers(ids);
+      const response = await deleteUsers({ data: ids });
       if (!response.success) {
         throw new Error("Erreur sur la suppression des utilisateurs");
       }
@@ -92,7 +92,7 @@ export const useModifierRole = () => {
       userId: string;
       newRole: Role;
     }) => {
-      const response = await ModifierRole(userId, newRole);
+      const response = await ModifierRole({ data: { id: userId, newRole } });
 
       if (!response.success) {
         throw new Error("Impossible de changer de role");

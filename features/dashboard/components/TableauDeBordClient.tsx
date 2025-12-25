@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useMemo, useState } from "react";
 import { useDeleteUsers, useModifierRole } from "../hooks/UseDashboard";
 import toast from "react-hot-toast";

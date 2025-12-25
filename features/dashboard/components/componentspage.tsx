@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 // Header est maintenant dans le layout
 import { TableauDeBordClient } from "./TableauDeBordClient";
@@ -32,7 +30,7 @@ const ComponentPage = () => {
             <Skeleton className="h-32 w-full" />
             <Skeleton className="h-32 w-full" />
           </div>
-          
+
           {/* Skeleton pour le tableau */}
           <Skeleton className="h-10 w-full" />
           <div className="space-y-2">
@@ -42,7 +40,7 @@ const ComponentPage = () => {
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />
           </div>
-          
+
           {/* Skeleton pour la pagination */}
           <div className="flex justify-center mt-4">
             <Skeleton className="h-10 w-32" />
@@ -73,9 +71,10 @@ const ComponentPage = () => {
   const totalRevenus = Number(dataStats.data.abonnements.total.revenus);
   const MRR = Number(dataStats.data.abonnements.total.mrr);
 
-  const RevenusParUtilisateurs = totalUtilisateurs > 0
-    ? Number((totalRevenus / totalUtilisateurs).toFixed(2))
-    : 0;
+  const RevenusParUtilisateurs =
+    totalUtilisateurs > 0
+      ? Number((totalRevenus / totalUtilisateurs).toFixed(2))
+      : 0;
 
   const statistiques = {
     totalUtilisateurs,
