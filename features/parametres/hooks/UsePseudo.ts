@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "@tanstack/react-router";
 import { verifierMotDePasse } from "../actions/verifiermotdepasseaction";
 import { changerPseudo } from "../actions/changerpseudo";
+import { getUserAccounts } from "../actions/getuseraccounts";
 
 interface PropsRequeteUtilisateur {
   message: string;
@@ -26,9 +27,8 @@ export function useSectionPseudo(id: string) {
   const { data: donneesCompteUtilisateur } = useQuery<PropsRequeteUtilisateur>({
     queryKey: ["profil", id],
     queryFn: async () => {
-      const reponse = await fetch(`/api/user/accounts?userId=${id}`);
-      if (!reponse.ok) throw new Error("Échec de la récupération des comptes");
-      return reponse.json();
+      const reponse = await getUserAccounts({ data: { userId: id } });
+      return reponse as unknown as PropsRequeteUtilisateur;
     },
     enabled: !!id,
   });
