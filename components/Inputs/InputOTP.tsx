@@ -1,13 +1,11 @@
-"use client"
+import { useId } from "react";
+import { OTPInput, SlotProps } from "input-otp";
 
-import { useId } from "react"
-import { OTPInput, SlotProps } from "input-otp"
-
-import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
 
 export default function InputOTP() {
-  const id = useId()
+  const id = useId();
   return (
     <div className="*:not-first:mt-2">
       <Label htmlFor={id}>Code de confirmation</Label>
@@ -23,9 +21,8 @@ export default function InputOTP() {
           </div>
         )}
       />
-      
     </div>
-  )
+  );
 }
 
 function Slot(props: SlotProps) {
@@ -38,5 +35,5 @@ function Slot(props: SlotProps) {
     >
       {props.char !== null && <div>{props.char}</div>}
     </div>
-  )
+  );
 }

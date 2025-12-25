@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -82,9 +80,7 @@ export function BarreLaterale({ userId }: BarreLateraleProps) {
       </Card>
 
       <div className="space-y-8">
-        {sectionActive === "profil" && (
-          <SectionProfil userId={userId}  />
-        )}
+        {sectionActive === "profil" && <SectionProfil userId={userId} />}
         {showCredentialFeatures && sectionActive === "email" && (
           <SectionEmail />
         )}

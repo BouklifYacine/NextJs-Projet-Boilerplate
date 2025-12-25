@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -58,7 +56,9 @@ export function SectionSuppression({ userId }: { userId: string }) {
         {!confirmation ? (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button className="bg-red-500 text-white hover:bg-red-700 cursor-pointer">Supprimer mon compte</Button>
+              <Button className="bg-red-500 text-white hover:bg-red-700 cursor-pointer">
+                Supprimer mon compte
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -69,7 +69,9 @@ export function SectionSuppression({ userId }: { userId: string }) {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel className="cursor-pointer">Annuler</AlertDialogCancel>
+                <AlertDialogCancel className="cursor-pointer">
+                  Annuler
+                </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={startDeleteProcess}
                   className="bg-red-500 text-white hover:bg-red-700 cursor-pointer"
@@ -90,9 +92,7 @@ export function SectionSuppression({ userId }: { userId: string }) {
               >
                 <div className="space-y-2">
                   <Label htmlFor="motdepasse">Mot de passe actuel</Label>
-                  <InputPassword
-                    {...formVerification.register("motdepasse")}
-                  />
+                  <InputPassword {...formVerification.register("motdepasse")} />
                   {formVerification.formState.errors.motdepasse && (
                     <Alert variant="destructive">
                       <AlertDescription>

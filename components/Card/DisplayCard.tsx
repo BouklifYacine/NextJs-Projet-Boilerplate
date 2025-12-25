@@ -1,5 +1,3 @@
-"use client";
-
 import DisplayCards from "@/components/ui/display-cards";
 import { Sparkles } from "lucide-react";
 
