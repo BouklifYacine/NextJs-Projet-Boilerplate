@@ -12,9 +12,11 @@ export function useProfilePictureMutations(userId: string) {
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
       const { presignedurl } = await serverUploadProfilePicture({
-        contentType: file.type,
-        size: file.size,
-        fileName: file.name,
+        data: {
+          contentType: file.type,
+          size: file.size,
+          fileName: file.name,
+        },
       });
 
       await fetch(presignedurl, {

@@ -54,7 +54,7 @@ export function useSectionPseudo(id: string) {
 
   const mutationVerifierMotDePasse = useMutation({
     mutationFn: async (motDePasse: string) => {
-      const resultat = await verifierMotDePasse(motDePasse);
+      const resultat = await verifierMotDePasse({ data: motDePasse });
       if (resultat.error) throw new Error(resultat.error);
       return resultat;
     },
