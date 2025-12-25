@@ -1,4 +1,3 @@
-"use client";
 import { CarouselComposant } from "@/components/Carousel/CarouselComposant";
 import { Footer } from "@/components/Footer/footer";
 import Header from "@/features/landingpage/components/header";
