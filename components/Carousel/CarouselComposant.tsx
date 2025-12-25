@@ -1,21 +1,11 @@
-"use client";
-
 import AutoScroll from "embla-carousel-auto-scroll";
+import { Image } from "@unpic/react";
 
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { Image } from "@unpic/react";
-import Coca from "@/public/coca-cola-logo-svgrepo-com.svg";
-import Instagram from "@/public/instagram-2-1-logo-svgrepo-com.svg";
-import Whatsapp from "@/public/whatsapp-icon-logo-svgrepo-com.svg";
-import Youtube from "@/public/youtube-icon-logo-svgrepo-com.svg";
-import ManCity from "@/public/Logo_Manchester_City_2016.svg";
-import Snapchat from "@/public/snapchat-logo-svgrepo-com.svg";
-import Paypal from "@/public/paypal-icon-logo-svgrepo-com.svg";
-import BMW from "@/public/bmw-logo-svgrepo-com.svg";
 
 interface Logo {
   id: string;
@@ -36,49 +26,49 @@ const CarouselComposant = ({
     {
       id: "logo-1",
       description: "Logo 1",
-      image: Coca,
+      image: "/coca-cola-logo-svgrepo-com.svg",
       className: "h-30 w-auto",
     },
     {
       id: "logo-2",
       description: "Logo 2",
-      image: Instagram,
+      image: "/instagram-2-1-logo-svgrepo-com.svg",
       className: "h-15 w-auto",
     },
     {
       id: "logo-3",
       description: "Logo 3",
-      image: ManCity,
+      image: "/Logo_Manchester_City_2016.svg",
       className: "h-20 w-auto",
     },
     {
       id: "logo-4",
       description: "Logo 4",
-      image: Whatsapp,
+      image: "/whatsapp-icon-logo-svgrepo-com.svg",
       className: "h-15 w-auto",
     },
     {
       id: "logo-5",
       description: "Logo 5",
-      image: Youtube,
+      image: "/youtube-icon-logo-svgrepo-com.svg",
       className: "h-20 w-auto",
     },
     {
       id: "logo-6",
       description: "Logo 6",
-      image: BMW,
+      image: "/bmw-logo-svgrepo-com.svg",
       className: "h-15 w-auto",
     },
     {
       id: "logo-7",
       description: "Logo 7",
-      image: Paypal,
+      image: "/paypal-icon-logo-svgrepo-com.svg",
       className: "h-15 w-auto",
     },
     {
       id: "logo-8",
       description: "Logo 8",
-      image: Snapchat,
+      image: "/snapchat-logo-svgrepo-com.svg",
       className: "h-15 w-auto",
     },
   ],
