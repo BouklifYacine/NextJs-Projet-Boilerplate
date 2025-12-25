@@ -8,6 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   server: {
     port: 3000,
+    host: true, // Required for Docker - binds to 0.0.0.0
   },
   ssr: {
     external: ["@node-rs/argon2"],

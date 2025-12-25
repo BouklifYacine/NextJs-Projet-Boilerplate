@@ -1,22 +1,22 @@
 # ─── STAGE 1: Dependencies ─────────────────────────────
-FROM node:24.0.1-alpine3.21 AS deps
+FROM oven/bun:1.2-alpine AS deps
 WORKDIR /app
 
 # Installer les dépendances nécessaires pour Prisma et autres packages
 RUN apk add --no-cache libc6-compat
 
 # Copier uniquement les fichiers nécessaires pour installer les dépendances
-COPY package*.json ./
+COPY package.json bun.lock* ./
 COPY prisma ./prisma
 
-# Installation des dépendances de production uniquement
-RUN npm ci 
+# Installation des dépendances avec Bun
+RUN bun install --frozen-lockfile
 
 # Générer les clients Prisma
-RUN npx prisma generate
+RUN bunx prisma generate --schema=prisma/schema
 
 # ─── STAGE 2: Builder ───────────────────────────────────
-FROM node:24.0.1-alpine3.21 AS builder
+FROM oven/bun:1.2-alpine AS builder
 WORKDIR /app
 
 # Copier les dépendances depuis l'étape précédente
@@ -26,49 +26,37 @@ COPY --from=deps /app/prisma ./prisma
 # Copier le reste du code source
 COPY . .
 
-# Définir l'environnement de production
-# ENV NODE_ENV=production
-
-# Dans l'étape builder, avant npm run build
-RUN echo "NODE_ENV: $NODE_ENV"
-RUN echo "DATABASE_URL: $DATABASE_URL"
-RUN npm run build -- --no-lint
-# Construire l'application
-RUN npm run build
+# Construire l'application TanStack Start
+RUN bun run build
 
 # ─── STAGE 3: Runner ────────────────────────────────────
-FROM node:24.0.1-alpine3.21 AS runner
-LABEL org.opencontainers.image.description="Image de production pour NextJs-Projet-Boilerplate"
-LABEL org.name="NextJs-Prod-Environment"
+FROM oven/bun:1.2-alpine AS runner
+LABEL org.opencontainers.image.description="Image de production pour TanStack Start Boilerplate"
+LABEL org.name="TanStack-Start-Prod-Environment"
 
 WORKDIR /app
 
 # Installer uniquement les dépendances nécessaires pour l'exécution
 RUN apk add --no-cache libc6-compat
 
-# Définir l'environnement de production
-# ENV NODE_ENV=production
-
 # Créer un utilisateur non-root pour des raisons de sécurité
-RUN addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 bunjs \
+    && adduser --system --uid 1001 appuser
 
 # Copier les fichiers nécessaires depuis l'étape de construction
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/prisma ./prisma
-
-# Utiliser la fonctionnalité standalone de Next.js pour une image plus légère
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Copier les fichiers de configuration nécessaires
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
 # Définir l'utilisateur pour l'exécution
-USER nextjs
+USER appuser
 
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
-# Exécuter les migrations Prisma puis démarrer l'application
-CMD ["sh", "-c", "npx prisma migrate deploy && exec node server.js"]
+# Définir l'environnement de production
+ENV NODE_ENV=production
+
+# Exécuter les migrations Prisma puis démarrer l'application TanStack Start
+CMD ["sh", "-c", "bunx prisma migrate deploy && exec bun run start"]

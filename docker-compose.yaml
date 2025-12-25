@@ -1,5 +1,3 @@
-
-
 services:
   db:
     container_name: devgo-prod-db
@@ -23,8 +21,8 @@ services:
     container_name: devgo-prod
     build:
       context: .
-      dockerfile: Dockerfile
-    image: nextjs-projet-boilerplate-prod:latest
+      dockerfile: dockerfile
+    image: tanstack-start-boilerplate-prod:latest
     restart: always
     depends_on:
       db:
@@ -33,6 +31,8 @@ services:
       - "3000:3000"
     env_file:
       - .env.production.local
+    environment:
+      - NODE_ENV=production
     # Utilisation de la base de données Neon en production
     # environment:
     #   - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-devgo}
