@@ -7,9 +7,8 @@ import {
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
-import { QueryClientProvider } from "@tanstack/react-query";
 import appCss from "../../styles/globals.css?url";
-import QueryProvider from "@/app/(providers)/QueryProvider";
+import QueryProvider from "../../app/(providers)/QueryProvider";
 
 export const Route = createRootRoute({
   head: () => ({
