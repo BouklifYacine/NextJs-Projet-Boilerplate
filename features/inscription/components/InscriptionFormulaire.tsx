@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,11 +12,11 @@ import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
 import { z } from "zod";
 import { useForm } from "@tanstack/react-form";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { inscriptionAction } from "@/features/inscription/actions/InscriptionAction";
 import { BoutonDisabled } from "@/components/Buttons/BoutonDisabled";
-import Link from "next/link";
+
 import SchemaInscription from "@/features/inscription/schemas/SchemaInscription";
 import { InputPassword } from "../../parametres/components/InputPassword";
 import { Lock } from "lucide-react";
@@ -29,7 +27,7 @@ export default function InscriptionFormulaire({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [erreurMessage, setErreurMessage] = useState("");
 
   const form = useForm({
@@ -40,10 +38,10 @@ export default function InscriptionFormulaire({
     } as Schema,
     onSubmit: async ({ value }) => {
       try {
-        const result = await inscriptionAction(value);
+        const result = await inscriptionAction({ data: value });
 
         if (result.success) {
-          router.push("/connexion");
+          navigate({ to: "/connexion" });
           form.reset();
           setErreurMessage("");
         } else {
@@ -91,7 +89,8 @@ export default function InscriptionFormulaire({
                 name="name"
                 validators={{
                   onChange: ({ value }) => {
-                    const result = SchemaInscription.shape.name.safeParse(value);
+                    const result =
+                      SchemaInscription.shape.name.safeParse(value);
                     if (!result.success) return result.error.issues[0].message;
                     return undefined;
                   },
@@ -123,7 +122,8 @@ export default function InscriptionFormulaire({
                 name="email"
                 validators={{
                   onChange: ({ value }) => {
-                    const result = SchemaInscription.shape.email.safeParse(value);
+                    const result =
+                      SchemaInscription.shape.email.safeParse(value);
                     if (!result.success) return result.error.issues[0].message;
                     return undefined;
                   },
@@ -155,7 +155,8 @@ export default function InscriptionFormulaire({
                 name="password"
                 validators={{
                   onChange: ({ value }) => {
-                    const result = SchemaInscription.shape.password.safeParse(value);
+                    const result =
+                      SchemaInscription.shape.password.safeParse(value);
                     if (!result.success) return result.error.issues[0].message;
                     return undefined;
                   },
@@ -214,7 +215,7 @@ export default function InscriptionFormulaire({
             </div>
             <div className="text-center text-sm mt-4">
               Déjà inscrit ?{" "}
-              <Link href="/connexion" className="underline underline-offset-4">
+              <Link to="/connexion" className="underline underline-offset-4">
                 Se connecter
               </Link>
             </div>

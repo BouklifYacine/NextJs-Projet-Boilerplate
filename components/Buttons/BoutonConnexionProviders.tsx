@@ -1,4 +1,3 @@
-"use client";
 import { Image } from "@unpic/react";
 import Github from "@/public/github-icon-2.svg";
 import Google from "@/public/Google.png";
@@ -8,20 +7,31 @@ import { Button } from "../ui/button";
 
 const BoutonConnexionProviders = () => {
   const GoogleConnexion = async () => {
-    const data = await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
-    return data;
+    try {
+      console.log("Google OAuth clicked");
+      const data = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+      console.log("Google OAuth response:", data);
+      return data;
+    } catch (error) {
+      console.error("Google OAuth error:", error);
+    }
   };
 
   const GithubConnexion = async () => {
-    const data = await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/",
-    });
-
-    return data;
+    try {
+      console.log("GitHub OAuth clicked");
+      const data = await authClient.signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+      console.log("GitHub OAuth response:", data);
+      return data;
+    } catch (error) {
+      console.error("GitHub OAuth error:", error);
+    }
   };
 
   return (

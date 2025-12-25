@@ -10,19 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TestIndexRouteImport } from './routes/test/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestIndexRoute = TestIndexRouteImport.update({
-  id: '/test/',
-  path: '/test/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
@@ -41,19 +36,24 @@ const ConnexionMotdepasseoublieIndexRoute =
     path: '/connexion/motdepasseoublie/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
-  '/test': typeof TestIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
-  '/test': typeof TestIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
 }
 export interface FileRoutesById {
@@ -61,7 +61,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
-  '/test/': typeof TestIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie/': typeof ConnexionMotdepasseoublieIndexRoute
 }
 export interface FileRouteTypes {
@@ -70,21 +70,21 @@ export interface FileRouteTypes {
     | '/'
     | '/connexion'
     | '/inscription'
-    | '/test'
+    | '/api/auth/$'
     | '/connexion/motdepasseoublie'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/connexion'
     | '/inscription'
-    | '/test'
+    | '/api/auth/$'
     | '/connexion/motdepasseoublie'
   id:
     | '__root__'
     | '/'
     | '/connexion/'
     | '/inscription/'
-    | '/test/'
+    | '/api/auth/$'
     | '/connexion/motdepasseoublie/'
   fileRoutesById: FileRoutesById
 }
@@ -92,7 +92,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
-  TestIndexRoute: typeof TestIndexRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ConnexionMotdepasseoublieIndexRoute: typeof ConnexionMotdepasseoublieIndexRoute
 }
 
@@ -103,13 +103,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/test/': {
-      id: '/test/'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscription/': {
@@ -133,6 +126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConnexionMotdepasseoublieIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -140,7 +140,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,
-  TestIndexRoute: TestIndexRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   ConnexionMotdepasseoublieIndexRoute: ConnexionMotdepasseoublieIndexRoute,
 }
 export const routeTree = rootRouteImport

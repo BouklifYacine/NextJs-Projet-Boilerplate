@@ -1,12 +1,14 @@
-"use server";
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
-import { headers } from "next/headers";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 
-export async function AdminAction() {
-const session = await auth.api.getSession({
-    headers: await headers() 
-});
+export const AdminAction = createServerFn().handler(async () => {
+  const request = getRequest();
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
   const sessionID = session?.user?.id;
 
   if (!sessionID)
@@ -15,8 +17,9 @@ const session = await auth.api.getSession({
   const utilisateur = await prisma.user.findUnique({
     where: { id: sessionID },
   });
+
   if (utilisateur?.role !== "Admin")
     return { success: false, message: "Vous n'etes pas admin " };
 
   return { success: true, Admin: utilisateur.role === "Admin" };
-}
+});

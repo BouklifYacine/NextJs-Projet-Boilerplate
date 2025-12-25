@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000,
   },
   ssr: {
-    noExternal: ["@node-rs/argon2"],
+    external: ["@node-rs/argon2"],
   },
   optimizeDeps: {
     exclude: ["@node-rs/argon2"],

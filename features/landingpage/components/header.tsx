@@ -1,6 +1,6 @@
 import { Image } from "@unpic/react";
 import React from "react";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BoutonDeconnexion } from "../../../components/Buttons/BoutonDéconnexion";
@@ -49,7 +49,7 @@ const Header = () => {
     <header className=" top-0 z-50 pt-4 px-4 ">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <Link href="/">
+          <Link to="/">
             <Image
               src="/FC_Bayern_München_logo_(2017).svg.png"
               alt="Logo Bayern - Retour à l'accueil"
@@ -74,19 +74,19 @@ const Header = () => {
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
             <Link
-              href="/"
+              to="/"
               className=" hover:text-purple-600 opacity-80 transition-colors"
             >
               Data
             </Link>
             <Link
-              href="/"
+              to="/"
               className=" hover:text-purple-600 opacity-80 transition-colors"
             >
               Classement
             </Link>
             <Link
-              href="/"
+              to="/"
               className=" hover:text-purple-600 opacity-80 transition-colors"
             >
               Favoris
@@ -127,7 +127,7 @@ const Header = () => {
 
                     <DropdownMenuItem>
                       <DoorOpen className="mr-2 h-4 w-4" />
-                      <Link href="connexion" className="cursor-pointer">
+                      <Link to="/connexion" className="cursor-pointer">
                         Connexion
                       </Link>
                     </DropdownMenuItem>
@@ -184,7 +184,7 @@ const Header = () => {
                     <DropdownMenuSeparator />
 
                     {utilisateurabonner && (
-                      <Link
+                      <a
                         href={
                           process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!
                         }
@@ -193,27 +193,27 @@ const Header = () => {
                           <CreditCard className="mr-2 h-4 w-4 cursor-pointer" />
                           <span className="cursor-pointer">Abonnement</span>
                         </DropdownMenuItem>
-                      </Link>
+                      </a>
                     )}
 
                     {utilisateurAdmin && (
-                      <Link href="/dashboard" className="cursor-pointer">
+                      <a href="/dashboard" className="cursor-pointer">
                         <DropdownMenuItem>
                           <Table className="mr-2 h-4 w-4 " />
                           <span className="cursor-pointer">Dashboard</span>
                         </DropdownMenuItem>
-                      </Link>
+                      </a>
                     )}
 
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4 cursor-pointer" />
-                        <Link
+                        <a
                           href={`/parametres/${session.user?.id}`}
                           className="cursor-pointer"
                         >
                           Paramètres
-                        </Link>
+                        </a>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>

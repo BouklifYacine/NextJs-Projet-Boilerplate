@@ -1,6 +1,5 @@
 import { betterAuth } from "better-auth";
-
-import { nextCookies } from "better-auth/next-js";
+import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { HashPassword, verifyPassword } from "./lib/argon2";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./lib/prisma";
@@ -35,5 +34,5 @@ export const auth = betterAuth({
     window: 10,
     max: 100,
   },
-  plugins: [nextCookies()],
+  plugins: [tanstackStartCookies()],
 });
