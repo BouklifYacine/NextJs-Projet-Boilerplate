@@ -1,6 +1,10 @@
 import BoutonConnexionProviders from "@/components/Buttons/BoutonConnexionProviders";
+import { CarouselComposant } from "@/components/Carousel/CarouselComposant";
 import { Footer } from "@/components/Footer/footer";
+import Faq from "@/features/landingpage/components/Faq";
 import Header from "@/features/landingpage/components/header";
+import { Pricing2 } from "@/features/landingpage/components/pricing2";
+import Section from "@/features/landingpage/components/Section";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -11,8 +15,11 @@ function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-dvh w-full flex items-center justify-center flex-col gap-y-4 p-4"></main>
-      <Footer />
+      <Section />
+      <CarouselComposant />
+      <Pricing2></Pricing2>
+      <Faq></Faq>
+      <Footer></Footer>
     </>
   );
 }

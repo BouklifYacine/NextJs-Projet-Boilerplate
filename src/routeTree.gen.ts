@@ -16,6 +16,7 @@ import { Route as InscriptionIndexRouteImport } from './routes/inscription/index
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as TestcomponentsDatatableRouteImport } from './routes/testcomponents/datatable'
+import { Route as ParametresUserIdRouteImport } from './routes/parametres/$userId'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ConnexionMotdepasseoublieCodeIndexRouteImport } from './routes/connexion/motdepasseoublie/code/index'
@@ -55,6 +56,11 @@ const TestcomponentsDatatableRoute = TestcomponentsDatatableRouteImport.update({
   path: '/testcomponents/datatable',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParametresUserIdRoute = ParametresUserIdRouteImport.update({
+  id: '/parametres/$userId',
+  path: '/parametres/$userId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConnexionMotdepasseoublieIndexRoute =
   ConnexionMotdepasseoublieIndexRouteImport.update({
     id: '/connexion/motdepasseoublie/',
@@ -76,6 +82,7 @@ const ConnexionMotdepasseoublieCodeIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/parametres/$userId': typeof ParametresUserIdRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/parametres/$userId': typeof ParametresUserIdRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/parametres/$userId': typeof ParametresUserIdRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/parametres/$userId'
     | '/testcomponents/datatable'
     | '/connexion'
     | '/dashboard/'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/parametres/$userId'
     | '/testcomponents/datatable'
     | '/connexion'
     | '/dashboard'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/parametres/$userId'
     | '/testcomponents/datatable'
     | '/connexion/'
     | '/dashboard/'
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  ParametresUserIdRoute: typeof ParametresUserIdRoute
   TestcomponentsDatatableRoute: typeof TestcomponentsDatatableRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestcomponentsDatatableRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parametres/$userId': {
+      id: '/parametres/$userId'
+      path: '/parametres/$userId'
+      fullPath: '/parametres/$userId'
+      preLoaderRoute: typeof ParametresUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/connexion/motdepasseoublie/': {
       id: '/connexion/motdepasseoublie/'
       path: '/connexion/motdepasseoublie'
@@ -249,6 +269,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  ParametresUserIdRoute: ParametresUserIdRoute,
   TestcomponentsDatatableRoute: TestcomponentsDatatableRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,

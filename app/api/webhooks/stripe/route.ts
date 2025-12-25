@@ -115,7 +115,7 @@ async function handleCheckoutComplete(event: Stripe.Event) {
   if (item?.price?.type === "recurring") {
     const endDate = new Date();
     const isYearly = item.price.id === process.env.STRIPE_YEARLY_PRICE_ID;
-    const periode = isYearly ? PlanAbonnement.année : PlanAbonnement.mois;
+    const periode = isYearly ? PlanAbonnement.annee : PlanAbonnement.mois;
 
     if (isYearly) {
       endDate.setFullYear(endDate.getFullYear() + 1);
@@ -214,7 +214,7 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
     }
 
     const isYearly = priceId === process.env.STRIPE_YEARLY_PRICE_ID;
-    const periode = isYearly ? PlanAbonnement.année : PlanAbonnement.mois;
+    const periode = isYearly ? PlanAbonnement.annee : PlanAbonnement.mois;
 
     const endDate = new Date();
     if (isYearly) {
@@ -254,7 +254,7 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
           name: user.name || user.email,
           plan: isYearly ? "Pro Annuel" : "Pro Mensuel",
           oldPlan:
-            oldPlanData.periode === PlanAbonnement.année
+            oldPlanData.periode === PlanAbonnement.annee
               ? "Pro Annuel"
               : "Pro Mensuel",
         });
