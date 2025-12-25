@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
@@ -30,11 +29,6 @@ const DashboardRoute = DashboardRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SigninIndexRoute = SigninIndexRouteImport.update({
-  id: '/signin/',
-  path: '/signin/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
@@ -93,7 +87,6 @@ export interface FileRoutesByFullPath {
   '/connexion': typeof ConnexionIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/inscription': typeof InscriptionIndexRoute
-  '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
@@ -106,7 +99,6 @@ export interface FileRoutesByTo {
   '/connexion': typeof ConnexionIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/inscription': typeof InscriptionIndexRoute
-  '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
@@ -121,7 +113,6 @@ export interface FileRoutesById {
   '/connexion/': typeof ConnexionIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
-  '/signin/': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
   '/connexion/motdepasseoublie/': typeof ConnexionMotdepasseoublieIndexRoute
@@ -137,7 +128,6 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/dashboard/'
     | '/inscription'
-    | '/signin'
     | '/api/auth/$'
     | '/api/webhooks/stripe'
     | '/connexion/motdepasseoublie'
@@ -150,7 +140,6 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/dashboard'
     | '/inscription'
-    | '/signin'
     | '/api/auth/$'
     | '/api/webhooks/stripe'
     | '/connexion/motdepasseoublie'
@@ -164,7 +153,6 @@ export interface FileRouteTypes {
     | '/connexion/'
     | '/dashboard/'
     | '/inscription/'
-    | '/signin/'
     | '/api/auth/$'
     | '/api/webhooks/stripe'
     | '/connexion/motdepasseoublie/'
@@ -178,7 +166,6 @@ export interface RootRouteChildren {
   TestcomponentsDatatableRoute: typeof TestcomponentsDatatableRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
-  SigninIndexRoute: typeof SigninIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiWebhooksStripeRoute: typeof ApiWebhooksStripeRoute
   ConnexionMotdepasseoublieIndexRoute: typeof ConnexionMotdepasseoublieIndexRoute
@@ -199,13 +186,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signin/': {
-      id: '/signin/'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof SigninIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscription/': {
@@ -293,7 +273,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestcomponentsDatatableRoute: TestcomponentsDatatableRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,
-  SigninIndexRoute: SigninIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiWebhooksStripeRoute: ApiWebhooksStripeRoute,
   ConnexionMotdepasseoublieIndexRoute: ConnexionMotdepasseoublieIndexRoute,

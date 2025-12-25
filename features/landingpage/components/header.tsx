@@ -5,9 +5,6 @@ import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BoutonDeconnexion } from "../../../components/Buttons/BoutonDéconnexion";
 import { BoutonConnexion } from "../../../components/Buttons/BoutonConnexion";
-import MenuDeroulant from "@/features/landingpage/components/MenuDeroulant";
-import { useQuery } from "@tanstack/react-query";
-import { UtilisateurAbonner } from "@/app/(actions)/UtilisateurAbonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,27 +14,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AdminAction } from "@/app/(actions)/AdminAction";
 import { useSession } from "@/lib/auth-client";
 import { BoutonDarkMode2 } from "../../../components/DarkModeButton/BoutonDarkMode2";
 import { useProfil } from "@/features/parametres/hooks/useProfil";
 import { Loader } from "@/components/ui/loader";
+import MenuDeroulant from "@/features/landingpage/components/MenuDeroulant";
+import { useUserStatus } from "../hooks/useUserStatus";
 
 const Header = () => {
   const { data: session } = useSession();
 
   const SessionID = session?.user.id || "";
 
-  const { data } = useQuery({
-    queryKey: ["userStatus"],
-    queryFn: async () => {
-      const [abonnement, admin] = await Promise.all([
-        UtilisateurAbonner(),
-        AdminAction(),
-      ]);
-      return { abonnement, admin };
-    },
-  });
+  const { data } = useUserStatus();
 
   const { data: Profil, isLoading } = useProfil(SessionID);
 
@@ -51,12 +40,12 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link to="/">
             <Image
-              src="/FC_Bayern_München_logo_(2017).svg.png"
+              src="/Logo_Manchester_City_2016.svg"
               alt="Logo Bayern - Retour à l'accueil"
               height={50}
               width={50}
               className="hover:scale-110 transition-transform"
-              priority
+              fetchPriority="high"
             />
           </Link>
 
@@ -103,7 +92,7 @@ const Header = () => {
                     >
                       <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
                         <AvatarImage
-                          src="https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
+                          src="/Logo_Manchester_City_2016.svg"
                           alt="Avatar utilisateur"
                         />
                         <AvatarFallback>LFC</AvatarFallback>
@@ -114,7 +103,7 @@ const Header = () => {
                     <div className="flex items-center gap-2 px-2 py-1.5">
                       <Avatar className="h-6 w-6">
                         <AvatarImage
-                          src="https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
+                          src="/Logo_Manchester_City_2016.svg"
                           alt="Logo"
                         />
                         <AvatarFallback>LFC</AvatarFallback>

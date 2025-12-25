@@ -54,11 +54,7 @@ export default function MenuDeroulant({
           ) : (
             <Avatar className="h-6 w-6">
               <AvatarImage
-                src={
-                  isLogged
-                    ? imageUrl
-                    : "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
-                }
+                src={isLogged ? imageUrl : "/Logo_Manchester_City_2016.svg"}
                 alt={isLogged ? userName || "User avatar" : "Logo"}
               />
               <AvatarFallback>
