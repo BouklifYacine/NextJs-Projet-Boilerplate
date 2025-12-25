@@ -35,6 +35,11 @@ export const getUtilisateursAction = createServerFn({ method: "GET" })
     const utilisateurs = await prisma.user.findMany({
       skip: page * PAGE_SIZE,
       take: PAGE_SIZE,
+      where: {
+        id: {
+          not: sessionId,
+        },
+      },
       select: {
         id: true,
         name: true,
