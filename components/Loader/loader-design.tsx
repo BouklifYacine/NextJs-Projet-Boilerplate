@@ -1,10 +1,11 @@
-import React from 'react'
-import Loader from '../ui/loaderkokonutui'
+import { Loader } from "../ui/loader";
 
 function Loaderdesign() {
   return (
-   <><Loader></Loader></>
-  )
+    <>
+      <Loader></Loader>
+    </>
+  );
 }
 
-export default Loaderdesign
+export default Loaderdesign;

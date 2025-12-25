@@ -1,11 +1,7 @@
-'use client'
-
 import { SignUpPage } from "../ui/sign-up";
 
 function FormulaireInscription() {
-  return (
-      <SignUpPage />
-  )
+  return <SignUpPage />;
 }
 
 export { FormulaireInscription };

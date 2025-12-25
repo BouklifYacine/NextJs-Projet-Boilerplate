@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --bun next dev",
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "node .output/server/index.mjs",
     "db:push:prod": "bunx prisma db push",
-    "build": "bun --bun next build",
-    "start": "bun --bun next start",
     "lint": "next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -48,9 +48,12 @@
     "@tabler/icons-react": "^3.34.0",
     "@tanstack/react-form": "^1.27.4",
     "@tanstack/react-query": "^5.66.0",
+    "@tanstack/react-router": "^1.143.6",
+    "@tanstack/react-start": "^1.143.7",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/zod-form-adapter": "^0.42.1",
     "@types/bcryptjs": "^3.0.0",
+    "@unpic/react": "^1.0.2",
     "better-auth": "^1.4.9",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
@@ -88,6 +91,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.5",
+    "@tailwindcss/vite": "^4.1.18",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -95,12 +99,15 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^5.1.2",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",
     "prisma": "7",
-    "tailwindcss": "^4.1.5",
+    "tailwindcss": "^4.1.18",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^7.3.0",
+    "vite-tsconfig-paths": "^6.0.3"
   }
 }

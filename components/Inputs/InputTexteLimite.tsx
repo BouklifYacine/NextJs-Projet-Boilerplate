@@ -1,20 +1,18 @@
-"use client"
+import { useId } from "react";
 
-import { useId } from "react"
-
-import { useCharacterLimit } from "@/hooks/use-character-limit"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useCharacterLimit } from "@/hooks/use-character-limit";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function InputTexteLimite() {
-  const id = useId()
-  const maxLength = 50
+  const id = useId();
+  const maxLength = 50;
   const {
     value,
     characterCount,
     handleChange,
     maxLength: limit,
-  } = useCharacterLimit({ maxLength })
+  } = useCharacterLimit({ maxLength });
 
   return (
     <div className="*:not-first:mt-2">
@@ -39,5 +37,5 @@ export default function InputTexteLimite() {
         </div>
       </div>
     </div>
-  )
+  );
 }

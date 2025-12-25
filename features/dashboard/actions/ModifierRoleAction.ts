@@ -1,33 +1,47 @@
-"use server";
-
 import { prisma } from "@/prisma";
-import { SessionAdmin } from "../../../lib/SessionAdmin";
-import { revalidatePath } from "next/cache";
 import { ModifierRoleInputSchema } from "../schemas/SchemaRole";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
+import { auth } from "@/auth";
 
-export async function ModifierRole(
-  id: string,
-  newRole: "Admin" | "utilisateur"
-) {
+export const ModifierRole = createServerFn({ method: "POST" })
+  .inputValidator(ModifierRoleInputSchema)
+  .handler(async ({ data: { id, newRole } }) => {
+    try {
+      const request = getRequest();
+      const session = await auth.api.getSession({
+        headers: request.headers,
+      });
 
-  const validationinput = ModifierRoleInputSchema.safeParse({id , newRole})
-  if(!validationinput.success){
-    return {
-      success : false, 
+      const sessionId = session?.user?.id;
+      if (!sessionId) {
+        throw new Error("Vous devez etre connecté");
+      }
+
+      const admin = await prisma.user.findUnique({
+        where: {
+          id: sessionId,
+        },
+        select: { role: true },
+      });
+
+      if (admin?.role !== "Admin") {
+        throw new Error("Vous devez etre admin !");
+      }
+
+      await prisma.user.update({
+        where: { id: id },
+        data: { role: newRole },
+      });
+
+      return {
+        success: true,
+        message: "Role changé avec succès",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Erreur lors du changement de rôle",
+      };
     }
-  }
-  await SessionAdmin();
-
-  await prisma.user.update({
-    where: { id: id },
-    data: { role: newRole },
   });
-
-  revalidatePath("/dashboard");
-  revalidatePath(`/parametres/${id}`);
-
-  return {
-    success: true,
-    message: "Role changé avec succès",
-  };
-}

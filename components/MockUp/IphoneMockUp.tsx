@@ -1,10 +1,11 @@
-import React from 'react'
-import { Iphone } from '../ui/iphone'
+import { Iphone } from "../ui/iphone";
 
 function IphoneMockUp() {
   return (
-    <><Iphone></Iphone></>
-  )
+    <>
+      <Iphone></Iphone>
+    </>
+  );
 }
 
-export default IphoneMockUp
+export default IphoneMockUp;

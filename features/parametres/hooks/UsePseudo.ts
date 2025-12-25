@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaPseudo, schemaVerificationMotDePasse } from "../schemas/schema";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@tanstack/react-router";
 import { verifierMotDePasse } from "../actions/verifiermotdepasseaction";
 import { changerPseudo } from "../actions/changerpseudo";
+import { getUserAccounts } from "../actions/getuseraccounts";
 
 interface PropsRequeteUtilisateur {
   message: string;
@@ -16,7 +17,7 @@ interface PropsRequeteUtilisateur {
 type EtapeModification = "verification" | "changement";
 
 export function useSectionPseudo(id: string) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const [estEnEdition, setEstEnEdition] = useState(false);
@@ -26,9 +27,8 @@ export function useSectionPseudo(id: string) {
   const { data: donneesCompteUtilisateur } = useQuery<PropsRequeteUtilisateur>({
     queryKey: ["profil", id],
     queryFn: async () => {
-      const reponse = await fetch(`/api/user/accounts?userId=${id}`);
-      if (!reponse.ok) throw new Error("Échec de la récupération des comptes");
-      return reponse.json();
+      const reponse = await getUserAccounts({ data: { userId: id } });
+      return reponse as unknown as PropsRequeteUtilisateur;
     },
     enabled: !!id,
   });
@@ -54,7 +54,7 @@ export function useSectionPseudo(id: string) {
 
   const mutationVerifierMotDePasse = useMutation({
     mutationFn: async (motDePasse: string) => {
-      const resultat = await verifierMotDePasse(motDePasse);
+      const resultat = await verifierMotDePasse({ data: motDePasse });
       if (resultat.error) throw new Error(resultat.error);
       return resultat;
     },
@@ -76,7 +76,7 @@ export function useSectionPseudo(id: string) {
       pseudo: string;
       codeverification: string;
     }) => {
-      const resultat = await changerPseudo(donnees);
+      const resultat = await changerPseudo({ data: donnees });
       if (resultat.error) throw new Error(resultat.error);
       return resultat;
     },
@@ -86,8 +86,7 @@ export function useSectionPseudo(id: string) {
         queryKey: ["profil", id], // Invalide le profil utilisateur
       });
       annulerModification();
-      router.refresh();
-      router.push("/");
+      navigate({ to: "/" });
     },
     onError: (erreur: Error) => {
       if (erreur.message.includes("Code")) {

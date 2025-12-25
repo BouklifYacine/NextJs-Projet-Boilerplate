@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import {
   AudioWaveform,
@@ -26,7 +24,6 @@ import { NavUser } from "./nav-user";
 
 // This is sample data.
 const data = {
-
   teams: [
     {
       name: "Acme Inc",
@@ -160,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser  />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

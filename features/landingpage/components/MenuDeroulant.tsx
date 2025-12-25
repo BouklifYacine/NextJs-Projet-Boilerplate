@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ChartPie,
   CreditCard,
@@ -8,7 +6,6 @@ import {
   Menu,
   Settings,
   Star,
-  Table,
   Table2,
   User,
 } from "lucide-react";
@@ -22,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import { Loader } from "@/components/ui/loader";
 import { DeconnexionClient } from "@/lib/FonctionDeconnexionClient";
 
@@ -57,17 +54,11 @@ export default function MenuDeroulant({
           ) : (
             <Avatar className="h-6 w-6">
               <AvatarImage
-                src={
-                  isLogged
-                    ? imageUrl
-                    : "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
-                }
+                src={isLogged ? imageUrl : "/Logo_Manchester_City_2016.svg"}
                 alt={isLogged ? userName || "User avatar" : "Logo"}
               />
               <AvatarFallback>
-                {isLogged
-                  ? userName?.[0]?.toUpperCase() || ""
-                  : "LFC"}
+                {isLogged ? userName?.[0]?.toUpperCase() || "" : "LFC"}
               </AvatarFallback>
             </Avatar>
           )}
@@ -77,7 +68,7 @@ export default function MenuDeroulant({
 
         {isLogged && abonnement && (
           <Link
-            href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!}
+            to={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL!}
             className="cursor-pointer"
           >
             <DropdownMenuItem>
@@ -87,12 +78,13 @@ export default function MenuDeroulant({
           </Link>
         )}
         {isLogged && admin && (
-          <Link href="/dashboard" className="cursor-pointer">
-            <DropdownMenuItem>
-              <Table className="mr-2 h-4 w-4 " />
-              <span className="">Dashboard</span>
-            </DropdownMenuItem>
-          </Link>
+          // <Link to="/dashboard" className="cursor-pointer">
+          //   <DropdownMenuItem>
+          //     <Table className="mr-2 h-4 w-4 " />
+          //     <span className="">Dashboard</span>
+          //   </DropdownMenuItem>
+          // </Link>
+          <p>Dashboard</p>
         )}
 
         <DropdownMenuSeparator />
@@ -117,12 +109,9 @@ export default function MenuDeroulant({
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
-              <Link
-                href={`/parametres`}
-                className="cursor-pointer"
-              >
+              {/* <Link to="/parametres" className="cursor-pointer">
                 Paramètres
-              </Link>
+              </Link> */}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={async () => DeconnexionClient()}>
@@ -131,7 +120,7 @@ export default function MenuDeroulant({
             </DropdownMenuItem>
           </DropdownMenuGroup>
         ) : (
-          <Link href="connexion">
+          <Link to="/connexion">
             <DropdownMenuItem>
               <DoorOpen className="mr-2 h-4 w-4" />
               <span>Connexion</span>

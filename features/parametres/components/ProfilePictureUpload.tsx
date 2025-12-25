@@ -1,5 +1,3 @@
-'use client';
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImagePlus, Trash2, Upload } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -131,7 +129,9 @@ export function ProfilePictureUpload({
         >
           <ImagePlus className="w-6 h-6 text-white mb-1" />
           <span className="text-white text-xs font-medium text-center">
-            Glissez-déposez<br />ou cliquez pour changer
+            Glissez-déposez
+            <br />
+            ou cliquez pour changer
           </span>
         </div>
 
@@ -188,7 +188,6 @@ export function ProfilePictureUpload({
           )}
         </div>
       </div>
-     
     </div>
   );
 }
