@@ -16,7 +16,6 @@ import { useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { inscriptionAction } from "@/features/inscription/actions/InscriptionAction";
 import { BoutonDisabled } from "@/components/Buttons/BoutonDisabled";
-
 import SchemaInscription from "@/features/inscription/schemas/SchemaInscription";
 import { InputPassword } from "../../parametres/components/InputPassword";
 import { Lock } from "lucide-react";

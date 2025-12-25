@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
+import { Route as TestcomponentsDatatableRouteImport } from './routes/testcomponents/datatable'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ConnexionMotdepasseoublieCodeIndexRouteImport } from './routes/connexion/motdepasseoublie/code/index'
@@ -37,6 +38,11 @@ const ConnexionIndexRoute = ConnexionIndexRouteImport.update({
   path: '/connexion/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestcomponentsDatatableRoute = TestcomponentsDatatableRouteImport.update({
+  id: '/testcomponents/datatable',
+  path: '/testcomponents/datatable',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConnexionMotdepasseoublieIndexRoute =
   ConnexionMotdepasseoublieIndexRouteImport.update({
     id: '/connexion/motdepasseoublie/',
@@ -57,6 +63,7 @@ const ConnexionMotdepasseoublieCodeIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
   '/signin': typeof SigninIndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
   '/signin': typeof SigninIndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
   '/signin/': typeof SigninIndexRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/testcomponents/datatable'
     | '/connexion'
     | '/inscription'
     | '/signin'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/testcomponents/datatable'
     | '/connexion'
     | '/inscription'
     | '/signin'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/testcomponents/datatable'
     | '/connexion/'
     | '/inscription/'
     | '/signin/'
@@ -115,6 +127,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TestcomponentsDatatableRoute: typeof TestcomponentsDatatableRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
   SigninIndexRoute: typeof SigninIndexRoute
@@ -153,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConnexionIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/testcomponents/datatable': {
+      id: '/testcomponents/datatable'
+      path: '/testcomponents/datatable'
+      fullPath: '/testcomponents/datatable'
+      preLoaderRoute: typeof TestcomponentsDatatableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/connexion/motdepasseoublie/': {
       id: '/connexion/motdepasseoublie/'
       path: '/connexion/motdepasseoublie'
@@ -179,6 +199,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TestcomponentsDatatableRoute: TestcomponentsDatatableRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,
   SigninIndexRoute: SigninIndexRoute,

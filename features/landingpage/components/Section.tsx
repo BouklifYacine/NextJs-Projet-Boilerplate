@@ -3,7 +3,7 @@ import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { IoStarSharp } from "react-icons/io5";
 import { HandWrittenTitle } from "../../../components/ui/hand-writing-text";
 import { GlowEffectButton } from "../../../components/Buttons/BoutonGlowCTA";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 
 const avatars = [
   {
@@ -70,7 +70,7 @@ const Section = () => {
           </p>
 
           <div className="flex justify-center items-center pb-2 pt-3">
-            <Link href={"/connexion"}>
+            <Link to="/connexion">
               <GlowEffectButton texte="Rejoindre"></GlowEffectButton>
             </Link>
           </div>

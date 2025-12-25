@@ -10,17 +10,24 @@ import { UsersTable } from "./Tableau";
 import { Role } from "../interfaces/Interface-Types";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@tanstack/react-router";
 
-export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs, statistiques, MRR, RevenusParUtilisateurs, page, setPage , totalPages}) => {
-  
+export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
+  utilisateurs,
+  statistiques,
+  MRR,
+  RevenusParUtilisateurs,
+  page,
+  setPage,
+  totalPages,
+}) => {
   const [utilisateursSelectionnes, setUtilisateursSelectionnes] = useState<
     string[]
   >([]);
   const [recherche, setRecherche] = useState("");
   const [filtreabonnement, setFiltreAbonnement] = useState(false);
-  const [filtreabonnementmensuel, setFiltreAbonnementMensuel] = useState(false)
-  const [filtreabommentannuel, setFiltreAbonnementAnnuel] = useState(false)
+  const [filtreabonnementmensuel, setFiltreAbonnementMensuel] = useState(false);
+  const [filtreabommentannuel, setFiltreAbonnementAnnuel] = useState(false);
   const [filtreAdmin, setFiltreAdmin] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState<Record<string, boolean>>({});
 
@@ -40,7 +47,7 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
       {
         onSuccess: () => {
           setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
-          router.refresh();
+          router.invalidate();
         },
         onError: () => {
           setLoadingUsers((prev) => ({ ...prev, [userId]: false }));
@@ -55,15 +62,34 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
         const correspondancePseudo = utilisateur?.name
           ?.toLowerCase()
           .includes(recherche.toLowerCase());
-        const correspondancePlan = !filtreabonnement || utilisateur.plan === "pro";
-        const correspondanceplanmensuel = !filtreabonnementmensuel || utilisateur.plan === "pro" && utilisateur.abonnement?.periode === "mois"
-        const correspondanceplanannuel = !filtreabommentannuel || utilisateur.plan === "pro" && utilisateur.abonnement?.periode === "année"
-        const conrrespondanceRole =  !filtreAdmin || utilisateur.role === "Admin";
+        const correspondancePlan =
+          !filtreabonnement || utilisateur.plan === "pro";
+        const correspondanceplanmensuel =
+          !filtreabonnementmensuel ||
+          (utilisateur.plan === "pro" &&
+            utilisateur.abonnement?.periode === "mois");
+        const correspondanceplanannuel =
+          !filtreabommentannuel ||
+          (utilisateur.plan === "pro" &&
+            utilisateur.abonnement?.periode === "année");
+        const conrrespondanceRole =
+          !filtreAdmin || utilisateur.role === "Admin";
         return (
-          correspondancePseudo && correspondancePlan && conrrespondanceRole && correspondanceplanmensuel && correspondanceplanannuel
+          correspondancePseudo &&
+          correspondancePlan &&
+          conrrespondanceRole &&
+          correspondanceplanmensuel &&
+          correspondanceplanannuel
         );
       }),
-    [utilisateurs, recherche, filtreabonnement, filtreAdmin, filtreabommentannuel , filtreabonnementmensuel ]
+    [
+      utilisateurs,
+      recherche,
+      filtreabonnement,
+      filtreAdmin,
+      filtreabommentannuel,
+      filtreabonnementmensuel,
+    ]
   );
 
   const gererSelectionTotale = (coche: boolean) => {
@@ -130,36 +156,38 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({ utilisateurs
         utilisateurs={utilisateurs}
       />
 
-<div className="flex justify-center gap-2 my-4 ">
-<Button 
-    variant="outline"
-    onClick={() => setPage((pageActuelle) => Math.max(pageActuelle - 1, 0))}
-    disabled={page === 0}
-    className={`${
-      page === 0 
-        ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed" 
-        : "bg-white text-gray-900 hover:bg-gray-100"
-    }`}
->
-    <ChevronLeft />
-</Button>
+      <div className="flex justify-center gap-2 my-4 ">
+        <Button
+          variant="outline"
+          onClick={() =>
+            setPage((pageActuelle) => Math.max(pageActuelle - 1, 0))
+          }
+          disabled={page === 0}
+          className={`${
+            page === 0
+              ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+              : "bg-white text-gray-900 hover:bg-gray-100"
+          }`}
+        >
+          <ChevronLeft />
+        </Button>
 
-<span className="flex items-center px-4">
-    Page {page + 1} sur {totalPages}
-</span>
+        <span className="flex items-center px-4">
+          Page {page + 1} sur {totalPages}
+        </span>
 
-<Button
-    variant="outline"
-    onClick={() => setPage((pageActuelle) => pageActuelle + 1)}
-    disabled={page >= totalPages - 1}
-    className={`${
-      page >= totalPages - 1
-        ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
-        : "bg-white text-gray-900 hover:bg-gray-100"
-    }`}
->
-    <ChevronRight />
-</Button>
+        <Button
+          variant="outline"
+          onClick={() => setPage((pageActuelle) => pageActuelle + 1)}
+          disabled={page >= totalPages - 1}
+          className={`${
+            page >= totalPages - 1
+              ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+              : "bg-white text-gray-900 hover:bg-gray-100"
+          }`}
+        >
+          <ChevronRight />
+        </Button>
       </div>
     </div>
   );

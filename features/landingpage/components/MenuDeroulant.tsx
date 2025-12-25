@@ -6,7 +6,6 @@ import {
   Menu,
   Settings,
   Star,
-  Table,
   Table2,
   User,
 } from "lucide-react";
