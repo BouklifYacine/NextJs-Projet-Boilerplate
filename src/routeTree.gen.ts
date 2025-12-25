@@ -10,20 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TestSessionIndexRouteImport } from './routes/test-session/index'
+import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ConnexionMotdepasseoublieCodeIndexRouteImport } from './routes/connexion/motdepasseoublie/code/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TestSessionIndexRoute = TestSessionIndexRouteImport.update({
-  id: '/test-session/',
-  path: '/test-session/',
+const SigninIndexRoute = SigninIndexRouteImport.update({
+  id: '/signin/',
+  path: '/signin/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
@@ -47,31 +48,40 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConnexionMotdepasseoublieCodeIndexRoute =
+  ConnexionMotdepasseoublieCodeIndexRouteImport.update({
+    id: '/connexion/motdepasseoublie/code/',
+    path: '/connexion/motdepasseoublie/code/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
-  '/test-session': typeof TestSessionIndexRoute
+  '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
+  '/connexion/motdepasseoublie/code': typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
-  '/test-session': typeof TestSessionIndexRoute
+  '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
+  '/connexion/motdepasseoublie/code': typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
-  '/test-session/': typeof TestSessionIndexRoute
+  '/signin/': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie/': typeof ConnexionMotdepasseoublieIndexRoute
+  '/connexion/motdepasseoublie/code/': typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -79,34 +89,38 @@ export interface FileRouteTypes {
     | '/'
     | '/connexion'
     | '/inscription'
-    | '/test-session'
+    | '/signin'
     | '/api/auth/$'
     | '/connexion/motdepasseoublie'
+    | '/connexion/motdepasseoublie/code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/connexion'
     | '/inscription'
-    | '/test-session'
+    | '/signin'
     | '/api/auth/$'
     | '/connexion/motdepasseoublie'
+    | '/connexion/motdepasseoublie/code'
   id:
     | '__root__'
     | '/'
     | '/connexion/'
     | '/inscription/'
-    | '/test-session/'
+    | '/signin/'
     | '/api/auth/$'
     | '/connexion/motdepasseoublie/'
+    | '/connexion/motdepasseoublie/code/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
-  TestSessionIndexRoute: typeof TestSessionIndexRoute
+  SigninIndexRoute: typeof SigninIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ConnexionMotdepasseoublieIndexRoute: typeof ConnexionMotdepasseoublieIndexRoute
+  ConnexionMotdepasseoublieCodeIndexRoute: typeof ConnexionMotdepasseoublieCodeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -118,11 +132,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/test-session/': {
-      id: '/test-session/'
-      path: '/test-session'
-      fullPath: '/test-session'
-      preLoaderRoute: typeof TestSessionIndexRouteImport
+    '/signin/': {
+      id: '/signin/'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscription/': {
@@ -153,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/connexion/motdepasseoublie/code/': {
+      id: '/connexion/motdepasseoublie/code/'
+      path: '/connexion/motdepasseoublie/code'
+      fullPath: '/connexion/motdepasseoublie/code'
+      preLoaderRoute: typeof ConnexionMotdepasseoublieCodeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -160,9 +181,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,
-  TestSessionIndexRoute: TestSessionIndexRoute,
+  SigninIndexRoute: SigninIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ConnexionMotdepasseoublieIndexRoute: ConnexionMotdepasseoublieIndexRoute,
+  ConnexionMotdepasseoublieCodeIndexRoute:
+    ConnexionMotdepasseoublieCodeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

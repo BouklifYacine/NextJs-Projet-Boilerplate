@@ -1,0 +1,37 @@
+import { ConnexionFormulaire } from "@/features/connexion/components/ConnexionFormulaire";
+import { AlreadyConnectedMiddleware } from "@/src/middleware/AlreadyConnected";
+import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { GalleryVerticalEnd } from "lucide-react";
+
+const checkNotConnected = createServerFn({ method: "GET" })
+  .middleware([AlreadyConnectedMiddleware])
+  .handler(async () => {
+    return null;
+  });
+
+export const Route = createFileRoute("/signin/")({
+  component: RouteComponent,
+  beforeLoad: async () => {
+    await checkNotConnected();
+  },
+});
+
+function RouteComponent() {
+  return (
+    <main className="min-h-svh bg-muted flex flex-col items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm space-y-8">
+        <header className="flex flex-col items-center gap-4 text-center">
+          <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl shadow-sm">
+            <GalleryVerticalEnd className="size-6" />
+          </div>
+          <h1 className="text-huge font-bold tracking-tight">Boilerplate</h1>
+        </header>
+
+        <section className="bg-background rounded-2xl shadow-xs">
+          <ConnexionFormulaire />
+        </section>
+      </div>
+    </main>
+  );
+}

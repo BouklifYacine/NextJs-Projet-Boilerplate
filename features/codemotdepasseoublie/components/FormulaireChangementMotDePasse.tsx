@@ -1,10 +1,8 @@
-"use client";
-
 import React, { useState } from "react";
 import { Lock, Mail, MessageSquareLock } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@tanstack/react-router";
 import { ResetPasswordSchema } from "@/features/codemotdepasseoublie/schemas/SchemaMotDepasse";
 import { InputPassword } from "@/features/parametres/components/InputPassword";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
@@ -14,7 +12,7 @@ import { PasswordResetService } from "../services/PasswordResetService";
 type Schema = z.infer<typeof ResetPasswordSchema>;
 
 const FormulaireChangementMotDePasse = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,7 +29,7 @@ const FormulaireChangementMotDePasse = () => {
         form.reset();
         setCode(response.message);
         setErrorMessage("");
-        router.push("/connexion");
+        navigate({ to: "/connexion" });
       } catch (error) {
         setErrorMessage("Une erreur est survenue");
         console.error(error);
@@ -174,8 +172,9 @@ const FormulaireChangementMotDePasse = () => {
             {(isSubmitting) => (
               <button
                 type="submit"
-                className={`w-full bg-blue-600 text-white cursor-pointer py-2 rounded-md hover:bg-blue-700 transition-colors ${isSubmitting ? "opacity-50" : ""
-                  }`}
+                className={`w-full bg-blue-600 text-white cursor-pointer py-2 rounded-md hover:bg-blue-700 transition-colors ${
+                  isSubmitting ? "opacity-50" : ""
+                }`}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "En cours" : "Valider "}
