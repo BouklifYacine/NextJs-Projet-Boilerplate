@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TestSessionIndexRouteImport } from './routes/test-session/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
@@ -18,6 +19,11 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestSessionIndexRoute = TestSessionIndexRouteImport.update({
+  id: '/test-session/',
+  path: '/test-session/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
+  '/test-session': typeof TestSessionIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
 }
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionIndexRoute
   '/inscription': typeof InscriptionIndexRoute
+  '/test-session': typeof TestSessionIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie': typeof ConnexionMotdepasseoublieIndexRoute
 }
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
+  '/test-session/': typeof TestSessionIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/connexion/motdepasseoublie/': typeof ConnexionMotdepasseoublieIndexRoute
 }
@@ -70,6 +79,7 @@ export interface FileRouteTypes {
     | '/'
     | '/connexion'
     | '/inscription'
+    | '/test-session'
     | '/api/auth/$'
     | '/connexion/motdepasseoublie'
   fileRoutesByTo: FileRoutesByTo
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/connexion'
     | '/inscription'
+    | '/test-session'
     | '/api/auth/$'
     | '/connexion/motdepasseoublie'
   id:
@@ -84,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/connexion/'
     | '/inscription/'
+    | '/test-session/'
     | '/api/auth/$'
     | '/connexion/motdepasseoublie/'
   fileRoutesById: FileRoutesById
@@ -92,6 +104,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
+  TestSessionIndexRoute: typeof TestSessionIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ConnexionMotdepasseoublieIndexRoute: typeof ConnexionMotdepasseoublieIndexRoute
 }
@@ -103,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test-session/': {
+      id: '/test-session/'
+      path: '/test-session'
+      fullPath: '/test-session'
+      preLoaderRoute: typeof TestSessionIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscription/': {
@@ -140,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,
+  TestSessionIndexRoute: TestSessionIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ConnexionMotdepasseoublieIndexRoute: ConnexionMotdepasseoublieIndexRoute,
 }

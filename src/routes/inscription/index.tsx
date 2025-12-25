@@ -1,9 +1,20 @@
 import InscriptionFormulaire from "@/features/inscription/components/InscriptionFormulaire";
+import { AlreadyConnectedMiddleware } from "@/src/middleware/AlreadyConnected";
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 import { GalleryVerticalEnd } from "lucide-react";
+
+const checkNotConnected = createServerFn({ method: "GET" })
+  .middleware([AlreadyConnectedMiddleware])
+  .handler(async () => {
+    return null;
+  });
 
 export const Route = createFileRoute("/inscription/")({
   component: RouteComponent,
+  beforeLoad: async () => {
+    await checkNotConnected();
+  },
 });
 
 function RouteComponent() {
