@@ -1,161 +1,176 @@
-# 🚀 NextJS Projet Boilerplate
+# 🚀 TanStack Start Project Boilerplate
 
-Une boilerplate moderne et complète pour construire des applications web full-stack avec Next.js 15, conçue pour une expérience de développement optimale et permettre de se concentrer sur les fonctionnalités métier.
+A modern and complete boilerplate for building full-stack web applications with TanStack Start, designed for an optimal developer experience and focusing on business features.
 
-## ✨ Fonctionnalités Principales
+## ✨ Main Features
 
-### 🔐 Authentification & Autorisation & Profil
-- **Authentification complète** avec email/mot de passe (Better Auth)
-- **Connexion via providers** (Google, GitHub) avec OAuth
-- **Gestion complète du profil utilisateur** :
-  - Modification de l'email avec notification
-  - Changement de mot de passe sécurisé + notification par email
-  - Mise à jour du pseudo + notification par email
-  - Upload et gestion de photo de profil (S3/Tigris)
-  - Suppression de compte + notification par email
-- **Système de réinitialisation** de mot de passe avec code unique par email (expiration 1h)
-- **Routes protégées** et gestion des sessions sécurisées
-- **Gestion des rôles** (Admin/Utilisateur) avec middleware
-- **Protection CSRF** et validation des données
-- **Rate limiting** intégré
+### 🔐 Authentication & Authorization & Profile
 
-### 📧 Système d'Emails Transactionnels
-- **Templates d'emails** personnalisables avec React Email
-- **Emails automatiques** :
-  - Bienvenue à l'inscription
-  - Confirmation de changement de mot de passe
-  - Notification de changement d'email
-  - Notification de changement de pseudo
-  - Confirmation de suppression de compte
-  - Codes de vérification pour actions sensibles
-- **Support Gmail SMTP** avec mots de passe d'application
+- **Complete Authentication** with email/password (Better Auth)
+- **Provider Connection** (Google, GitHub) with OAuth
+- **Full User Profile Management**:
+  - Email modification with notification
+  - Secure password change + email notification
+  - Username update + email notification
+  - Profile picture upload and management (S3/Tigris)
+  - Account deletion + email notification
+- **Password Reset System** with unique email code (1h expiration)
+- **Protected Routes** and secure session management
+- **Role Management** (Admin/User) with middleware
+- **CSRF Protection** and data validation
+- **Integrated Rate Limiting**
 
-### 💳 Système de Paiement et Abonnements
-- **Intégration complète Stripe** :
-  - Abonnements mensuels et annuels
-  - Webhooks pour synchronisation des paiements
-  - Portail client pour gestion des abonnements
-  - Historique des transactions
-- **Gestion des plans** (Free/Pro) avec restrictions
-- **Mise à niveau/rétrogradation** des abonnements
-- **Calculs automatiques** des revenus et MRR
+### 📧 Transactional Email System
 
-### 📊 Dashboard Admin Complet
-- **Sidebar responsive** avec navigation intuitive
-- **Statistiques en temps réel** :
-  - Nombre total d'utilisateurs
-  - Nombre d'abonnés Pro
-  - Revenus totaux et MRR (Monthly Recurring Revenue)
-  - Revenus moyens par utilisateur
-  - Répartition abonnements mensuels/annuels
-- **Gestion des utilisateurs** :
-  - Tableau avec pagination dynamique
-  - Filtres avancés (Admin, Abonnement, Type d'abonnement)
-  - Recherche par pseudo en temps réel
-  - Modification des rôles utilisateurs
-  - Suppression en masse d'utilisateurs
-- **Interface moderne** avec états de chargement et animations
+- **Customizable Email Templates** with React Email
+- **Automatic Emails**:
+  - Welcome on signup
+  - Password change confirmation
+  - Email change notification
+  - Username change notification
+  - Account deletion confirmation
+  - Verification codes for sensitive actions
+- **Gmail SMTP Support** with app passwords
 
-### 📁 Système de Stockage et Upload
-- **Intégration S3/Tigris** pour le stockage de fichiers
-- **Upload de photos de profil** avec :
-  - Drag & drop intuitif
-  - Prévisualisation en temps réel
-  - Compression et optimisation automatique
-  - Suppression sécurisée des anciens fichiers
-- **URLs pré-signées** pour uploads sécurisés
-- **Gestion des erreurs** et validation des types de fichiers
+### 💳 Payment & Subscription System
 
-### 🎨 Interface Utilisateur Moderne
-- **Design responsive** avec Tailwind CSS
-- **Composants réutilisables** avec shadcn/ui :
-  - Formulaires avec validation (React Hook Form + Zod)
-  - Notifications Toast élégantes
-  - Modales et dialogues
-  - Badges et indicateurs de statut
-  - Avatars avec états en ligne/hors ligne
-- **Thème sombre/clair** avec next-themes
-- **Animations fluides** avec Framer Motion
-- **États de chargement** et skeletons
-- **Gestion d'erreurs** utilisateur-friendly
+- **Full Stripe Integration**:
+  - Monthly and annual subscriptions
+  - Webhooks for payment synchronization
+  - Customer portal for subscription management
+  - Transaction history
+- **Plan Management** (Free/Pro) with restrictions
+- **Subscription Upgrades/Downgrades**
+- **Automatic Revenue Calculations** and MRR
 
-### 🛡️ Sécurité et Performance
-- **Protection XSS** intégrée
-- **Rate limiting** sur les API
-- **Validation serveur et client** avec Zod
-- **En-têtes de sécurité** optimisés
-- **Sessions sécurisées** avec Better Auth
-- **Middleware de protection** des routes
-- **Hachage sécurisé** des mots de passe (Argon2)
-- **Gestion des erreurs** centralisée
+### 📊 Complete Admin Dashboard
 
-## 🛠️ Stack Technique
+- **Responsive Sidebar** with intuitive navigation
+- **Real-time Statistics**:
+  - Total users
+  - Pro subscribers
+  - Total Revenue and MRR (Monthly Recurring Revenue)
+  - Average Revenue Per User (ARPU)
+  - Monthly/Annual subscription distribution
+- **User Management**:
+  - Table with dynamic pagination
+  - Advanced filters (Admin, Subscription, Subscription Type)
+  - Real-time username search
+  - User role modification
+  - Bulk user deletion
+- **Modern Interface** with loading states and animations
+
+### 📁 Storage & Upload System
+
+- **S3/Tigris Integration** for file storage
+- **Profile Picture Upload** with:
+  - Intuitive drag & drop
+  - Real-time preview
+  - Automatic compression and optimization
+  - Secure deletion of old files
+- **Pre-signed URLs** for secure uploads
+- **Error Handling** and file type validation
+
+### 🎨 Modern User Interface
+
+- **Responsive Design** with Tailwind CSS
+- **Reusable Components** with shadcn/ui:
+  - Forms with validation (React Hook Form + Zod)
+  - Elegant Toast notifications
+  - Modals and dialogs
+  - Badges and status indicators
+  - Avatars with online/offline states
+- **Dark/Light Theme** with generic theme provider
+- **Fluid Animations** with Framer Motion
+- **Loading States** and skeletons
+- **User-friendly Error Handling**
+
+### 🛡️ Security & Performance
+
+- **Integrated XSS Protection**
+- **API Rate Limiting**
+- **Server and Client Validation** with Zod (TanStack Start Server Functions)
+- **Optimized Security Headers**
+- **Secure Sessions** with Better Auth
+- **Route Protection Middleware**
+- **Secure Password Hashing** (Argon2)
+- **Centralized Error Handling**
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- **Next.js 15+** avec App Router et Turbopack
-- **TypeScript** pour la sécurité des types
-- **React 19** avec les dernières fonctionnalités
-- **Tailwind CSS 4** pour le styling
-- **shadcn/ui** pour les composants UI
-- **React Hook Form** + **Zod** pour la validation
-- **TanStack Query** pour la gestion d'état serveur
-- **Framer Motion** pour les animations
-- **next-themes** pour le thème sombre/clair
-- **Lucide React** pour les icônes
-- **React Dropzone** pour les uploads
-- **React Hot Toast** pour les notifications
 
-### Backend & Base de Données
-- **Next.js API Routes** pour l'API REST
-- **Prisma ORM** avec adaptateur Neon
-- **PostgreSQL** comme base de données principale
-- **Better Auth** pour l'authentification moderne
-- **Argon2** pour le hachage des mots de passe
-- **Rate limiting** intégré
+- **TanStack Start** with TanStack Router
+- **TypeScript** for type safety
+- **React 19** with latest features
+- **Tailwind CSS 4** for styling
+- **shadcn/ui** for UI components
+- **React Hook Form** + **Zod** for validation
+- **TanStack Query** for server state management
+- **Framer Motion** for animations
+- **Lucide React** for icons
+- **React Dropzone** for uploads
+- **React Hot Toast** for notifications
 
-### Services Externes
-- **Stripe** pour les paiements et abonnements
-- **AWS S3/Tigris** pour le stockage de fichiers
-- **Gmail SMTP** pour l'envoi d'emails
-- **React Email** pour les templates d'emails
-- **OAuth** (Google, GitHub) pour l'authentification sociale
+### Backend & Database
 
-### Outils de Développement
-- **ESLint** pour la qualité du code
-- **Vitest** pour les tests
-- **Docker** pour la containerisation
-- **Prisma Studio** pour la gestion de la base de données
+- **TanStack Start Server Functions** for backend logic
+- **Prisma ORM** with Neon adapter
+- **PostgreSQL** as main database
+- **Better Auth** for modern authentication
+- **Argon2** for password hashing
+- **Integrated Rate Limiting**
+
+### External Services
+
+- **Stripe** for payments and subscriptions
+- **AWS S3/Tigris** for file storage
+- **Gmail SMTP** for sending emails
+- **React Email** for email templates
+- **OAuth** (Google, GitHub) for social auth
+
+### Developer Tools
+
+- **ESLint** for code quality
+- **Vitest** for testing
+- **Docker** for containerization
+- **Prisma Studio** for database management
 
 ## 📦 Installation
 
-### Prérequis
-- Node.js 18+
+### Prerequisites
+
+- Node.js 18+ (or Bun)
 - PostgreSQL
-- Compte Stripe
-- Compte Gmail 
+- Stripe Account
+- Gmail Account
 
-### Configuration Initiale
+### Initial Configuration
 
-1. **Cloner et installer**
+1. **Clone and install**
+
 ```bash
-git clone [votre-repo]
-cd [nom-projet]
-npm install
+git clone [your-repo]
+cd [project-name]
+bun install # Recommended
+# or npm install
 ```
 
-2. **Configuration des variables d'environnement**
+2. **Environment Variable Configuration**
+
 ```bash
 cp .env.example .env
 ```
 
-3. **Variables d'environnement requises**
+3. **Required Environment Variables**
+
 ```env
-# Base de données
+# Database
 DATABASE_URL="postgresql://user:password@localhost:5432/db_name"
 
 # Auth
-AUTH_SECRET="votre-secret"
-NEXTAUTH_URL="http://localhost:3000"
+AUTH_SECRET="your-secret"
+BETTER_AUTH_URL="http://localhost:3000" # Updated for Better Auth
 
 # Providers
 GOOGLE_CLIENT_ID=""
@@ -164,9 +179,9 @@ GITHUB_CLIENT_ID=""
 GITHUB_CLIENT_SECRET=""
 
 # Email
-SMTP_USER="votre-email@gmail.com"
-SMTP_PASSWORD="mot-de-passe-app"
-# OU
+SMTP_USER="your-email@gmail.com"
+SMTP_PASSWORD="app-password"
+# OR
 RESEND_API_KEY=""
 
 # Stripe
@@ -175,51 +190,54 @@ STRIPE_WEBHOOK_SECRET=""
 STRIPE_PRICE_ID=""
 
 # App
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+VITE_APP_URL="http://localhost:3000"
 ```
 
-### Configuration de la Base de Données
+### Database Configuration
 
-1. **Initialisation de Prisma**
+1. **Initialize Prisma**
+
 ```bash
-npx prisma generate
-npx prisma db push
+bunx prisma generate
+bunx prisma db push
 ```
 
-### Configuration des Services
+### Service Configuration
 
 #### 1. Stripe
-- Créer un compte Stripe
-- Configurer un produit d'abonnement
-- Noter le PRICE_ID
-- Configurer le webhook (URL: `/api/webhook`)
+
+- Create a Stripe account
+- Configure a subscription product
+- Note the PRICE_ID
+- Configure the webhook (URL: `/api/webhooks/stripe`)
 
 #### 2. Email
-**Option Gmail:**
-- Activer 2FA
-- Générer un mot de passe d'application
 
-#### 3. Stockage Tigris (S3)
-**Configuration requise pour l'upload de fichiers :**
+**Gmail Option:**
 
-1. **Créer un compte Tigris**
-   - Aller sur [fly.io/docs/reference/tigris/](https://fly.io/docs/reference/tigris/)
-   - Créer un compte et un bucket
+- Enable 2FA
+- Generate an App Password
 
-2. **Récupérer les clés API**
-   - Dans le dashboard Tigris, aller dans "Access Keys"
-   - Créer une nouvelle clé d'accès
-   - Noter l'`Access Key ID` et la `Secret Access Key`
+#### 3. Tigris Storage (S3)
 
-3. **⚠️ Configuration CORS OBLIGATOIRE**
+**Required configuration for file upload:**
+
+1. **Create Tigris Account**
+   - Go to [fly.io/docs/reference/tigris/](https://fly.io/docs/reference/tigris/)
+   - Create an account and bucket
+
+2. **Get API Keys**
+   - In Tigris dashboard, go to "Access Keys"
+   - Create new access key
+   - Note `Access Key ID` and `Secret Access Key`
+
+3. **⚠️ MANDATORY CORS Configuration**
+
    ```json
    {
      "CORSRules": [
        {
-         "AllowedOrigins": [
-           "http://localhost:3000",
-           "https://votre-domaine.com"
-         ],
+         "AllowedOrigins": ["http://localhost:3000", "https://your-domain.com"],
          "AllowedMethods": ["GET", "PUT", "POST", "DELETE"],
          "AllowedHeaders": ["*"],
          "MaxAgeSeconds": 3000
@@ -227,202 +245,73 @@ npx prisma db push
      ]
    }
    ```
-   **Sans cette configuration CORS, les uploads ne fonctionneront pas !**
 
-4. **Variables d'environnement Tigris**
+   **Without this CORS config, uploads will not work!**
+
+4. **Tigris Environment Variables**
    ```env
-   AWS_ACCESS_KEY_ID="votre-access-key-id"
-   AWS_SECRET_ACCESS_KEY="votre-secret-access-key"
+   AWS_ACCESS_KEY_ID="your-access-key-id"
+   AWS_SECRET_ACCESS_KEY="your-secret-access-key"
    AWS_REGION="auto"
    AWS_ENDPOINT_URL_S3="https://fly.storage.tigris.dev"
-   S3_BUCKET_NAME="votre-nom-de-bucket"
+   S3_BUCKET_NAME="your-bucket-name"
    ```
-- le rentrer ensuite dans le .env : SMTP_PASSWORD="mot-de-passe-app"
 
+## Start
 
+1. **Development**
 
-## Démarrage
-
-1. **Développement**
 ```bash
-npm run dev
+bun dev
 ```
 
-2. **Webhook Stripe (développement)**
+2. **Stripe Webhook (Development)**
+
 ```bash
-stripe listen --forward-to localhost:3000/api/webhook
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
 
-##  Personnalisation
+## Customization
 
-### Modification des Templates Email
-Les templates sont dans `app/(emails)/`
+### Modifying Email Templates
+
+Templates are in `emails/` (check project structure).
+
 ```tsx
-// Exemple de modification
-<Text>Personnalisez votre message ici</Text>
+// Example modification
+<Text>Customize your message here</Text>
 ```
-Les changer ensuite la ou ces emails sont utilisés checkez les API de bienvenue 
 
-### Ajout de Plans d'Abonnement
-1. Créer le plan dans Stripe
-2. Ajouter le plan dans `prisma/schema.prisma`
-3. Mettre à jour les composants UI
+### Adding Subscription Plans
 
-### Ajout de produits Stripe dans notre application 
-1. Aller sur mode Compte Stripe dans catalogue produits 
-2. Cliquez sur Créer un produit valider quand tout est bon 
-3. Aller dans catalogue de produit et cliquer sur l'id du produit que vous voulez récuperez 
-4. En mode test copier l'id du produit en cliquant sur les 3 petits point en mode dev copier directement l'id du produit afficher 
-5 Aller dans le .env et copier votre produit selon son type d'abonnement ici par mois STRIPE_MONTHLY_PRICE_ID="blabla"
-6. utiliser le .env dans votre code pour ne pas afficher le secret avec le proces.env.STRIPE_MONTHLY_PRICE_ID
+1. Create plan in Stripe
+2. Add plan in `prisma/schema.prisma`
+3. Update UI components
 
+### Adding Stripe Products
 
-🚀Version 1.0 a venir (Début du développement en Mai 2025)
-🛠️ Architecture & Tech
+1. Go to Stripe Dashboard -> Product Catalog
+2. Click Create Product
+3. Copy Product/Price ID
+4. Add to `.env` (e.g., `STRIPE_MONTHLY_PRICE_ID`)
+5. Use `process.env.STRIPE_MONTHLY_PRICE_ID` in code
 
-- Dark Mode
-- (Zustand pour state management)
-- Architecture modulaires
-- CI/CD (Github Actions)
-- Tests complets (Unitaire, E2E, Integration)
+## Documentation
 
-🔒 Migration système d'authentification
-- Passage de AuthJS a BetterAuth 
+For more details, check:
 
-🎨 Personnalisation
-
-- Design System
-- Système marque blanche
-- Couleurs personnalisables
-- Polices configurables
-
-🔒 Sécurité
-
-- 2FA (email)
-- Rate limiting
-- Super Admin unique
-
-👤 ESPACE UTILISATEUR
-Profil & Préférences
-
-- Upload photo de profil
-- Paramètres notifications
-- Préférences emails
-- Export données personnelles
-- Système de feedback/bug
-
-📊 DASHBOARD ADMIN
-🏠 Page d'Accueil
-Stats Aujourd'hui
-
-- Inscriptions du jour
-- Revenus journaliers
-- Utilisateurs actifs
-- Nouveaux abonnements
-
-Vue Hebdomadaire
-
-- Graphique inscriptions
-- Total revenus semaine
-- Comparaison semaine -1
-
-👥 Gestion Utilisateurs
-- Filtres Avancés
-
-- Période (aujourd'hui/7j/30j)
-- Source (Email/Google/GitHub)
-
-Actions
-
-- Export CSV
-- Ban/Unban
-- Gestion rôles
-- Vue détaillée
-
-💰 Section Revenus
-- Stats Mensuelles
-- Total du mois
-- Comparaison M-1
-- Graphique journalier
-- Top 3 meilleurs jours
-
-Abonnements
-
-- Répartition (camembert)
-- Liste derniers abonnés
-
-📝 Section Activité
-- Timeline
-
-- Nouvelles inscriptions
-- Nouveaux abonnements
-- Changes de rôles
-- Actions importantes
-
-🔔 Notifications
-
-- Nouveaux abonnés
-- Feedbacks reçus
-- Utilisateurs bannis
-- Emails Admin
-- Rapport hebdo inscriptions
-- Rapport hebdo revenus
-
-🎨 UI/UX
-
-- Design System
-- Plus de composants réutilisables
-- Animations fluides
-- Tooltips contextuels
-- Skeleton loading
-
-⚡ PERFORMANCE
-
-- Images optimisées
-- Améliorer les requetes Prisma
-- Lazy loading
-
-📚 DOCUMENTATION
-Guides
-
-Installation détaillée
-Guide développeur
-Guide customisation
-Bonnes pratiques
-Doc API complète
-
-
-### Problèmes Courants
-
-1. **Erreur de Base de Données**
-- Vérifier la connexion PostgreSQL
-- Valider DATABASE_URL
-- Exécuter `npx prisma db push`
-
-2. **Problèmes d'Email**
-- Vérifier les credentials SMTP
-- Consulter les logs email
-- Tester avec Resend
-
-3. **Erreurs Stripe**
-- Vérifier les clés API
-- Confirmer le webhook
-- Consulter les logs Stripe
-
-##  Documentation
-
-Pour plus de détails, consultez :
-- [Auth.js](https://authjs.dev/)
+- [TanStack Start](https://tanstack.com/start/latest)
+- [Better Auth](https://better-auth.com/)
 - [Prisma](https://www.prisma.io/docs/)
 - [Stripe](https://stripe.com/docs)
-- [Next.js](https://nextjs.org/docs)
 
-##  Support
+## Support
 
-Pour toute question :
-1. Consulter les issues GitHub
-2. Créer une nouvelle issue
-3. Consulter la documentation des packages
+For any questions:
+
+1. Check GitHub issues
+2. Create a new issue
+3. Check package documentation
 
 ## 📝 License
 

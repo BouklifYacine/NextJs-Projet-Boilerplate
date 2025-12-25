@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   SmilePlus,
@@ -6,43 +6,43 @@ import {
   CheckCheck,
   MoreHorizontal,
   Send,
-} from "lucide-react"
-import Image from "next/image"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
+} from "lucide-react";
+import { Image } from "@unpic/react";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 export interface Message {
-  id: string
-  content: string
+  id: string;
+  content: string;
   sender: {
-    name: string
-    avatar: string
-    isOnline: boolean
-    isCurrentUser?: boolean
-  }
-  timestamp: string
-  status: "sent" | "delivered" | "read"
+    name: string;
+    avatar: string;
+    isOnline: boolean;
+    isCurrentUser?: boolean;
+  };
+  timestamp: string;
+  status: "sent" | "delivered" | "read";
   reactions?: Array<{
-    emoji: string
-    count: number
-    reacted: boolean
-  }>
+    emoji: string;
+    count: number;
+    reacted: boolean;
+  }>;
 }
 
 interface ChatCardProps {
-  chatName?: string
-  membersCount?: number
-  onlineCount?: number
-  initialMessages?: Message[]
+  chatName?: string;
+  membersCount?: number;
+  onlineCount?: number;
+  initialMessages?: Message[];
   currentUser?: {
-    name: string
-    avatar: string
-  }
-  onSendMessage?: (message: string) => void
-  onReaction?: (messageId: string, emoji: string) => void
-  onMoreClick?: () => void
-  className?: string
-  theme?: "light" | "dark"
+    name: string;
+    avatar: string;
+  };
+  onSendMessage?: (message: string) => void;
+  onReaction?: (messageId: string, emoji: string) => void;
+  onMoreClick?: () => void;
+  className?: string;
+  theme?: "light" | "dark";
 }
 
 export function ChatCard({
@@ -61,11 +61,11 @@ export function ChatCard({
   className,
   theme = "dark",
 }: ChatCardProps) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
-  const [inputValue, setInputValue] = useState("")
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [inputValue, setInputValue] = useState("");
 
   const handleSendMessage = () => {
-    if (!inputValue.trim()) return
+    if (!inputValue.trim()) return;
 
     const newMessage: Message = {
       id: Date.now().toString(),
@@ -82,38 +82,38 @@ export function ChatCard({
         hour12: true,
       }),
       status: "sent",
-    }
+    };
 
-    setMessages((prev) => [...prev, newMessage])
-    setInputValue("")
-    onSendMessage?.(inputValue)
+    setMessages((prev) => [...prev, newMessage]);
+    setInputValue("");
+    onSendMessage?.(inputValue);
 
     // Имитация получения статуса сообщения
     setTimeout(() => {
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.id === newMessage.id ? { ...msg, status: "delivered" } : msg,
-        ),
-      )
-    }, 1000)
+          msg.id === newMessage.id ? { ...msg, status: "delivered" } : msg
+        )
+      );
+    }, 1000);
 
     setTimeout(() => {
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.id === newMessage.id ? { ...msg, status: "read" } : msg,
-        ),
-      )
-    }, 2000)
-  }
+          msg.id === newMessage.id ? { ...msg, status: "read" } : msg
+        )
+      );
+    }, 2000);
+  };
 
   const handleReaction = (messageId: string, emoji: string) => {
     setMessages((prev) =>
       prev.map((message) => {
         if (message.id === messageId) {
           const existingReaction = message.reactions?.find(
-            (r) => r.emoji === emoji,
-          )
-          const newReactions = message.reactions || []
+            (r) => r.emoji === emoji
+          );
+          const newReactions = message.reactions || [];
 
           if (existingReaction) {
             return {
@@ -125,23 +125,23 @@ export function ChatCard({
                       count: r.reacted ? r.count - 1 : r.count + 1,
                       reacted: !r.reacted,
                     }
-                  : r,
+                  : r
               ),
-            }
+            };
           } else {
             return {
               ...message,
               reactions: [...newReactions, { emoji, count: 1, reacted: true }],
-            }
+            };
           }
         }
-        return message
-      }),
-    )
-    onReaction?.(messageId, emoji)
-  }
+        return message;
+      })
+    );
+    onReaction?.(messageId, emoji);
+  };
 
-  const isLightTheme = theme === "light"
+  const isLightTheme = theme === "light";
 
   return (
     <div
@@ -150,7 +150,7 @@ export function ChatCard({
         isLightTheme
           ? "bg-white text-zinc-900 border border-zinc-200"
           : "bg-zinc-900 text-zinc-100",
-        className,
+        className
       )}
     >
       <div className="flex flex-col h-[600px]">
@@ -158,7 +158,7 @@ export function ChatCard({
         <div
           className={cn(
             "px-4 py-3 flex items-center justify-between border-b",
-            isLightTheme ? "border-zinc-200" : "border-zinc-800",
+            isLightTheme ? "border-zinc-200" : "border-zinc-800"
           )}
         >
           <div className="flex items-center gap-3">
@@ -169,7 +169,7 @@ export function ChatCard({
               <div
                 className={cn(
                   "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 ring-2",
-                  isLightTheme ? "ring-white" : "ring-zinc-900",
+                  isLightTheme ? "ring-white" : "ring-zinc-900"
                 )}
               />
             </div>
@@ -177,7 +177,7 @@ export function ChatCard({
               <h3
                 className={cn(
                   "font-medium",
-                  isLightTheme ? "text-zinc-900" : "text-zinc-100",
+                  isLightTheme ? "text-zinc-900" : "text-zinc-100"
                 )}
               >
                 {chatName}
@@ -185,7 +185,7 @@ export function ChatCard({
               <p
                 className={cn(
                   "text-sm",
-                  isLightTheme ? "text-zinc-500" : "text-zinc-400",
+                  isLightTheme ? "text-zinc-500" : "text-zinc-400"
                 )}
               >
                 {membersCount} members • {onlineCount} online
@@ -199,7 +199,7 @@ export function ChatCard({
               "p-2 rounded-full",
               isLightTheme
                 ? "hover:bg-zinc-100 text-zinc-500"
-                : "hover:bg-zinc-800 text-zinc-400",
+                : "hover:bg-zinc-800 text-zinc-400"
             )}
           >
             <MoreHorizontal className="w-5 h-5" />
@@ -222,7 +222,7 @@ export function ChatCard({
                   <span
                     className={cn(
                       "font-medium",
-                      isLightTheme ? "text-zinc-900" : "text-zinc-100",
+                      isLightTheme ? "text-zinc-900" : "text-zinc-100"
                     )}
                   >
                     {message.sender.name}
@@ -230,7 +230,7 @@ export function ChatCard({
                   <span
                     className={cn(
                       "text-sm",
-                      isLightTheme ? "text-zinc-500" : "text-zinc-500",
+                      isLightTheme ? "text-zinc-500" : "text-zinc-500"
                     )}
                   >
                     {message.timestamp}
@@ -239,7 +239,7 @@ export function ChatCard({
                 <p
                   className={cn(
                     "break-words",
-                    isLightTheme ? "text-zinc-700" : "text-zinc-300",
+                    isLightTheme ? "text-zinc-700" : "text-zinc-300"
                   )}
                 >
                   {message.content}
@@ -260,7 +260,7 @@ export function ChatCard({
                               : "bg-violet-500/20 text-violet-400"
                             : isLightTheme
                               ? "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700",
+                              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
                         )}
                       >
                         <span>{reaction.emoji}</span>
@@ -280,7 +280,7 @@ export function ChatCard({
                   <Check
                     className={cn(
                       "w-4 h-4",
-                      isLightTheme ? "text-zinc-400" : "text-zinc-500",
+                      isLightTheme ? "text-zinc-400" : "text-zinc-500"
                     )}
                   />
                 )}
@@ -299,8 +299,8 @@ export function ChatCard({
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault()
-                    handleSendMessage()
+                    e.preventDefault();
+                    handleSendMessage();
                   }
                 }}
                 placeholder="Write a message..."
@@ -309,7 +309,7 @@ export function ChatCard({
                   "focus:outline-none focus:ring-1",
                   isLightTheme
                     ? "bg-zinc-100 text-zinc-900 placeholder-zinc-500 focus:ring-zinc-300"
-                    : "bg-zinc-800 text-zinc-100 placeholder-zinc-500 focus:ring-zinc-600",
+                    : "bg-zinc-800 text-zinc-100 placeholder-zinc-500 focus:ring-zinc-600"
                 )}
               />
               <button
@@ -318,7 +318,7 @@ export function ChatCard({
                   "absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full",
                   isLightTheme
                     ? "hover:bg-zinc-200 text-zinc-500"
-                    : "hover:bg-zinc-700 text-zinc-400",
+                    : "hover:bg-zinc-700 text-zinc-400"
                 )}
               >
                 <SmilePlus className="w-5 h-5" />
@@ -330,7 +330,7 @@ export function ChatCard({
                 "p-2.5 rounded-lg transition-colors",
                 isLightTheme
                   ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-600"
-                  : "bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-300",
+                  : "bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-300"
               )}
             >
               <Send className="w-5 h-5" />
@@ -339,5 +339,5 @@ export function ChatCard({
         </div>
       </div>
     </div>
-  )
+  );
 }

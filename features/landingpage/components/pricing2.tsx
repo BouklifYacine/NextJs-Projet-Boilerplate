@@ -1,7 +1,6 @@
-"use client";
-
 import { ArrowRight, CircleCheck } from "lucide-react";
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -137,10 +136,21 @@ const Pricing2 = ({
                 </CardContent>
                 <CardFooter className="mt-auto">
                   <Button asChild className="w-full">
-                    <a href={plan.button.url} target="_blank">
-                      {plan.button.text}
-                      <ArrowRight className="ml-2 size-4" />
-                    </a>
+                    {plan.button.url.startsWith("http") ? (
+                      <a
+                        href={plan.button.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {plan.button.text}
+                        <ArrowRight className="ml-2 size-4" />
+                      </a>
+                    ) : (
+                      <Link to={plan.button.url}>
+                        {plan.button.text}
+                        <ArrowRight className="ml-2 size-4" />
+                      </Link>
+                    )}
                   </Button>
                 </CardFooter>
               </Card>

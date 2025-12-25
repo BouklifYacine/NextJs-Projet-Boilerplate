@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import { useId } from "react";
 
 function SelectAvatar() {
@@ -33,7 +33,9 @@ function SelectAvatar() {
               />
               <span>
                 <span className="block font-medium">Jenny Hamilton</span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">@jennycodes</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  @jennycodes
+                </span>
               </span>
             </span>
           </SelectItem>
@@ -48,7 +50,9 @@ function SelectAvatar() {
               />
               <span>
                 <span className="block font-medium">Paul Smith</span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">@paulsmith</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  @paulsmith
+                </span>
               </span>
             </span>
           </SelectItem>
@@ -63,7 +67,9 @@ function SelectAvatar() {
               />
               <span>
                 <span className="block font-medium">Luna Wyen</span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">@wyen.luna</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  @wyen.luna
+                </span>
               </span>
             </span>
           </SelectItem>

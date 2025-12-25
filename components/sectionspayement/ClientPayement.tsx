@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Card,
@@ -12,7 +10,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@tanstack/react-router";
 
 type Abonnement = {
   nom: string;
@@ -25,8 +23,6 @@ type Abonnement = {
   lienStripe: string;
 };
 
-
-
 interface ClientSidePaymentProps {
   session: string | null;
   abonnements: Abonnement[];
@@ -36,17 +32,18 @@ const ClientSidePayment = ({
   session,
   abonnements,
 }: ClientSidePaymentProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [abonnementChoisi, setAbonnementChoisi] = useState("Mensuel");
 
   const gererAchat = (lienStripe: string) => {
     if (!session) {
-      router.push("/connexion");
+      navigate({ to: "/connexion" });
       return;
     }
 
     if (lienStripe) {
-      router.push(lienStripe);
+      // External Stripe links - use window.location for external URLs
+      window.location.href = lienStripe;
     }
   };
 
@@ -116,7 +113,9 @@ const ClientSidePayment = ({
           </CardContent>
           <CardFooter className="pt-6">
             <Button
-              variant={abonnementChoisi === abonnement.nom ? "default" : "outline"}
+              variant={
+                abonnementChoisi === abonnement.nom ? "default" : "outline"
+              }
               className="w-full py-6 text-lg"
               onClick={() => {
                 setAbonnementChoisi(abonnement.nom);

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +12,6 @@ import { supprimerCompte } from "../actions/supprimercompte";
 export type DeleteAccountSteps = "verification" | "confirmation";
 
 export function useSuppressionCompte(userId: string) {
-
   const [confirmation, setConfirmation] = useState(false);
   const [etape, setEtape] = useState<DeleteAccountSteps>("verification");
 
@@ -25,14 +22,13 @@ export function useSuppressionCompte(userId: string) {
 
   const formConfirmation = useForm({});
 
-  const {data : utilisateur , isLoading} = useProfil(userId)
+  const { data: utilisateur, isLoading } = useProfil(userId);
 
-  const hasProvider =  utilisateur?.providerId[0] !== "credential";
-  
+  const hasProvider = utilisateur?.providerId[0] !== "credential";
 
   const verifierMotDePasseMutation = useMutation({
     mutationFn: async (motdepasse: string) => {
-      const resultat = await verifierMotDePasse(motdepasse);
+      const resultat = await verifierMotDePasse({ data: motdepasse });
       if (resultat.error) throw new Error(resultat.error);
       return resultat;
     },
@@ -52,7 +48,7 @@ export function useSuppressionCompte(userId: string) {
   const supprimerCompteMutation = useMutation({
     mutationFn: async (codeVerification?: string) => {
       try {
-        const resultat = await supprimerCompte(codeVerification);
+        const resultat = await supprimerCompte({ data: codeVerification });
         if (resultat?.error) throw new Error(resultat.error);
         return resultat;
       } catch (error) {
@@ -61,7 +57,7 @@ export function useSuppressionCompte(userId: string) {
     },
     onSuccess: () => {
       toast.success("Compte supprimé avec succès");
-      DeconnexionClient()
+      DeconnexionClient();
     },
     onError: (error: Error) => {
       toast.error(error.message || "Une erreur est survenue");

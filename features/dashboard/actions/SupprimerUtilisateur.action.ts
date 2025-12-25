@@ -1,42 +1,64 @@
-"use server";
-
 import { prisma } from "@/prisma";
-import { SessionAdmin } from "../../../lib/SessionAdmin";
 import { Prisma } from "@/generated/client";
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+import { getRequest } from "@tanstack/react-start/server";
+import { auth } from "@/auth";
 
 interface DeleteResponse {
   success: boolean;
 }
 
-export async function deleteUsers(ids: string[]): Promise<DeleteResponse> {
-  try {
-    await SessionAdmin();
-
-    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      await tx.session.deleteMany({
-        where: { userId: { in: ids } },
+export const deleteUsers = createServerFn({ method: "POST" })
+  .inputValidator(z.array(z.string()))
+  .handler(async ({ data: ids }): Promise<DeleteResponse> => {
+    try {
+      const request = getRequest();
+      const session = await auth.api.getSession({
+        headers: request.headers,
       });
 
-      await tx.account.deleteMany({
-        where: { userId: { in: ids } },
+      const sessionId = session?.user?.id;
+      if (!sessionId) {
+        throw new Error("Vous devez etre connecté");
+      }
+
+      const admin = await prisma.user.findUnique({
+        where: {
+          id: sessionId,
+        },
+        select: { role: true },
       });
 
-      await tx.abonnement.deleteMany({
-        where: { userId: { in: ids } },
+      if (admin?.role !== "Admin") {
+        throw new Error("Vous devez etre admin !");
+      }
+
+      await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+        await tx.session.deleteMany({
+          where: { userId: { in: ids } },
+        });
+
+        await tx.account.deleteMany({
+          where: { userId: { in: ids } },
+        });
+
+        await tx.abonnement.deleteMany({
+          where: { userId: { in: ids } },
+        });
+
+        await tx.user.deleteMany({
+          where: { id: { in: ids } },
+        });
       });
 
-      await tx.user.deleteMany({
-        where: { id: { in: ids } },
-      });
-    });
-
-    return {
-      success: true,
-    };
-  } catch (error) {
-    console.error("Erreur lors de la suppression:", error);
-    return {
-      success: false,
-    };
-  }
-}
+      return {
+        success: true,
+      };
+    } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
+      return {
+        success: false,
+      };
+    }
+  });

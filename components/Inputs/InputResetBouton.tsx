@@ -1,26 +1,24 @@
-"use client"
+import { useId, useRef, useState } from "react";
+import { CircleXIcon } from "lucide-react";
 
-import { useId, useRef, useState } from "react"
-import { CircleXIcon } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Props {
-    texte : string
+  texte: string;
 }
 
-export default function InputResetBouton({texte} : Props) {
-  const id = useId()
-  const [inputValue, setInputValue] = useState("Click to clear")
-  const inputRef = useRef<HTMLInputElement>(null)
+export default function InputResetBouton({ texte }: Props) {
+  const id = useId();
+  const [inputValue, setInputValue] = useState("Click to clear");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClearInput = () => {
-    setInputValue("")
+    setInputValue("");
     if (inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }
+  };
 
   return (
     <div className="*:not-first:mt-2">
@@ -46,5 +44,5 @@ export default function InputResetBouton({texte} : Props) {
         )}
       </div>
     </div>
-  )
+  );
 }

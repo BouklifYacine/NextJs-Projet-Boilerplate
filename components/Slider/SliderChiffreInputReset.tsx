@@ -1,25 +1,23 @@
-"use client"
+import { RotateCcwIcon } from "lucide-react";
 
-import { RotateCcwIcon } from "lucide-react"
-
-import { useSliderWithInput } from "@/hooks/use-slider-with-input"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
+import { useSliderWithInput } from "@/hooks/use-slider-with-input";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 
 export default function Component() {
-  const minValue = 0
-  const maxValue = 2
-  const initialValue = [1.25]
-  const defaultValue = [1]
+  const minValue = 0;
+  const maxValue = 2;
+  const initialValue = [1.25];
+  const defaultValue = [1];
 
   const {
     sliderValue,
@@ -29,7 +27,7 @@ export default function Component() {
     handleSliderChange,
     resetToDefault,
     showReset,
-  } = useSliderWithInput({ minValue, maxValue, initialValue, defaultValue })
+  } = useSliderWithInput({ minValue, maxValue, initialValue, defaultValue });
 
   return (
     <div className="space-y-3">
@@ -53,7 +51,7 @@ export default function Component() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="px-2 py-1 text-xs">
-                Reset 
+                Reset
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -66,7 +64,7 @@ export default function Component() {
             onBlur={() => validateAndUpdateValue(inputValues[0] ?? "", 0)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                validateAndUpdateValue(inputValues[0] ?? "", 0)
+                validateAndUpdateValue(inputValues[0] ?? "", 0);
               }
             }}
             aria-label="Enter value"
@@ -85,5 +83,5 @@ export default function Component() {
         />
       </div>
     </div>
-  )
+  );
 }

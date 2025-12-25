@@ -1,18 +1,15 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@tanstack/react-router";
 import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
 export function BoutonDeconnexion() {
-  const Router = useRouter();
+  const navigate = useNavigate();
   const Deconnexion = async () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          Router.push("/");
-          Router.refresh()
+          navigate({ to: "/" });
         },
       },
     });

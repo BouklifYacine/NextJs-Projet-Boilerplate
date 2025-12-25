@@ -1,5 +1,5 @@
-import { GlowEffect } from '@/components/ui/glow-effect';
-import { ArrowRight } from 'lucide-react';
+import { GlowEffect } from "@/components/ui/glow-effect";
+import { ArrowRight } from "lucide-react";
 
 interface Props {
   texte: string;
@@ -9,7 +9,7 @@ export function GlowEffectButton({ texte }: Props) {
   return (
     <div className="relative inline-block">
       <GlowEffect
-        colors={['#FF5733', '#33FF57', '#3357FF', '#F1C40F']}
+        colors={["#FF5733", "#33FF57", "#3357FF", "#F1C40F"]}
         mode="colorShift"
         blur="soft"
         duration={3}

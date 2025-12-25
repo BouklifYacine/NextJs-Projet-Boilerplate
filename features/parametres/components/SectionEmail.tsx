@@ -1,12 +1,10 @@
-'use client'
-
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { InputPassword } from './InputPassword'
-import { useEmail } from '../hooks/useEmail'
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { InputPassword } from "./InputPassword";
+import { useEmail } from "../hooks/useEmail";
 
 export function SectionEmail() {
   const {
@@ -17,8 +15,8 @@ export function SectionEmail() {
     formEmail,
     verifierMotDePasseMutation,
     changerEmailMutation,
-    reinitialiser
-  } = useEmail()
+    reinitialiser,
+  } = useEmail();
 
   return (
     <Card className="p-6">
@@ -29,24 +27,20 @@ export function SectionEmail() {
             <p className="text-sm text-gray-500">Gérez votre adresse email</p>
           </div>
           {!enEdition && (
-            <Button onClick={() => setEnEdition(true)}>
-              Modifier
-            </Button>
+            <Button onClick={() => setEnEdition(true)}>Modifier</Button>
           )}
         </div>
 
-        {enEdition && etape === 'motdepasse' && (
-          <form 
-            onSubmit={formMotDePasse.handleSubmit((data) => 
+        {enEdition && etape === "motdepasse" && (
+          <form
+            onSubmit={formMotDePasse.handleSubmit((data) =>
               verifierMotDePasseMutation.mutate(data.motdepasse)
-            )} 
+            )}
             className="space-y-4"
           >
             <div className="space-y-2">
               <Label htmlFor="motdepasse">Mot de passe actuel</Label>
-              <InputPassword
-                {...formMotDePasse.register('motdepasse')}
-              />
+              <InputPassword {...formMotDePasse.register("motdepasse")} />
               {formMotDePasse.formState.errors.motdepasse && (
                 <Alert variant="destructive">
                   <AlertDescription>
@@ -56,29 +50,24 @@ export function SectionEmail() {
               )}
             </div>
             <div className="flex space-x-2">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={verifierMotDePasseMutation.isPending}
               >
-                {verifierMotDePasseMutation.isPending 
-                  ? "Vérification..." 
-                  : "Continuer"
-                }
+                {verifierMotDePasseMutation.isPending
+                  ? "Vérification..."
+                  : "Continuer"}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={reinitialiser}
-              >
+              <Button type="button" variant="outline" onClick={reinitialiser}>
                 Annuler
               </Button>
             </div>
           </form>
         )}
 
-        {enEdition && etape === 'email' && (
-          <form 
-            onSubmit={formEmail.handleSubmit((data) => 
+        {enEdition && etape === "email" && (
+          <form
+            onSubmit={formEmail.handleSubmit((data) =>
               changerEmailMutation.mutate(data)
             )}
             className="space-y-4"
@@ -88,7 +77,7 @@ export function SectionEmail() {
               <Input
                 id="nouvelEmail"
                 type="email"
-                {...formEmail.register('nouvelEmail')}
+                {...formEmail.register("nouvelEmail")}
               />
               {formEmail.formState.errors.nouvelEmail && (
                 <Alert variant="destructive">
@@ -102,7 +91,7 @@ export function SectionEmail() {
               <Label htmlFor="codeVerification">Code de vérification</Label>
               <Input
                 id="codeVerification"
-                {...formEmail.register('codeverification')}
+                {...formEmail.register("codeverification")}
               />
               {formEmail.formState.errors.codeverification && (
                 <Alert variant="destructive">
@@ -113,20 +102,12 @@ export function SectionEmail() {
               )}
             </div>
             <div className="flex space-x-2">
-              <Button 
-                type="submit"
-                disabled={changerEmailMutation.isPending}
-              >
-                {changerEmailMutation.isPending 
-                  ? "Modification en cours..." 
-                  : "Changer l'email"
-                }
+              <Button type="submit" disabled={changerEmailMutation.isPending}>
+                {changerEmailMutation.isPending
+                  ? "Modification en cours..."
+                  : "Changer l'email"}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={reinitialiser}
-              >
+              <Button type="button" variant="outline" onClick={reinitialiser}>
                 Annuler
               </Button>
             </div>
@@ -134,5 +115,5 @@ export function SectionEmail() {
         )}
       </div>
     </Card>
-  )
+  );
 }

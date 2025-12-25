@@ -135,3 +135,6 @@ src/generated/
 
 # Prisma migrations
 prisma/migrations/
+
+# TanStack Router generated files
+.tanstack
