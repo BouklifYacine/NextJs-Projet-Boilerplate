@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ImagePlus, X, Upload, Trash2 } from "lucide-react";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useImageUpload } from "@/hooks/use-image-upload";
@@ -263,9 +263,8 @@ export function ImageUpload() {
             <Image
               src={previewUrl}
               alt="Preview"
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              layout="fullWidth"
+              className="object-cover transition-transform duration-300 group-hover:scale-105 absolute inset-0 w-full h-full"
             />
             <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100" />
             <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
@@ -319,12 +318,12 @@ export function ImageUpload() {
               <Image
                 src={file.objectUrl || ""}
                 alt="image"
-                fill
+                width={64}
+                height={64}
                 className={cn(
-                  "object-cover transition-opacity duration-300",
+                  "object-cover transition-opacity duration-300 absolute inset-0 w-full h-full",
                   file.uploading && "opacity-60"
                 )}
-                sizes="64px"
               />
               {/* Overlay pour l'upload */}
               {file.uploading && (

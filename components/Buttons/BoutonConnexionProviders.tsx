@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import Github from "@/public/github-icon-2.svg";
 import Google from "@/public/Google.png";
 import React from "react";
@@ -10,7 +10,7 @@ const BoutonConnexionProviders = () => {
   const GoogleConnexion = async () => {
     const data = await authClient.signIn.social({
       provider: "google",
-      callbackURL:'/'
+      callbackURL: "/",
     });
     return data;
   };
@@ -18,7 +18,7 @@ const BoutonConnexionProviders = () => {
   const GithubConnexion = async () => {
     const data = await authClient.signIn.social({
       provider: "github",
-      callbackURL: "/"
+      callbackURL: "/",
     });
 
     return data;
@@ -26,20 +26,25 @@ const BoutonConnexionProviders = () => {
 
   return (
     <>
-   
-        <Button variant="outline" type="button" onClick={GithubConnexion} className="w-full cursor-pointer">
-          <Image src={Github} alt="GitHub Logo" width={25} height={25} />
-          Connexion avec Github
-        </Button>
+      <Button
+        variant="outline"
+        type="button"
+        onClick={GithubConnexion}
+        className="cursor-pointer"
+      >
+        <Image src={Github} alt="GitHub Logo" width={25} height={25} />
+        Connexion avec Github
+      </Button>
 
-        <Button variant="outline" type="button" onClick={GoogleConnexion} className="w-full cursor-pointer ">
-          <Image src={Google} alt="Google Logo" width={25} height={25} />
-           Connexion avec Google 
-        </Button>
-
-
-        
-   
+      <Button
+        variant="outline"
+        type="button"
+        onClick={GoogleConnexion}
+        className="cursor-pointer"
+      >
+        <Image src={Google} alt="Google Logo" width={25} height={25} />
+        Connexion avec Google
+      </Button>
     </>
   );
 };

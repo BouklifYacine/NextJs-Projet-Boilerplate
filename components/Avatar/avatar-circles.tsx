@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import Image from "next/image"; // Import manquant
+import { Image } from "@unpic/react";
 
 interface Avatar {
   imageUrl: string;
@@ -35,9 +35,6 @@ export const AvatarCercle = ({
             width={40}
             height={40}
             alt={`Avatar ${index + 1}`}
-            quality={85}
-            priority={index === 0}
-            sizes="(max-width: 768px) 40px, 50px"
           />
         </a>
       ))}

@@ -7,7 +7,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import Coca from "@/public/coca-cola-logo-svgrepo-com.svg";
 import Instagram from "@/public/instagram-2-1-logo-svgrepo-com.svg";
 import Whatsapp from "@/public/whatsapp-icon-logo-svgrepo-com.svg";
