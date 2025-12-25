@@ -1,5 +1,3 @@
-"use client";
-
 import { Announcement, AnnouncementTitle } from "@/components/ui/announcement";
 
 interface Props {

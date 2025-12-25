@@ -8,6 +8,7 @@ import { DataTableRowActions } from "./DataTableRowActions";
 import { BadgeVariantMap, ActionColumnOptions } from "./DataTable.types";
 import { ExternalLink } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 
 // ============================================
 // UTILITY
@@ -467,8 +468,7 @@ export function imageColumn<TData>(options: {
       if (!src) return null;
 
       return (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={src}
           alt={options.alt ?? ""}
           width={options.width ?? 40}

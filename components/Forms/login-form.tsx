@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import BoutonConnexionProviders from "./Buttons/BoutonConnexionProviders";
+import BoutonConnexionProviders from "../Buttons/BoutonConnexionProviders";
 
 export function LoginForm({
   className,
@@ -47,12 +48,12 @@ export function LoginForm({
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">Mot de passe</Label>
-                    <a
-                      href="#"
+                    <Link
+                      to="/connexion/motdepasseoublie"
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Mot de passe oublié?
-                    </a>
+                    </Link>
                   </div>
                   <Input
                     id="password"
@@ -66,9 +67,12 @@ export function LoginForm({
               </div>
               <div className="text-center text-sm">
                 Vous n&apos;avez pas de compte?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link
+                  to="/inscription"
+                  className="underline underline-offset-4"
+                >
                   Inscrivez vous
-                </a>
+                </Link>
               </div>
             </div>
           </form>
@@ -76,7 +80,9 @@ export function LoginForm({
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
         En cliquant sur continuer, you agree to our{" "}
-        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        <span className="underline underline-offset-4">Terms of Service</span>{" "}
+        and <span className="underline underline-offset-4">Privacy Policy</span>
+        .
       </div>
     </div>
   );
