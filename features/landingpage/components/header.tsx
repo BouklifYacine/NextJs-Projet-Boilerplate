@@ -1,8 +1,5 @@
-"use client";
-
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import React from "react";
-import LogoBayern from "@/public/FC_Bayern_München_logo_(2017).svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -54,7 +51,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link href="/">
             <Image
-              src={LogoBayern}
+              src="/FC_Bayern_München_logo_(2017).svg.png"
               alt="Logo Bayern - Retour à l'accueil"
               height={50}
               width={50}

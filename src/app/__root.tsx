@@ -4,6 +4,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import "@/styles/globals.css";
+import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import appCss from "../../styles/globals.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -13,11 +17,17 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      { title: "TanStack Start Starter" },
+      { title: "FootyGogo" },
+      {
+        name: "description",
+        content:
+          "FootyGogo la boilerplate NextJS idéale pour vos projets full stack",
+      },
     ],
     links: [
       {
         rel: "stylesheet",
+        href: appCss,
       },
     ],
   }),
@@ -26,12 +36,20 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   return (
-    <html lang="en">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body>
-        <Outlet />
+      <body className="antialiased font-sans relative">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Outlet />
+          <Toaster position="top-center" />
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>
