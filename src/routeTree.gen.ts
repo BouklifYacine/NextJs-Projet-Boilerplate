@@ -9,15 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as TestcomponentsDatatableRouteImport } from './routes/testcomponents/datatable'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ConnexionMotdepasseoublieCodeIndexRouteImport } from './routes/connexion/motdepasseoublie/code/index'
 
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -32,6 +39,11 @@ const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
   id: '/inscription/',
   path: '/inscription/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const ConnexionIndexRoute = ConnexionIndexRouteImport.update({
   id: '/connexion/',
@@ -63,8 +75,10 @@ const ConnexionMotdepasseoublieCodeIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/inscription': typeof InscriptionIndexRoute
   '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -75,6 +89,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/inscription': typeof InscriptionIndexRoute
   '/signin': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -84,8 +99,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion/': typeof ConnexionIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
   '/signin/': typeof SigninIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -96,8 +113,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/testcomponents/datatable'
     | '/connexion'
+    | '/dashboard/'
     | '/inscription'
     | '/signin'
     | '/api/auth/$'
@@ -108,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/testcomponents/datatable'
     | '/connexion'
+    | '/dashboard'
     | '/inscription'
     | '/signin'
     | '/api/auth/$'
@@ -116,8 +136,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/dashboard'
     | '/testcomponents/datatable'
     | '/connexion/'
+    | '/dashboard/'
     | '/inscription/'
     | '/signin/'
     | '/api/auth/$'
@@ -127,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   TestcomponentsDatatableRoute: typeof TestcomponentsDatatableRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
@@ -138,6 +161,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -158,6 +188,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/inscription'
       preLoaderRoute: typeof InscriptionIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/connexion/': {
       id: '/connexion/'
@@ -197,8 +234,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   TestcomponentsDatatableRoute: TestcomponentsDatatableRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,

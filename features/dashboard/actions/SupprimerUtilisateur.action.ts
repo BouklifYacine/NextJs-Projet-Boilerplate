@@ -1,8 +1,9 @@
 import { prisma } from "@/prisma";
-import { SessionAdmin } from "../../../lib/SessionAdmin";
 import { Prisma } from "@/generated/client";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { getRequest } from "@tanstack/react-start/server";
+import { auth } from "@/auth";
 
 interface DeleteResponse {
   success: boolean;
@@ -12,7 +13,26 @@ export const deleteUsers = createServerFn({ method: "POST" })
   .inputValidator(z.array(z.string()))
   .handler(async ({ data: ids }): Promise<DeleteResponse> => {
     try {
-      await SessionAdmin();
+      const request = getRequest();
+      const session = await auth.api.getSession({
+        headers: request.headers,
+      });
+
+      const sessionId = session?.user?.id;
+      if (!sessionId) {
+        throw new Error("Vous devez etre connecté");
+      }
+
+      const admin = await prisma.user.findUnique({
+        where: {
+          id: sessionId,
+        },
+        select: { role: true },
+      });
+
+      if (admin?.role !== "Admin") {
+        throw new Error("Vous devez etre admin !");
+      }
 
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await tx.session.deleteMany({
