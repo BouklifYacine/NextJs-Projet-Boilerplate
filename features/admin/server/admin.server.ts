@@ -75,10 +75,16 @@ export const getUsers = createServerFn({ method: "GET" })
     // Format for serialization
     return {
       users: users.map((user) => ({
-        ...user,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        role: user.role,
+        banned: user.banned,
+        banReason: user.banReason,
+        banExpires: user.banExpires ? user.banExpires.toISOString() : null,
         createdAt: user.createdAt.toISOString(),
         updatedAt: user.updatedAt.toISOString(),
-        banExpires: user.banExpires ? user.banExpires.toISOString() : null,
       })),
       total,
     };
@@ -171,48 +177,3 @@ export const removeUser = createServerFn({ method: "POST" })
 
     return { success: true };
   });
-
-/**
- * Server function to impersonate a user
- */
-export const impersonateUser = createServerFn({ method: "POST" })
-  .inputValidator((d: any) => z.object({ userId: z.string() }).parse(d))
-  .handler(async ({ data }) => {
-    const { request } = await checkAdmin();
-    const { userId } = data;
-
-    // Try to find the impersonateUser method - if auth.api.admin is missing, we try auth.api directly
-    const impersonate =
-      (auth.api as any).admin?.impersonateUser ||
-      (auth.api as any).impersonateUser;
-
-    if (!impersonate) {
-      throw new Error("Méthode impersonateUser de Better Auth introuvable");
-    }
-
-    return await impersonate({
-      headers: request.headers,
-      body: { userId },
-    });
-  });
-
-/**
- * Server function to stop impersonating
- */
-export const stopImpersonation = createServerFn({ method: "POST" }).handler(
-  async () => {
-    const { request } = await checkAdmin();
-
-    const stop =
-      (auth.api as any).admin?.stopImpersonating ||
-      (auth.api as any).stopImpersonating;
-
-    if (!stop) {
-      throw new Error("Méthode stopImpersonating de Better Auth introuvable");
-    }
-
-    return await stop({
-      headers: request.headers,
-    });
-  }
-);

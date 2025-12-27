@@ -8,20 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-  MoreHorizontal,
-  Ban,
-  UserCheck,
-  Shield,
-  Trash2,
-  LogIn,
-} from "lucide-react";
+import { MoreHorizontal, Ban, UserCheck, Shield, Trash2 } from "lucide-react";
 import {
   useBanUser,
   useUnbanUser,
   useSetUserRole,
   useRemoveUser,
-  useImpersonateUser,
 } from "../hooks";
 import {
   AlertDialog,
@@ -39,6 +31,7 @@ interface UserActionsMenuProps {
   userName: string;
   isBanned: boolean;
   currentRole: string;
+  currentUserId?: string;
 }
 
 export function UserActionsMenu({
@@ -46,15 +39,19 @@ export function UserActionsMenu({
   userName,
   isBanned,
   currentRole,
+  currentUserId,
 }: UserActionsMenuProps) {
+  const isSelf = userId === currentUserId;
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  if (isSelf) return null;
   const [showBanDialog, setShowBanDialog] = useState(false);
 
   const banUser = useBanUser();
   const unbanUser = useUnbanUser();
   const setRole = useSetUserRole();
   const removeUser = useRemoveUser();
-  const impersonate = useImpersonateUser();
 
   const handleBan = () => {
     banUser.mutate({ userId, banReason: "Violation of terms" });
@@ -75,16 +72,12 @@ export function UserActionsMenu({
     setShowDeleteDialog(false);
   };
 
-  const handleImpersonate = () => {
-    impersonate.mutate(userId);
-  };
-
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Ouvrir le menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
@@ -92,14 +85,11 @@ export function UserActionsMenu({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={handleImpersonate}>
-            <LogIn className="mr-2 h-4 w-4" />
-            Impersonate
-          </DropdownMenuItem>
-
           <DropdownMenuItem onClick={handleToggleRole}>
             <Shield className="mr-2 h-4 w-4" />
-            {currentRole === "Admin" ? "Remove Admin" : "Make Admin"}
+            {currentRole === "Admin"
+              ? "Retirer le rôle Admin"
+              : "Promouvoir Admin"}
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
@@ -107,15 +97,15 @@ export function UserActionsMenu({
           {isBanned ? (
             <DropdownMenuItem onClick={handleUnban}>
               <UserCheck className="mr-2 h-4 w-4" />
-              Unban User
+              Débannir l'utilisateur
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem
               onClick={() => setShowBanDialog(true)}
-              className="text-orange-600"
+              className="text-destructive focus:text-destructive"
             >
               <Ban className="mr-2 h-4 w-4" />
-              Ban User
+              Bannir l'utilisateur
             </DropdownMenuItem>
           )}
 
@@ -124,7 +114,7 @@ export function UserActionsMenu({
             className="text-destructive"
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            Delete User
+            Supprimer l'utilisateur
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -133,16 +123,19 @@ export function UserActionsMenu({
       <AlertDialog open={showBanDialog} onOpenChange={setShowBanDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Ban User</AlertDialogTitle>
+            <AlertDialogTitle>Bannir l'utilisateur</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to ban <strong>{userName}</strong>? They
-              will no longer be able to sign in.
+              Êtes-vous sûr de vouloir bannir <strong>{userName}</strong> ? Il
+              ne pourra plus se connecter.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleBan} className="bg-orange-600">
-              Ban User
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBan}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Bannir
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -152,19 +145,19 @@ export function UserActionsMenu({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete User</AlertDialogTitle>
+            <AlertDialogTitle>Supprimer l'utilisateur</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to permanently delete{" "}
-              <strong>{userName}</strong>? This action cannot be undone.
+              Êtes-vous sûr de vouloir supprimer définitivement{" "}
+              <strong>{userName}</strong> ? Cette action est irréversible.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              Supprimer
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

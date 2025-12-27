@@ -36,19 +36,14 @@ export const auth = betterAuth({
     max: 100,
   },
   user: {
-    additionalFields: {
-      role: {
-        type: "string",
-        defaultValue: "utilisateur",
-        input: false,
-      },
-    },
+    additionalFields: {},
   },
   plugins: [
     tanstackStartCookies(),
     multiSession(),
     admin({
       adminRoles: ["Admin"],
+      defaultRole: "utilisateur",
     }),
   ],
 });
