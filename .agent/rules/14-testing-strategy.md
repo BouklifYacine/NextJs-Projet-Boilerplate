@@ -15,6 +15,7 @@ We use a **Hybrid Strategy** combining high-coverage Unit Tests for logic and Br
   - **Server Functions** (/server/*.fn.ts): Critical business logic.
   - **Hooks** (/hooks/*.ts): Complex state logic.
   - **Utils** (/lib/*.ts, /utils/*.ts): Data transformation helpers.
+- **Location**: Tests MUST be co-located with the feature in __tests__ directories (e.g., src/features/auth/server/__tests__).
 - **Tools**: Use itest. Run un run test (or itest).
 - **Mocking**: Mock external services (Prisma, Stripe, Resend) using i.mock().
 - **Constraint**: DO NOT unit test simple UI components (buttons, inputs) unless they have complex internal logic.
@@ -25,6 +26,8 @@ We use a **Hybrid Strategy** combining high-coverage Unit Tests for logic and Br
 Path.
 - **Protocol**: see 14-testing-strategy.md (legacy name, now Hybrid).
 
-## 3. Workflow
-1. Write Logic -> Write Unit Test -> Verify Green.
-2. Build UI -> Verify manually via Browser MCP.
+## 3. Workflow (Feature Lifecycle)
+1. **Scaffold**: Create __tests__ folder.
+2. **Dev**: Write Logic -> Write Unit Test -> Verify Green.
+3. **Verify**: Run erify-feature workflow (runs Unit Tests + Browser Check).
+4. **Done**: Mark as Done in FEATURES.md.

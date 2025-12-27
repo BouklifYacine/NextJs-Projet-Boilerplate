@@ -1,4 +1,5 @@
 ---
+trigger: always_on
 description: Feature-Based Architecture & Directory Structure
 globs: "**/*"
 ---
@@ -27,6 +28,8 @@ src/features/<feature-name>/
 ├── types/           # TS Interfaces/Types
 ├── schemas/         # Zod schemas (validation)
 └── utils/           # Feature-specific helpers
+└── test/            # For unit tests (vitest)
+
 ```
 
 ## 3. Key Rules
