@@ -1,6 +1,5 @@
 ---
-description: Protocol for implementing tasks
-globs: "**/*"
+trigger: always_on
 ---
 
 # Task Implementation Protocol

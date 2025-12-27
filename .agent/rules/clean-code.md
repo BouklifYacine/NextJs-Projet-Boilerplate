@@ -1,6 +1,5 @@
 ---
-description: TypeScript Clean Code & Core Principles
-globs: "**/*.ts", "**/*.tsx"
+trigger: always_on
 ---
 
 # TypeScript Clean Code & Core Principles

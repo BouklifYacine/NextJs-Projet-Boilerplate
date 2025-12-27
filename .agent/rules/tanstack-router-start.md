@@ -1,6 +1,5 @@
 ---
-description: TanStack Router & TanStack Start Guidelines
-globs: "src/routes/**/*.tsx", "src/features/**/server/*.ts"
+trigger: always_on
 ---
 
 # TanStack Router & Start Guidelines

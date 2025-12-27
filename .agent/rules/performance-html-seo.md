@@ -1,6 +1,5 @@
 ---
-description: Performance & SEO Guidelines
-globs: "src/routes/**/*.tsx", "src/components/**/*.tsx"
+trigger: always_on
 ---
 
 # Performance & SEO

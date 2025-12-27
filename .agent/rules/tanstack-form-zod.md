@@ -1,6 +1,5 @@
 ---
-description: TanStack Form & Zod Validation
-globs: "src/features/**/components/*-form.tsx"
+trigger: always_on
 ---
 
 # TanStack Form & Zod Rules

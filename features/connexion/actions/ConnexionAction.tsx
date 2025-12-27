@@ -9,15 +9,14 @@ export const connexionAction = createServerFn({ method: "POST" })
   .inputValidator(SchemaConnexion)
   .handler(async ({ data }) => {
     try {
-      const response = await auth.api.signInEmail({
+      const result = await auth.api.signInEmail({
         body: {
           email: data.email,
           password: data.password,
         },
-        asResponse: true,
       });
 
-      if (!response.ok) {
+      if (!result) {
         return {
           success: false,
           error: "Email ou mot de passe incorrect",
@@ -31,7 +30,7 @@ export const connexionAction = createServerFn({ method: "POST" })
       console.error("Erreur de connexion:", error);
       return {
         success: false,
-        error: "Une erreur est survenue lors de la connexion",
+        error: "Email ou mot de passe incorrect",
       };
     }
   });

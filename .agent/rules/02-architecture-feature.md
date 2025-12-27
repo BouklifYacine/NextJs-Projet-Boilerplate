@@ -23,6 +23,7 @@ Each feature folder (e.g., `src/features/auth`) must follow this structure:
 src/features/<feature-name>/
 ├── components/      # UI Components specific to this feature
 ├── hooks/           # Custom React hooks (logic only)
+├── repositories/    # folder inside each feature (if needed).
 ├── server/          # Server Functions (TanStack Start) & Backend Logic
 ├── services/        # Pure TS business logic (no React dependency)
 ├── types/           # TS Interfaces/Types
