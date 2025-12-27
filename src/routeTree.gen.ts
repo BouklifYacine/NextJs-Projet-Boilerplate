@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InscriptionIndexRouteImport } from './routes/inscription/index'
+import { Route as GridIndexRouteImport } from './routes/grid/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as TestcomponentsDatatableRouteImport } from './routes/testcomponents/datatable'
@@ -34,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 const InscriptionIndexRoute = InscriptionIndexRouteImport.update({
   id: '/inscription/',
   path: '/inscription/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GridIndexRoute = GridIndexRouteImport.update({
+  id: '/grid/',
+  path: '/grid/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/grid': typeof GridIndexRoute
   '/inscription': typeof InscriptionIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/grid': typeof GridIndexRoute
   '/inscription': typeof InscriptionIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/grid/': typeof GridIndexRoute
   '/inscription/': typeof InscriptionIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/webhooks/stripe': typeof ApiWebhooksStripeRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/testcomponents/datatable'
     | '/connexion'
     | '/dashboard/'
+    | '/grid'
     | '/inscription'
     | '/api/auth/$'
     | '/api/webhooks/stripe'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/testcomponents/datatable'
     | '/connexion'
     | '/dashboard'
+    | '/grid'
     | '/inscription'
     | '/api/auth/$'
     | '/api/webhooks/stripe'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/testcomponents/datatable'
     | '/connexion/'
     | '/dashboard/'
+    | '/grid/'
     | '/inscription/'
     | '/api/auth/$'
     | '/api/webhooks/stripe'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   ParametresUserIdRoute: typeof ParametresUserIdRoute
   TestcomponentsDatatableRoute: typeof TestcomponentsDatatableRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
+  GridIndexRoute: typeof GridIndexRoute
   InscriptionIndexRoute: typeof InscriptionIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiWebhooksStripeRoute: typeof ApiWebhooksStripeRoute
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/inscription'
       fullPath: '/inscription'
       preLoaderRoute: typeof InscriptionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grid/': {
+      id: '/grid/'
+      path: '/grid'
+      fullPath: '/grid'
+      preLoaderRoute: typeof GridIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -272,6 +292,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParametresUserIdRoute: ParametresUserIdRoute,
   TestcomponentsDatatableRoute: TestcomponentsDatatableRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
+  GridIndexRoute: GridIndexRoute,
   InscriptionIndexRoute: InscriptionIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiWebhooksStripeRoute: ApiWebhooksStripeRoute,
