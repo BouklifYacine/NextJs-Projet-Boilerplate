@@ -1,29 +1,30 @@
 ---
-description: Testing Strategy (Browser MCP Verification)
-globs: "**/*.test.ts", "**/*.test.tsx", "tests/**"
+description: Hybrid Testing Strategy (Vitest Unit + Browser MCP E2E)
+globs: **/*.test.ts, **/*.test.tsx, 	ests/**, itest.config.ts"
 ---
 
-# Testing Strategy
+# Hybrid Testing Strategy
 
-**ALWAYS start by using the `sequential-thinking` MCP server to analyze the request. User "sequential-thinking" first.**
+**ALWAYS start by using the sequential-thinking MCP server to analyze the request. User 
+sequential-thinking first.**
 
-We verify features by running them in a real browser via the Browser MCP.
+We use a **Hybrid Strategy** combining high-coverage Unit Tests for logic and Browser-based E2E for critical flows.
 
-## 1. Feature Verification Protocol
+## 1. Unit Tests (Vitest) - 90% Coverage Target
+- **Scope**:
+  - **Server Functions** (/server/*.fn.ts): Critical business logic.
+  - **Hooks** (/hooks/*.ts): Complex state logic.
+  - **Utils** (/lib/*.ts, /utils/*.ts): Data transformation helpers.
+- **Tools**: Use itest. Run un run test (or itest).
+- **Mocking**: Mock external services (Prisma, Stripe, Resend) using i.mock().
+- **Constraint**: DO NOT unit test simple UI components (buttons, inputs) unless they have complex internal logic.
 
-**At the end of every feature implementation**, you MUST:
+## 2. E2E Verification (Browser MCP)
+- **Scope**: Critical User Journeys (Login, Purchase, Profile Update).
+- **Execution**: At the end of a feature, use the rowser MCP to navigate and verify the Happy
+Path.
+- **Protocol**: see 14-testing-strategy.md (legacy name, now Hybrid).
 
-1. **Ask the User**: "Shall I launch the Browser MCP to test this feature?"
-2. **Launch & Test**: If the user says YES, use the `browser` MCP tools to:
-   - Navigate to the local URL (ensure `bun run dev` is running).
-   - Click through the feature (fill forms, click buttons, submit data).
-   - Verify the "Happy Path" works as expected.
-
-## 2. Browser MCP Usage
-
-- **Real Environment**: Tests must run against the running local dev server.
-- **Simulation**: Act as a real user. Don't just check the DOM; perform the actions.
-
-## 3. Rules
-
-- **No Unit Tests**: We do not write unit tests for individual functions unless specifically requested. We prioritize E2E confidence via the Browser MCP.
+## 3. Workflow
+1. Write Logic -> Write Unit Test -> Verify Green.
+2. Build UI -> Verify manually via Browser MCP.
