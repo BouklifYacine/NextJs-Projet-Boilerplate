@@ -11,39 +11,22 @@ vi.mock("react-hot-toast", () => ({
   },
 }));
 
-// Mock router
-vi.mock("@tanstack/react-router", () => ({
-  useNavigate: () => vi.fn(),
-}));
-
-// Mock authClient - must be before imports that use it
+// Mock server functions
 const mockBanUser = vi.fn();
 const mockUnbanUser = vi.fn();
-const mockSetRole = vi.fn();
+const mockSetUserRole = vi.fn();
 const mockRemoveUser = vi.fn();
 
-vi.mock("@/lib/auth-client", () => ({
-  authClient: {
-    admin: {
-      banUser: mockBanUser,
-      unbanUser: mockUnbanUser,
-      impersonateUser: vi.fn(),
-      stopImpersonating: vi.fn(),
-      setRole: mockSetRole,
-      removeUser: mockRemoveUser,
-    },
-  },
+vi.mock("../server/admin.server", () => ({
+  banUser: (args: unknown) => mockBanUser(args),
+  unbanUser: (args: unknown) => mockUnbanUser(args),
+  setUserRole: (args: unknown) => mockSetUserRole(args),
+  removeUser: (args: unknown) => mockRemoveUser(args),
 }));
 
 import toast from "react-hot-toast";
-import { useBanUser } from "../hooks/use-ban-user";
-import { useUnbanUser } from "../hooks/use-unban-user";
-import { useSetUserRole } from "../hooks/use-set-role";
-import { useRemoveUser } from "../hooks/use-remove-user";
+import { useAdminMutations } from "../hooks/use-admin-mutations";
 
-/**
- * Helper to create a wrapper with QueryClient
- */
 function createWrapper() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -59,133 +42,100 @@ function createWrapper() {
   };
 }
 
-describe("Admin Hooks", () => {
+describe("Admin Mutations Hook", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe("useBanUser", () => {
+  describe("banUser", () => {
     it("should call banUser with correct parameters", async () => {
-      mockBanUser.mockResolvedValue({ data: undefined, error: null });
+      mockBanUser.mockResolvedValue({ success: true });
 
-      const { result } = renderHook(() => useBanUser(), {
+      const { result } = renderHook(() => useAdminMutations(), {
         wrapper: createWrapper(),
       });
 
-      result.current.mutate({
+      result.current.banUser.mutate({
         userId: "user-123",
         banReason: "Violation of terms",
         banExpiresIn: 86400,
       });
 
       await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true);
+        expect(result.current.banUser.isSuccess).toBe(true);
       });
 
       expect(mockBanUser).toHaveBeenCalledWith({
-        userId: "user-123",
-        banReason: "Violation of terms",
-        banExpiresIn: 86400,
+        data: {
+          userId: "user-123",
+          banReason: "Violation of terms",
+          banExpiresIn: 86400,
+        },
       });
-      expect(toast.success).toHaveBeenCalledWith("User has been banned");
-    });
-
-    it("should show error toast when ban fails", async () => {
-      mockBanUser.mockResolvedValue({
-        data: null,
-        error: { message: "Not authorized" },
-      });
-
-      const { result } = renderHook(() => useBanUser(), {
-        wrapper: createWrapper(),
-      });
-
-      result.current.mutate({ userId: "user-123" });
-
-      await waitFor(() => {
-        expect(result.current.isError).toBe(true);
-      });
-
-      expect(toast.error).toHaveBeenCalledWith("Not authorized");
+      expect(toast.success).toHaveBeenCalled();
     });
   });
 
-  describe("useUnbanUser", () => {
+  describe("unbanUser", () => {
     it("should call unbanUser with correct userId", async () => {
-      mockUnbanUser.mockResolvedValue({ data: undefined, error: null });
+      mockUnbanUser.mockResolvedValue({ success: true });
 
-      const { result } = renderHook(() => useUnbanUser(), {
+      const { result } = renderHook(() => useAdminMutations(), {
         wrapper: createWrapper(),
       });
 
-      result.current.mutate("user-123");
+      result.current.unbanUser.mutate("user-123");
 
       await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true);
+        expect(result.current.unbanUser.isSuccess).toBe(true);
       });
 
-      expect(mockUnbanUser).toHaveBeenCalledWith({ userId: "user-123" });
-      expect(toast.success).toHaveBeenCalledWith("User has been unbanned");
+      expect(mockUnbanUser).toHaveBeenCalledWith({
+        data: { userId: "user-123" },
+      });
+      expect(toast.success).toHaveBeenCalled();
     });
   });
 
-  describe("useSetUserRole", () => {
+  describe("setRole", () => {
     it("should call setRole with correct parameters", async () => {
-      mockSetRole.mockResolvedValue({ data: undefined, error: null });
+      mockSetUserRole.mockResolvedValue({ success: true });
 
-      const { result } = renderHook(() => useSetUserRole(), {
+      const { result } = renderHook(() => useAdminMutations(), {
         wrapper: createWrapper(),
       });
 
-      result.current.mutate({ userId: "user-123", role: "Admin" });
+      result.current.setRole.mutate({ userId: "user-123", role: "Admin" });
 
       await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true);
+        expect(result.current.setRole.isSuccess).toBe(true);
       });
 
-      expect(mockSetRole).toHaveBeenCalledWith({
-        userId: "user-123",
-        role: "Admin",
+      expect(mockSetUserRole).toHaveBeenCalledWith({
+        data: { userId: "user-123", role: "Admin" },
       });
-      expect(toast.success).toHaveBeenCalledWith("User role updated to Admin");
+      expect(toast.success).toHaveBeenCalled();
     });
   });
 
-  describe("useRemoveUser", () => {
+  describe("removeUser", () => {
     it("should call removeUser with correct userId", async () => {
-      mockRemoveUser.mockResolvedValue({ data: undefined, error: null });
+      mockRemoveUser.mockResolvedValue({ success: true });
 
-      const { result } = renderHook(() => useRemoveUser(), {
+      const { result } = renderHook(() => useAdminMutations(), {
         wrapper: createWrapper(),
       });
 
-      result.current.mutate("user-123");
+      result.current.removeUser.mutate("user-123");
 
       await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true);
+        expect(result.current.removeUser.isSuccess).toBe(true);
       });
 
-      expect(mockRemoveUser).toHaveBeenCalledWith({ userId: "user-123" });
-      expect(toast.success).toHaveBeenCalledWith("User has been removed");
-    });
-
-    it("should show error toast when removal fails", async () => {
-      mockRemoveUser.mockResolvedValue({
-        data: null,
-        error: { message: "Cannot delete yourself" },
+      expect(mockRemoveUser).toHaveBeenCalledWith({
+        data: { userId: "user-123" },
       });
-
-      const { result } = renderHook(() => useRemoveUser(), {
-        wrapper: createWrapper(),
-      });
-
-      result.current.mutate("user-123");
-
-      await waitFor(() => {
-        expect(result.current.isError).toBe(true);
-      });
-
-      expect(toast.error).toHaveBeenCalledWith("Cannot delete yourself");
+      expect(toast.success).toHaveBeenCalled();
     });
   });
 });

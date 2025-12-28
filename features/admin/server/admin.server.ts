@@ -1,179 +1,113 @@
 import { createServerFn } from "@tanstack/react-start";
-import { prisma } from "@/prisma";
-import { auth } from "@/auth";
-import { getRequest } from "@tanstack/react-start/server";
+import { zodValidator } from "@tanstack/zod-adapter";
 import {
   banUserSchema,
   setRoleSchema,
   listUsersFilterSchema,
+  userIdSchema,
 } from "../schemas/admin-schemas";
-import { z } from "zod";
+import { userRepository } from "../repositories/user.repository";
+import {
+  requireAdmin,
+  serializeUser,
+  calculateBanExpiration,
+} from "../utils/admin.utils";
+import type {
+  ListUsersResponse,
+  AdminActionResult,
+  AdminUserSerialized,
+} from "../types/admin-types";
+
+// ============================================================================
+// Query: List Users
+// ============================================================================
 
 /**
- * Helper to check admin role in Server Functions
- */
-async function checkAdmin() {
-  const request = getRequest();
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
-
-  if (!session?.user?.id) {
-    throw new Error("Session introuvable");
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
-  });
-
-  if (user?.role !== "Admin") {
-    throw new Error("Action non autorisée : Droits administrateur requis");
-  }
-
-  return { session, request };
-}
-
-/**
- * Server function to list users with filtration and pagination
+ * Server function to list users with filtering and pagination
  */
 export const getUsers = createServerFn({ method: "GET" })
-  .inputValidator((d: any) => listUsersFilterSchema.partial().parse(d))
-  .handler(async ({ data }) => {
-    await checkAdmin();
+  .inputValidator(zodValidator(listUsersFilterSchema.partial()))
+  .handler(async ({ data }): Promise<ListUsersResponse> => {
+    await requireAdmin();
 
-    const { page = 1, limit = 10, search, role, banned } = data;
-    const skip = (page - 1) * limit;
+    const { users, total } = await userRepository.findMany(data);
 
-    const where: any = {};
-
-    if (search) {
-      where.OR = [
-        { email: { contains: search, mode: "insensitive" } },
-        { name: { contains: search, mode: "insensitive" } },
-      ];
-    }
-
-    if (role) {
-      where.role = role;
-    }
-
-    if (banned !== undefined) {
-      where.banned = banned;
-    }
-
-    const [users, total] = await Promise.all([
-      prisma.user.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.user.count({ where }),
-    ]);
-
-    // Format for serialization
     return {
-      users: users.map((user) => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        image: user.image,
-        role: user.role,
-        banned: user.banned,
-        banReason: user.banReason,
-        banExpires: user.banExpires ? user.banExpires.toISOString() : null,
-        createdAt: user.createdAt.toISOString(),
-        updatedAt: user.updatedAt.toISOString(),
-      })),
+      users: users.map(serializeUser),
       total,
     };
   });
 
+// ============================================================================
+// Mutations: User Management
+// ============================================================================
+
 /**
- * Server function to ban a user (using Prisma direct)
+ * Server function to ban a user
  */
 export const banUser = createServerFn({ method: "POST" })
-  .inputValidator((d: any) => banUserSchema.parse(d))
-  .handler(async ({ data }) => {
-    await checkAdmin();
-    const validated = data;
+  .inputValidator(zodValidator(banUserSchema))
+  .handler(
+    async ({ data }): Promise<AdminActionResult<AdminUserSerialized>> => {
+      await requireAdmin();
 
-    // Update user in DB
-    const user = await prisma.user.update({
-      where: { id: validated.userId },
-      data: {
+      const banExpires = calculateBanExpiration(data.banExpiresIn);
+
+      const user = await userRepository.updateBanStatus(data.userId, {
         banned: true,
-        banReason: validated.banReason,
-        banExpires: validated.banExpiresIn
-          ? new Date(Date.now() + validated.banExpiresIn * 1000)
-          : null,
-      },
-    });
+        banReason: data.banReason,
+        banExpires,
+      });
 
-    // Revoke all sessions for the banned user
-    await prisma.session.deleteMany({
-      where: { userId: validated.userId },
-    });
+      await userRepository.deleteUserSessions(data.userId);
 
-    return { success: true, user };
-  });
+      return { success: true, user: serializeUser(user) };
+    }
+  );
 
 /**
- * Server function to unban a user (using Prisma direct)
+ * Server function to unban a user
  */
 export const unbanUser = createServerFn({ method: "POST" })
-  .inputValidator((d: any) => z.object({ userId: z.string() }).parse(d))
-  .handler(async ({ data }) => {
-    await checkAdmin();
-    const { userId } = data;
+  .inputValidator(zodValidator(userIdSchema))
+  .handler(
+    async ({ data }): Promise<AdminActionResult<AdminUserSerialized>> => {
+      await requireAdmin();
 
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: {
+      const user = await userRepository.updateBanStatus(data.userId, {
         banned: false,
         banReason: null,
         banExpires: null,
-      },
-    });
+      });
 
-    return { success: true, user };
-  });
+      return { success: true, user: serializeUser(user) };
+    }
+  );
 
 /**
- * Server function to set user role (using Prisma direct)
+ * Server function to set user role
  */
 export const setUserRole = createServerFn({ method: "POST" })
-  .inputValidator((d: any) => setRoleSchema.parse(d))
-  .handler(async ({ data }) => {
-    await checkAdmin();
-    const { userId, role } = data;
+  .inputValidator(zodValidator(setRoleSchema))
+  .handler(
+    async ({ data }): Promise<AdminActionResult<AdminUserSerialized>> => {
+      await requireAdmin();
 
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        role: role as any, // Cast to enum
-      },
-    });
+      const user = await userRepository.updateRole(data.userId, data.role);
 
-    return { success: true, user };
-  });
+      return { success: true, user: serializeUser(user) };
+    }
+  );
 
 /**
- * Server function to remove a user (using Prisma direct)
+ * Server function to remove a user
  */
 export const removeUser = createServerFn({ method: "POST" })
-  .inputValidator((d: any) => z.object({ userId: z.string() }).parse(d))
-  .handler(async ({ data }) => {
-    await checkAdmin();
-    const { userId } = data;
+  .inputValidator(zodValidator(userIdSchema))
+  .handler(async ({ data }): Promise<AdminActionResult> => {
+    await requireAdmin();
 
-    // Delete accounts, sessions, and finally user
-    await prisma.$transaction([
-      prisma.account.deleteMany({ where: { userId } }),
-      prisma.session.deleteMany({ where: { userId } }),
-      prisma.user.delete({ where: { id: userId } }),
-    ]);
+    await userRepository.deleteWithRelations(data.userId);
 
     return { success: true };
   });

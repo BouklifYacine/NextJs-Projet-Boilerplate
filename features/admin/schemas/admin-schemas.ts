@@ -1,6 +1,13 @@
 import { z } from "zod";
 
 /**
+ * Reusable userId schema
+ */
+export const userIdSchema = z.object({
+  userId: z.string().min(1, "User ID is required"),
+});
+
+/**
  * Schema for banning a user
  */
 export const banUserSchema = z.object({
@@ -33,6 +40,8 @@ export const listUsersFilterSchema = z.object({
 });
 
 export type ListUsersFilter = z.infer<typeof listUsersFilterSchema>;
+
+// Note: AdminUser and ListUsersResponse types are defined in types/admin-types.ts
 
 /**
  * Schema for creating a user (admin)

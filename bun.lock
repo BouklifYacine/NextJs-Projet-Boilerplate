@@ -42,6 +42,7 @@
         "@tanstack/react-router": "^1.143.6",
         "@tanstack/react-start": "^1.143.7",
         "@tanstack/react-table": "^8.21.3",
+        "@tanstack/zod-adapter": "^1.144.0",
         "@tanstack/zod-form-adapter": "^0.42.1",
         "@types/bcryptjs": "^3.0.0",
         "@unpic/react": "^1.0.2",
@@ -1233,6 +1234,8 @@
     "@tanstack/table-core": ["@tanstack/table-core@8.21.3", "", {}, "sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg=="],
 
     "@tanstack/virtual-file-routes": ["@tanstack/virtual-file-routes@1.141.0", "", {}, "sha512-CJrWtr6L9TVzEImm9S7dQINx+xJcYP/aDkIi6gnaWtIgbZs1pnzsE0yJc2noqXZ+yAOqLx3TBGpBEs9tS0P9/A=="],
+
+    "@tanstack/zod-adapter": ["@tanstack/zod-adapter@1.144.0", "", { "peerDependencies": { "@tanstack/react-router": ">=1.43.2", "zod": "^3.23.8" } }, "sha512-hcGgc7zGBK3j3/yLGUq3GN2rPoMtgbEftBv4pHXkwfJQsiySbFmz3M438K7NKtCNCzCzBH/Gxhe1Hdps6GZalQ=="],
 
     "@tanstack/zod-form-adapter": ["@tanstack/zod-form-adapter@0.42.1", "", { "dependencies": { "@tanstack/form-core": "0.42.1" }, "peerDependencies": { "zod": "^3.x" } }, "sha512-hPRM0lawVKP64yurW4c6KHZH6altMo2MQN14hfi+GMBTKjO9S7bW1x5LPZ5cayoJE3mBvdlahpSGT5rYZtSbXQ=="],
 

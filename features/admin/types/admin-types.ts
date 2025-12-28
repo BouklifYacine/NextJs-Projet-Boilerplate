@@ -9,16 +9,14 @@ export type UserRole = "Admin" | "utilisateur";
 export type UserPlan = "free" | "pro";
 
 /**
- * User type for admin views
+ * User type for admin views (internal, with Date objects)
  */
 export interface AdminUser {
   id: string;
   name: string;
   email: string;
-  emailVerified: boolean;
   image: string | null;
-  role: UserRole;
-  plan: UserPlan;
+  role: string;
   banned: boolean;
   banReason: string | null;
   banExpires: Date | null;
@@ -27,21 +25,33 @@ export interface AdminUser {
 }
 
 /**
- * Paginated response for user listing
+ * Serialized user type for API responses (with ISO string dates)
  */
-export interface PaginatedUsersResponse {
-  users: AdminUser[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+export interface AdminUserSerialized {
+  id: string;
+  name: string;
+  email: string;
+  image: string | null;
+  role: string;
+  banned: boolean;
+  banReason: string | null;
+  banExpires: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 /**
- * Admin action result
+ * Paginated response for user listing
  */
-export interface AdminActionResult<T = void> {
+export interface ListUsersResponse {
+  users: AdminUserSerialized[];
+  total: number;
+}
+
+/**
+ * Admin action result with typed data
+ */
+export interface AdminActionResult<T = undefined> {
   success: boolean;
-  data?: T;
-  error?: string;
+  user?: T;
 }

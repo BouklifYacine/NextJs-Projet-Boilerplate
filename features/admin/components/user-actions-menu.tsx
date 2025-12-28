@@ -9,12 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Ban, UserCheck, Shield, Trash2 } from "lucide-react";
-import {
-  useBanUser,
-  useUnbanUser,
-  useSetUserRole,
-  useRemoveUser,
-} from "../hooks";
+import { useAdminMutations } from "../hooks";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,17 +36,12 @@ export function UserActionsMenu({
   currentRole,
   currentUserId,
 }: UserActionsMenuProps) {
-  const isSelf = userId === currentUserId;
-
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
-  if (isSelf) return null;
   const [showBanDialog, setShowBanDialog] = useState(false);
+  const { banUser, unbanUser, setRole, removeUser } = useAdminMutations();
 
-  const banUser = useBanUser();
-  const unbanUser = useUnbanUser();
-  const setRole = useSetUserRole();
-  const removeUser = useRemoveUser();
+  const isSelf = userId === currentUserId;
+  if (isSelf) return null;
 
   const handleBan = () => {
     banUser.mutate({ userId, banReason: "Violation of terms" });
