@@ -1,6 +1,5 @@
 ---
-description: State Management Strategy (Zustand & URL)
-globs: "src/store/**/*.ts", "src/hooks/**/*.ts"
+trigger: always_on
 ---
 
 # State Management Rules

@@ -3,10 +3,11 @@ import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { HashPassword, verifyPassword } from "./lib/argon2";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./lib/prisma";
+import { multiSession, admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "postgresql", // or "mysql", "postgresql", ...etc
+    provider: "postgresql",
   }),
   emailAndPassword: {
     enabled: true,
@@ -34,5 +35,15 @@ export const auth = betterAuth({
     window: 10,
     max: 100,
   },
-  plugins: [tanstackStartCookies()],
+  user: {
+    additionalFields: {},
+  },
+  plugins: [
+    tanstackStartCookies(),
+    multiSession(),
+    admin({
+      adminRoles: ["Admin"],
+      defaultRole: "utilisateur",
+    }),
+  ],
 });

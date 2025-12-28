@@ -1,6 +1,5 @@
 ---
-description: Protocol for fixing bugs systematically
-globs: "**/*"
+trigger: always_on
 ---
 
 # Bug Fixing Protocol

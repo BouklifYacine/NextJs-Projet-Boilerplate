@@ -1,6 +1,5 @@
 ---
-description: UI Design System (Shadcn/UI & Tailwind)
-globs: "src/components/**/*.tsx", "src/features/**/components/**/*.tsx"
+trigger: always_on
 ---
 
 # UI Design System Rules

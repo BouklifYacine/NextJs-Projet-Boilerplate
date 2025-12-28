@@ -1,6 +1,5 @@
 ---
-description: Better Auth Implementation
-globs: "src/lib/auth-client.ts", "auth.ts", "src/routes/**/*"
+trigger: always_on
 ---
 
 # Better Auth Rules

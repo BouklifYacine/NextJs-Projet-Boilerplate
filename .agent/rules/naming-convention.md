@@ -1,6 +1,12 @@
 ---
+trigger: always_on
+---
+
+---
+
 description: Naming Conventions (Files, Components, Functions)
-globs: "**/*"
+globs: "\*_/_"
+
 ---
 
 # Naming Conventions

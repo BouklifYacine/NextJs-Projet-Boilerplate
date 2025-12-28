@@ -17,6 +17,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion/index'
 import { Route as TestcomponentsDatatableRouteImport } from './routes/testcomponents/datatable'
 import { Route as ParametresUserIdRouteImport } from './routes/parametres/$userId'
+import { Route as DashboardAdminRouteImport } from './routes/dashboard/admin'
 import { Route as ConnexionMotdepasseoublieIndexRouteImport } from './routes/connexion/motdepasseoublie/index'
 import { Route as ApiWebhooksStripeRouteImport } from './routes/api/webhooks/stripe'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -62,6 +63,11 @@ const ParametresUserIdRoute = ParametresUserIdRouteImport.update({
   path: '/parametres/$userId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardAdminRoute = DashboardAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const ConnexionMotdepasseoublieIndexRoute =
   ConnexionMotdepasseoublieIndexRouteImport.update({
     id: '/connexion/motdepasseoublie/',
@@ -88,6 +94,7 @@ const ConnexionMotdepasseoublieCodeIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/admin': typeof DashboardAdminRoute
   '/parametres/$userId': typeof ParametresUserIdRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
   '/parametres/$userId': typeof ParametresUserIdRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion': typeof ConnexionIndexRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/admin': typeof DashboardAdminRoute
   '/parametres/$userId': typeof ParametresUserIdRoute
   '/testcomponents/datatable': typeof TestcomponentsDatatableRoute
   '/connexion/': typeof ConnexionIndexRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/dashboard/admin'
     | '/parametres/$userId'
     | '/testcomponents/datatable'
     | '/connexion'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard/admin'
     | '/parametres/$userId'
     | '/testcomponents/datatable'
     | '/connexion'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/dashboard/admin'
     | '/parametres/$userId'
     | '/testcomponents/datatable'
     | '/connexion/'
@@ -243,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParametresUserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/connexion/motdepasseoublie/': {
       id: '/connexion/motdepasseoublie/'
       path: '/connexion/motdepasseoublie'
@@ -275,10 +294,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface DashboardRouteChildren {
+  DashboardAdminRoute: typeof DashboardAdminRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAdminRoute: DashboardAdminRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 

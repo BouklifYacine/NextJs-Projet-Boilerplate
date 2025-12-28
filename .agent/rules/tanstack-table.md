@@ -1,6 +1,5 @@
 ---
-description: TanStack Table Pro Patterns
-globs: "src/features/**/components/*-table.tsx"
+trigger: always_on
 ---
 
 # TanStack Table Pro Rules

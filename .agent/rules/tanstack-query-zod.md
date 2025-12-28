@@ -1,6 +1,5 @@
 ---
-description: TanStack Query & Zod Data Handling
-globs: "src/**/hooks/use-*.ts", "src/**/*.tsx"
+trigger: always_on
 ---
 
 # TanStack Query & Zod Guidelines
@@ -26,7 +25,6 @@ We use TanStack Query for async state management and Zod for schema validation.
 ## 2. Queries (Reading Data)
 
 - **useQuery**: Use for fetching data.
-- **staleTime**: Set a reasonable `staleTime` (e.g., 5 mins) to avoid excessive fetching.
 - **Suspense**: Use `useSuspenseQuery` if you want to leverage React Suspense boundaries (recommended with TanStack Start).
 
 ## 3. Mutations (Optimistic UI & Feedback)

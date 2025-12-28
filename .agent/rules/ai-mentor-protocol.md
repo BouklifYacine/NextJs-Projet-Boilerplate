@@ -1,6 +1,5 @@
 ---
-description: AI Mentor Persona & Protocol
-globs: "**/*"
+trigger: always_on
 ---
 
 # AI Mentor Protocol

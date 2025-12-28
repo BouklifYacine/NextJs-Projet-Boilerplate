@@ -1,6 +1,5 @@
 ---
-description: Stripe & Resend Services Integration
-globs: "src/services/**", "src/features/**/server/*.ts"
+trigger: always_on
 ---
 
 # Stripe & Resend Integration Rules
