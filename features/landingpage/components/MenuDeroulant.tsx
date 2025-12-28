@@ -5,8 +5,6 @@ import {
   LogOut,
   Menu,
   Settings,
-  Star,
-  Table2,
   User,
 } from "lucide-react";
 import {
@@ -95,18 +93,18 @@ export default function MenuDeroulant({
               <User className="mr-2 h-4 w-4" />
               <span>{userName || "Profil"}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <ChartPie className="mr-2 h-4 w-4" />
-              <span>Data</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Table2 className="mr-2 h-4 w-4" />
-              <span>Classement</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Star className="mr-2 h-4 w-4" />
-              <span>Favoris</span>
-            </DropdownMenuItem>
+            <a href="#pricing">
+              <DropdownMenuItem>
+                <CreditCard className="mr-2 h-4 w-4" />
+                <span>Pricing</span>
+              </DropdownMenuItem>
+            </a>
+            <a href="#faq">
+              <DropdownMenuItem>
+                <ChartPie className="mr-2 h-4 w-4" />
+                <span>FAQ</span>
+              </DropdownMenuItem>
+            </a>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
               {/* <Link to="/parametres" className="cursor-pointer">

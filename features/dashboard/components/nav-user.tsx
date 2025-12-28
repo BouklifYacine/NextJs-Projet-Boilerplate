@@ -1,11 +1,5 @@
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { ChevronsUpDown, Home, LogOut, Settings } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -101,24 +95,20 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem asChild>
+                <Link to="/">
+                  <Home />
+                  Accueil
+                </Link>
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Exemple 1
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Exemple 2
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Exemple 3
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/parametres/$userId"
+                  params={{ userId: SessionUser?.id ?? "" }}
+                >
+                  <Settings />
+                  Paramètres
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

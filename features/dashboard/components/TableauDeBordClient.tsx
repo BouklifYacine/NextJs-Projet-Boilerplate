@@ -9,6 +9,7 @@ import { Role } from "../interfaces/Interface-Types";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "@tanstack/react-router";
+import { useSession } from "@/lib/auth-client";
 
 export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
   utilisateurs,
@@ -90,9 +91,16 @@ export const TableauDeBordClient: React.FC<TableauDeBordProps> = ({
     ]
   );
 
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
+
   const gererSelectionTotale = (coche: boolean) => {
     if (coche) {
-      setUtilisateursSelectionnes(utilisateurs.map((user) => user.id));
+      setUtilisateursSelectionnes(
+        utilisateurs
+          .filter((user) => user.id !== currentUserId)
+          .map((user) => user.id)
+      );
     } else {
       setUtilisateursSelectionnes([]);
     }

@@ -17,6 +17,7 @@ A modern and complete boilerplate for building full-stack web applications with 
 - **Password Reset System** with unique email code (1h expiration)
 - **Protected Routes** and secure session management
 - **Role Management** (Admin/User) with middleware
+- **Multi-session support**: Manage multiple active sessions (Better Auth)
 - **CSRF Protection** and data validation
 - **Integrated Rate Limiting**
 
@@ -53,10 +54,11 @@ A modern and complete boilerplate for building full-stack web applications with 
   - Average Revenue Per User (ARPU)
   - Monthly/Annual subscription distribution
 - **User Management**:
-  - Table with dynamic pagination
+  - Table with dynamic pagination (TanStack Table)
   - Advanced filters (Admin, Subscription, Subscription Type)
   - Real-time username search
-  - User role modification
+  - User role modification (Admin plugin)
+  - Ban/Unban system with optional expiration
   - Bulk user deletion
 - **Modern Interface** with loading states and animations
 
@@ -109,6 +111,7 @@ A modern and complete boilerplate for building full-stack web applications with 
 - **TanStack Query** for server state management
 - **Framer Motion** for animations
 - **Lucide React** for icons
+- **Better Auth Client** for frontend authentication
 - **React Dropzone** for uploads
 - **React Hot Toast** for notifications
 

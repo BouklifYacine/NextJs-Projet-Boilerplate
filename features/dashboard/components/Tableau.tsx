@@ -11,9 +11,18 @@ import { Button } from "@/components/ui/button";
 import { Image } from "@unpic/react";
 import BadgeRole from "./BadgeRole";
 import BadgeAbonnement from "./BadgeAbonnement";
-import { RoleSelect } from "./select";
 import { Role, Utilisateur } from "../interfaces/Interface-Types";
 import BadgeTypeAbonnement from "./BadgeTypeAbonnement";
+import { useSession } from "@/lib/auth-client";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
 
 interface UsersTableProps {
   utilisateurFiltre: Utilisateur[];
@@ -38,6 +47,13 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   isPending,
   utilisateurs,
 }) => {
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
+
+  // Filtrer les utilisateurs sélectionnables (pas soi-même) pour la sélection totale
+  const selectionnableUsers = utilisateurs.filter(
+    (user) => user.id !== currentUserId
+  );
   return (
     <>
       <div className="rounded-md border">
@@ -47,9 +63,12 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               <TableHead>
                 <Checkbox
                   checked={
-                    utilisateursSelectionnes.length === utilisateurs.length
+                    utilisateursSelectionnes.length > 0 &&
+                    utilisateursSelectionnes.length ===
+                      selectionnableUsers.length
                   }
                   onCheckedChange={gererSelectionTotale}
+                  disabled={selectionnableUsers.length === 0}
                 />
               </TableHead>
               <TableHead className="font-bold text-black dark:text-white">
@@ -65,76 +84,108 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                 Email
               </TableHead>
               <TableHead className="font-bold text-black dark:text-white">
-                Créé le
+                Rejoint le
               </TableHead>
               <TableHead className="font-bold text-black dark:text-white">
                 Abonnement
               </TableHead>
               <TableHead className="font-bold text-black dark:text-white">
-                Periode
+                Actions
               </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {utilisateurFiltre.map((utilisateur) => (
-              <TableRow key={utilisateur.id}>
-                <TableCell>
-                  <Checkbox
-                    checked={utilisateursSelectionnes.includes(utilisateur.id)}
-                    onCheckedChange={(checked: boolean) =>
-                      gererSelectionUtilisateur(checked, utilisateur.id)
-                    }
-                  />
-                </TableCell>
-                <TableCell className="font-medium">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                    {utilisateur.image ? (
-                      <Image
-                        src={utilisateur.image}
-                        alt={utilisateur.name || "Avatar"}
-                        width={40}
-                        height={40}
-                        className="object-cover w-full h-full absolute inset-0 rounded-full"
-                      />
-                    ) : (
-                      <span className="text-black text-lg font-bold">
-                        {utilisateur?.name?.[0]?.toUpperCase() || "?"}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <BadgeRole utilisateur={utilisateur} />
-                </TableCell>
-                <TableCell>{utilisateur.name}</TableCell>
-                <TableCell>{utilisateur.email}</TableCell>
-                <TableCell>
-                  {new Date(utilisateur.createdAt).toLocaleDateString("fr-FR")}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center">
-                    <BadgeAbonnement utilisateur={utilisateur} />
-                    <RoleSelect
-                      RoleActuel={utilisateur.role}
-                      isLoading={loadingUsers[utilisateur.id]}
-                      onRoleChange={(newRole) =>
-                        handleRoleChange(utilisateur.id, newRole)
+            {utilisateurFiltre.map((utilisateur) => {
+              const isSelf = utilisateur.id === currentUserId;
+
+              return (
+                <TableRow key={utilisateur.id}>
+                  <TableCell>
+                    <Checkbox
+                      checked={utilisateursSelectionnes.includes(
+                        utilisateur.id
+                      )}
+                      onCheckedChange={(checked: boolean) =>
+                        gererSelectionUtilisateur(checked, utilisateur.id)
                       }
+                      disabled={isSelf}
                     />
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {!utilisateur.abonnement?.periode ? (
-                    "Freemium"
-                  ) : (
-                    <BadgeTypeAbonnement
-                      abonnement={utilisateur.abonnement.periode}
-                    />
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                      {utilisateur.image ? (
+                        <Image
+                          src={utilisateur.image}
+                          alt={utilisateur.name || "Avatar"}
+                          width={40}
+                          height={40}
+                          className="object-cover w-full h-full absolute inset-0 rounded-full"
+                        />
+                      ) : (
+                        <span className="text-black text-lg font-bold">
+                          {utilisateur?.name?.[0]?.toUpperCase() || "?"}
+                        </span>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <BadgeRole utilisateur={utilisateur} />
+                  </TableCell>
+                  <TableCell>{utilisateur.name}</TableCell>
+                  <TableCell>{utilisateur.email}</TableCell>
+                  <TableCell>
+                    {new Date(utilisateur.createdAt).toLocaleDateString(
+                      "fr-FR"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <BadgeAbonnement utilisateur={utilisateur} />
+                      {utilisateur.abonnement?.periode && (
+                        <BadgeTypeAbonnement
+                          abonnement={utilisateur.abonnement.periode}
+                        />
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Ouvrir le menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Rôles</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuCheckboxItem
+                          checked={utilisateur.role === "Admin"}
+                          onCheckedChange={() =>
+                            handleRoleChange(utilisateur.id, "Admin")
+                          }
+                          disabled={loadingUsers[utilisateur.id]}
+                        >
+                          Administrateur
+                        </DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem
+                          checked={utilisateur.role === "utilisateur"}
+                          onCheckedChange={() =>
+                            handleRoleChange(utilisateur.id, "utilisateur")
+                          }
+                          disabled={loadingUsers[utilisateur.id]}
+                        >
+                          Utilisateur
+                        </DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
+                        {/* Future features can be added here */}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

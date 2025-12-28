@@ -40,7 +40,7 @@ export const auth = betterAuth({
   },
   plugins: [
     tanstackStartCookies(),
-    multiSession(),
+    multiSession({ maximumSessions: 3 }),
     admin({
       adminRoles: ["Admin"],
       defaultRole: "utilisateur",

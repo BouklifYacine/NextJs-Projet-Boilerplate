@@ -62,24 +62,18 @@ const Header = () => {
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
-            <Link
-              to="/"
-              className=" hover:text-purple-600 opacity-80 transition-colors"
+            <a
+              href="#pricing"
+              className="hover:text-purple-600 opacity-80 transition-colors"
             >
-              Data
-            </Link>
-            <Link
-              to="/"
-              className=" hover:text-purple-600 opacity-80 transition-colors"
+              Pricing
+            </a>
+            <a
+              href="#faq"
+              className="hover:text-purple-600 opacity-80 transition-colors"
             >
-              Classement
-            </Link>
-            <Link
-              to="/"
-              className=" hover:text-purple-600 opacity-80 transition-colors"
-            >
-              Favoris
-            </Link>
+              FAQ
+            </a>
 
             {!session ? (
               <div className="flex items-center gap-6">

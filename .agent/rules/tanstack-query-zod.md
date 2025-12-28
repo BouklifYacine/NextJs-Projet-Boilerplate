@@ -10,17 +10,7 @@ We use TanStack Query for async state management and Zod for schema validation.
 
 ## 1. Query Keys
 
-- **Query Key Factories**: NEVER hardcode query keys strings. Use a factory pattern.
-- **Structure**: `[feature, entity, action, params]`.
-  ```ts
-  export const todoKeys = {
-    all: ["todos"] as const,
-    lists: () => [...todoKeys.all, "list"] as const,
-    list: (filters: string) => [...todoKeys.lists(), { filters }] as const,
-    details: () => [...todoKeys.all, "detail"] as const,
-    detail: (id: number) => [...todoKeys.details(), id] as const,
-  };
-  ```
+- **Query Key Factories**: NEVER hardcode query keys strings. .
 
 ## 2. Queries (Reading Data)
 
