@@ -1,2 +1,3 @@
-export { UsersTable } from "./users-table";
-export { UserActionsMenu } from "./user-actions-menu";
+export * from "./users-table";
+export * from "./user-actions-menu";
+export * from "./admin-dashboard";
