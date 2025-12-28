@@ -1,6 +1,6 @@
 import { Toggle } from "@/components/ui/toggle";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/ui/ThemeProvider";
 
 function BoutonDarkMode2() {
   const { theme, setTheme } = useTheme();

@@ -1,11 +1,12 @@
 // components/examples/chat-card-demo.tsx
 import { ChatCard, Message } from "@/components/ui/chat-card";
 import { useState } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/ui/ThemeProvider";
 
 const CURRENT_USER = {
   name: "You",
-  avatar: "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg"
+  avatar:
+    "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg",
 };
 
 const INITIAL_MESSAGES: Message[] = [
@@ -14,7 +15,8 @@ const INITIAL_MESSAGES: Message[] = [
     content: "Hey team! I've just pushed the latest design changes 🎨",
     sender: {
       name: "Alex Chen",
-      avatar: "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg",
+      avatar:
+        "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg",
       isOnline: true,
     },
     timestamp: "10:24 AM",
@@ -29,7 +31,8 @@ const INITIAL_MESSAGES: Message[] = [
     content: "Looking great! The new color scheme is perfect",
     sender: {
       name: "Sarah Kim",
-      avatar: "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg",
+      avatar:
+        "https://cdn.vox-cdn.com/thumbor/r0U59Lx7DOSI2Z_F7WLnzcbQfuU=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24953495/1698708349.jpg",
       isOnline: true,
     },
     timestamp: "10:26 AM",
@@ -42,11 +45,11 @@ const INITIAL_MESSAGES: Message[] = [
       name: CURRENT_USER.name,
       avatar: CURRENT_USER.avatar,
       isOnline: true,
-      isCurrentUser: true
+      isCurrentUser: true,
     },
     timestamp: "10:30 AM",
     status: "delivered",
-  }
+  },
 ];
 
 export function Chat() {
@@ -58,7 +61,7 @@ export function Chat() {
       membersCount: 3,
       onlineCount: 2,
       messages: INITIAL_MESSAGES,
-    }
+    },
   ]);
 
   return (
@@ -72,9 +75,11 @@ export function Chat() {
           currentUser={CURRENT_USER}
           theme={resolvedTheme as "light" | "dark"}
           className={resolvedTheme === "light" ? "border border-zinc-200" : ""}
-          onSendMessage={(message) => console.log('Sent:', message)}
-          onReaction={(messageId, emoji) => console.log('Reaction:', messageId, emoji)}
-          onMoreClick={() => console.log('More clicked')}
+          onSendMessage={(message) => console.log("Sent:", message)}
+          onReaction={(messageId, emoji) =>
+            console.log("Reaction:", messageId, emoji)
+          }
+          onMoreClick={() => console.log("More clicked")}
         />
       </div>
     </div>
