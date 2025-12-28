@@ -12,6 +12,7 @@ export interface Utilisateur {
   email: string | null;
   plan: "pro" | "free";
   role: "Admin" | "utilisateur";
+  banned: boolean;
   createdAt: Date;
   abonnement?: Abonnement | null;
 }
@@ -38,5 +39,5 @@ export interface TableauDeBordProps {
   RevenusParUtilisateurs: number;
   page: number;
   setPage: (value: number | ((prevValue: number) => number)) => void;
-  totalPages: number; 
+  totalPages: number;
 }

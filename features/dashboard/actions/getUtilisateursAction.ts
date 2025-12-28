@@ -30,7 +30,13 @@ export const getUtilisateursAction = createServerFn({ method: "GET" })
 
     const PAGE_SIZE = 10;
 
-    const total = await prisma.user.count();
+    const total = await prisma.user.count({
+      where: {
+        id: {
+          not: sessionId,
+        },
+      },
+    });
 
     const utilisateurs = await prisma.user.findMany({
       skip: page * PAGE_SIZE,
@@ -47,6 +53,7 @@ export const getUtilisateursAction = createServerFn({ method: "GET" })
         role: true,
         image: true,
         plan: true,
+        banned: true,
         createdAt: true,
         abonnement: {
           select: {

@@ -28,6 +28,7 @@ export interface User {
   role: "Admin" | "utilisateur";
   image: string | null;
   plan: "free" | "pro";
+  banned: boolean;
   createdAt: Date;
   abonnement?: {
     periode: "mois" | "année";

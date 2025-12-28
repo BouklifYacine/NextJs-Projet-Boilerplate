@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Image } from "@unpic/react";
 import BadgeRole from "./BadgeRole";
 import BadgeAbonnement from "./BadgeAbonnement";
@@ -18,11 +19,14 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Ban, ShieldCheck } from "lucide-react";
+import { useBanUser } from "../hooks/useBanUser";
+import { useUnbanUser } from "../hooks/useUnbanUser";
 
 interface UsersTableProps {
   utilisateurFiltre: Utilisateur[];
@@ -54,6 +58,10 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const selectionnableUsers = utilisateurs.filter(
     (user) => user.id !== currentUserId
   );
+
+  // Ban/Unban hooks
+  const banMutation = useBanUser();
+  const unbanMutation = useUnbanUser();
   return (
     <>
       <div className="rounded-md border">
@@ -88,6 +96,9 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               </TableHead>
               <TableHead className="font-bold text-black dark:text-white">
                 Abonnement
+              </TableHead>
+              <TableHead className="font-bold text-black dark:text-white">
+                Ban
               </TableHead>
               <TableHead className="font-bold text-black dark:text-white">
                 Actions
@@ -150,38 +161,72 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Ouvrir le menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Rôles</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuCheckboxItem
-                          checked={utilisateur.role === "Admin"}
-                          onCheckedChange={() =>
-                            handleRoleChange(utilisateur.id, "Admin")
-                          }
-                          disabled={loadingUsers[utilisateur.id]}
-                        >
-                          Administrateur
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={utilisateur.role === "utilisateur"}
-                          onCheckedChange={() =>
-                            handleRoleChange(utilisateur.id, "utilisateur")
-                          }
-                          disabled={loadingUsers[utilisateur.id]}
-                        >
-                          Utilisateur
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuSeparator />
-                        {/* Future features can be added here */}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Badge
+                      className={
+                        utilisateur.banned
+                          ? "bg-red-100 text-red-800 border-red-200 hover:bg-red-100"
+                          : "bg-green-100 text-green-800 border-green-200 hover:bg-green-100"
+                      }
+                    >
+                      {utilisateur.banned ? "Oui" : "Non"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {!isSelf && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Ouvrir le menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Rôles</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuCheckboxItem
+                            checked={utilisateur.role === "Admin"}
+                            onCheckedChange={() =>
+                              handleRoleChange(utilisateur.id, "Admin")
+                            }
+                            disabled={loadingUsers[utilisateur.id]}
+                          >
+                            Administrateur
+                          </DropdownMenuCheckboxItem>
+                          <DropdownMenuCheckboxItem
+                            checked={utilisateur.role === "utilisateur"}
+                            onCheckedChange={() =>
+                              handleRoleChange(utilisateur.id, "utilisateur")
+                            }
+                            disabled={loadingUsers[utilisateur.id]}
+                          >
+                            Utilisateur
+                          </DropdownMenuCheckboxItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuLabel>Modération</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {utilisateur.banned ? (
+                            <DropdownMenuItem
+                              onClick={() =>
+                                unbanMutation.mutate(utilisateur.id)
+                              }
+                              disabled={unbanMutation.isPending || isSelf}
+                            >
+                              <ShieldCheck className="mr-2 h-4 w-4" />
+                              Débannir
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={() => banMutation.mutate(utilisateur.id)}
+                              disabled={banMutation.isPending || isSelf}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Ban className="mr-2 h-4 w-4" />
+                              Bannir
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </TableCell>
                 </TableRow>
               );
