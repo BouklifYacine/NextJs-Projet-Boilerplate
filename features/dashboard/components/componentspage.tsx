@@ -1,63 +1,14 @@
-import React, { useState } from "react";
+import { Suspense, useState } from "react";
 import { TableauDeBordClient } from "./TableauDeBordClient";
 import { useStats, useUtilisateurs } from "../hooks/UseDashboard";
-import { Skeleton } from "@/components/ui/skeleton";
+import { DashboardSkeleton } from "./dashboard-skeleton";
 
-const ComponentPage = () => {
+function DashboardContent() {
   const [page, setPage] = useState(0);
 
-  const {
-    data: dataStats,
-    isLoading: isLoadingStats,
-    error: statsError,
-  } = useStats();
-
-  const {
-    data: dataUtilisateur,
-    isLoading: isLoadingUtilisateur,
-    error: utilisateurError,
-  } = useUtilisateurs(page);
-
-  if (isLoadingStats || isLoadingUtilisateur) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="space-y-6">
-          {/* Skeleton pour les statistiques */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-          </div>
-
-          {/* Skeleton pour le tableau */}
-          <Skeleton className="h-10 w-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-          </div>
-
-          {/* Skeleton pour la pagination */}
-          <div className="flex justify-center mt-4">
-            <Skeleton className="h-10 w-32" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (statsError || utilisateurError || !dataStats || !dataUtilisateur) {
-    return (
-      <>
-        <div className="flex justify-center items-center min-h-screen text-red-500">
-          Une erreur est survenue lors du chargement des données
-        </div>
-      </>
-    );
-  }
+  // With useSuspenseQuery, data is ALWAYS defined (no loading/error checks needed)
+  const { data: dataStats } = useStats();
+  const { data: dataUtilisateur } = useUtilisateurs(page);
 
   const utilisateurs = dataUtilisateur.data;
   const totalPages = dataUtilisateur.totalPages;
@@ -83,17 +34,23 @@ const ComponentPage = () => {
   };
 
   return (
-    <>
-      <TableauDeBordClient
-        utilisateurs={utilisateurs}
-        statistiques={statistiques}
-        MRR={MRR}
-        RevenusParUtilisateurs={RevenusParUtilisateurs}
-        page={page}
-        setPage={setPage}
-        totalPages={totalPages}
-      />
-    </>
+    <TableauDeBordClient
+      utilisateurs={utilisateurs}
+      statistiques={statistiques}
+      MRR={MRR}
+      RevenusParUtilisateurs={RevenusParUtilisateurs}
+      page={page}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
+  );
+}
+
+const ComponentPage = () => {
+  return (
+    <Suspense fallback={<DashboardSkeleton />}>
+      <DashboardContent />
+    </Suspense>
   );
 };
 

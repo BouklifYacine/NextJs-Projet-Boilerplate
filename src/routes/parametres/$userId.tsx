@@ -11,6 +11,7 @@ export const Route = createFileRoute("/parametres/$userId")({
     console.error(error);
   },
   component: ParametresPage,
+  pendingComponent: () => <div>Loading...</div>,
 });
 
 function ParametresPage() {
