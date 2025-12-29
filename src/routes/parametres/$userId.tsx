@@ -1,38 +1,14 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { getRequest } from "@tanstack/react-start/server";
-import { z } from "zod";
-import { auth } from "@/auth";
+import { createFileRoute } from "@tanstack/react-router";
 import { BarreLaterale } from "@/features/parametres/components/BarreLatérale";
 import Header from "@/features/landingpage/components/header";
-
-const checkParametresAccess = createServerFn({ method: "GET" })
-  .inputValidator(z.object({ userId: z.string() }))
-  .handler(async ({ data: { userId } }) => {
-    const request = getRequest();
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
-
-    if (!session?.user?.id) {
-      throw redirect({
-        to: "/connexion",
-      });
-    }
-
-    if (session.user.id !== userId) {
-      throw redirect({
-        to: "/parametres/$userId",
-        params: { userId: session.user.id },
-      });
-    }
-
-    return null;
-  });
+import { checkParametresAccess } from "@/features/parametres/server/CheckParametersAcces.server";
 
 export const Route = createFileRoute("/parametres/$userId")({
   beforeLoad: async ({ params }) => {
     await checkParametresAccess({ data: { userId: params.userId } });
+  },
+  onError: ({ error }) => {
+    console.error(error);
   },
   component: ParametresPage,
 });
