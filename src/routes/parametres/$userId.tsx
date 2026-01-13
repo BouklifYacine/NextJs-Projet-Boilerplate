@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BarreLaterale } from "@/features/parametres/components/BarreLatérale";
 import Header from "@/features/landingpage/components/header";
-import { checkParametresAccess } from "@/features/parametres/server/CheckParametersAcces.server";
+import { checkParametresAccess } from "@/src/features/parametres/server/check-parameters-access.server";
 
 export const Route = createFileRoute("/parametres/$userId")({
   beforeLoad: async ({ params }) => {

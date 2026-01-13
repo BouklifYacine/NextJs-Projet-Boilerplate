@@ -1,9 +1,6 @@
-import { z } from "zod";
 import { SchemaConnexion } from "@/features/connexion/schemas/SchemaConnexion";
 import { auth } from "@/auth";
 import { createServerFn } from "@tanstack/react-start";
-
-type Schema = z.infer<typeof SchemaConnexion>;
 
 export const connexionAction = createServerFn({ method: "POST" })
   .inputValidator(SchemaConnexion)
